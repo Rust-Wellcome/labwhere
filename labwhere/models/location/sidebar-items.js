@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":["UNKNOWN_LOCATION"],"struct":["Location","NameFormatError"]};
