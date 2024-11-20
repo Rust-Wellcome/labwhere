@@ -1,10 +1,10 @@
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sqlx::SqliteConnection;
-use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
+use std::fmt::Debug;
 use PartialEq;
 
+use crate::errors::name_format_error::NameFormatError;
 use crate::errors::not_found_error::NotFoundError;
 use crate::errors::sql_error::DatabaseError;
 use crate::errors::LabwhereError;
@@ -199,26 +199,6 @@ impl Default for Location {
         }
     }
 }
-
-/// Error struct for containing name formatting errors
-struct NameFormatError {
-    /// Message contained within the exception
-    message: String,
-}
-
-impl Display for NameFormatError {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Debug for NameFormatError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Error for NameFormatError {}
 
 #[cfg(test)]
 mod tests {

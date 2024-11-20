@@ -1,3 +1,4 @@
+pub mod name_format_error;
 pub mod not_found_error;
 pub mod sql_error;
 
