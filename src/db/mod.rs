@@ -12,6 +12,8 @@ pub mod savable;
 /// logic needs to run in our binary executable as well (upon application startup), we will keep this function visibility
 /// as `pub`.
 ///
+/// Better to use pooling instead of a single connection.
+///
 /// Example usage:
 /// ```
 /// #[tokio::test]
