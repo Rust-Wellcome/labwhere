@@ -158,6 +158,8 @@ impl Labware {
 
 #[cfg(test)]
 mod tests {
+    use std::any::Any;
+
     use crate::db::init_db;
     use crate::models::labware::*;
     use crate::models::location_type::LocationType;
@@ -201,8 +203,13 @@ mod tests {
     #[tokio::test]
     async fn update_labware_location_that_doesnt_exist() {
         let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn);
+        let location_type = LocationType::create("Freezer".to_string(), &mut conn).await.unwrap();
+        let location = Location::create("lw-location-1".to_string(), location_type.id, &mut conn).await.unwrap();
+        let mut labware = Labware::create("lw-1".to_string(), location.id, &mut conn).await.unwrap();
 
+        labware.location_id = 3;
+
+        Labware::update(&labware, &mut conn).await.expect_err("Location not found!");
     }
 
     #[tokio::test]
