@@ -1,6 +1,8 @@
 use sqlx::{Connection, Error, SqliteConnection};
 use std::fs;
 
+use crate::errors::LabwhereError;
+
 pub mod savable;
 
 /// Initializes a test database and injects the schemas.
@@ -31,10 +33,15 @@ pub mod savable;
 ///     let location_types = location_types_result.unwrap();
 ///     assert_eq!(location_types.len(), 1);
 /// }
-pub async fn init_db(url: &str) -> Result<SqliteConnection, Error> {
-    let mut connection = SqliteConnection::connect(url).await?;
-    let schemas =
-        fs::read_to_string("./src/db/schema.sql").expect("Something went wrong reading the file");
-    sqlx::query(&schemas).execute(&mut connection).await?;
-    Ok(connection)
+pub async fn init_db(url: &str) -> Result<SqliteConnection, LabwhereError> {
+    match SqliteConnection::connect(url).await {
+        Ok(mut conn) => {
+            let schemas = fs::read_to_string("./src/db/schema.sql").expect("Something went wrong reading the file");
+            match sqlx::query(&schemas).execute(&mut conn).await {
+                Ok(_) => Ok(conn),
+                Err(_) => Err(LabwhereError::DatabaseError(crate::errors::sql_error::DatabaseError { message: "Error creating the schemas".to_string() }))
+            }
+        },
+        Err(_) => Err(LabwhereError::DatabaseError(crate::errors::sql_error::DatabaseError { message: "Error connecting to the database".to_string() }))
+    }
 }

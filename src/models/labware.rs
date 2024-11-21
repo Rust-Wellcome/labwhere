@@ -69,6 +69,9 @@ impl Labware {
     }
 
     /// Updates the location of the Labware
+    /// Throws LabwhereError if 
+    ///     1. Location is not found.
+    ///     2. Labware is not found.
     /// # Examples
     /// ```
     /// # #[cfg(doctest)] {
@@ -193,6 +196,13 @@ mod tests {
 
         assert_eq!(labware.barcode, "lw-1");
         assert_eq!(labware.location_id, location.id);
+    }
+
+    #[tokio::test]
+    async fn update_labware_location_that_doesnt_exist() {
+        let mut conn = init_db("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &mut conn);
+
     }
 
     #[tokio::test]
