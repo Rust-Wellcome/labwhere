@@ -117,12 +117,12 @@ impl<'a> Location {
                 {
                     Ok(_) => Ok(location),
                     Err(err) => Err(LabwhereError::ConnectivityError(ConnectivityError {
-                        message: err.to_string(),
+                        message: format!("Error updating the labware location: {}", err.to_string()),
                     })),
                 }
             }
             Err(err) => Err(LabwhereError::ConnectivityError(ConnectivityError {
-                message: err.to_string(),
+                message: format!("Error inserting the location into the database: {}", err.to_string()),
             })),
         }
     }
