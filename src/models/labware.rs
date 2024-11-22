@@ -68,22 +68,22 @@ impl Labware {
         Ok(Labware::new(id as u32, barcode, Some(&location)))
     }
 
-    /// Updates the location of the Labware
+    /// Updates the location of the Labware.
     /// Throws LabwhereError if 
     ///     1. Location is not found.
     ///     2. Labware is not found.
     /// # Examples
     /// ```
     /// # #[cfg(doctest)] {
-    /// use labware::Labware;
-    /// let mut connection = init_db("sqlite::memory:").await.unwrap();
-    /// let mut labware = Labware::create("trac-1".to_string(), 1, &mut connection);
-    /// let location_type = LocationType::create("Freezer".to_string(), &mut conn).await.unwrap();
-    /// let location1 = Location::create("location1".to_string(), location_type.id, &mut conn).await.unwrap();
-    /// let location2 = Location::create("location1".to_string(), location_type.id, &mut conn).await.unwrap();
-    /// // Update the labware now
-    /// labware.location_id = location2.id;
-    /// let updated_labware = Labware::update(&labware, &mut connection);
+    ///     use labware::Labware;
+    ///     let mut connection = init_db("sqlite::memory:").await.unwrap();
+    ///     let mut labware = Labware::create("trac-1".to_string(), 1, &mut connection);
+    ///     let location_type = LocationType::create("Freezer".to_string(), &mut conn).await.unwrap();
+    ///     let location1 = Location::create("location1".to_string(), location_type.id, &mut conn).await.unwrap();
+    ///     let location2 = Location::create("location1".to_string(), location_type.id, &mut conn).await.unwrap();
+    ///     // Update the labware now
+    ///     labware.location_id = location2.id;
+    ///     let updated_labware = Labware::update(&labware, &mut connection);
     /// # }
     pub(crate) async fn update(
         labware: &Labware,
@@ -158,7 +158,6 @@ impl Labware {
 
 #[cfg(test)]
 mod tests {
-    use std::any::Any;
 
     use crate::db::init_db;
     use crate::models::labware::*;
