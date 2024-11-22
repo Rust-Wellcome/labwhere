@@ -1,9 +1,9 @@
+pub mod database_error;
 pub mod name_format_error;
 pub mod not_found_error;
-pub mod database_error;
 
-use crate::errors::not_found_error::NotFoundError;
 use crate::errors::database_error::DatabaseError;
+use crate::errors::not_found_error::NotFoundError;
 use std::error::Error;
 use std::fmt::Debug;
 

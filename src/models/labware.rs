@@ -1,6 +1,6 @@
 use super::location::UNKNOWN_LOCATION;
-use crate::errors::not_found_error::NotFoundError;
 use crate::errors::database_error::DatabaseError;
+use crate::errors::not_found_error::NotFoundError;
 use crate::errors::LabwhereError;
 use crate::models::location::Location;
 use sqlx::SqliteConnection;
@@ -69,7 +69,7 @@ impl Labware {
     }
 
     /// Updates the location of the Labware.
-    /// Throws LabwhereError if 
+    /// Throws LabwhereError if
     ///     1. Location is not found.
     ///     2. Labware is not found.
     /// # Examples
@@ -202,13 +202,21 @@ mod tests {
     #[tokio::test]
     async fn update_labware_location_that_doesnt_exist() {
         let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn).await.unwrap();
-        let location = Location::create("lw-location-1".to_string(), location_type.id, &mut conn).await.unwrap();
-        let mut labware = Labware::create("lw-1".to_string(), location.id, &mut conn).await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &mut conn)
+            .await
+            .unwrap();
+        let location = Location::create("lw-location-1".to_string(), location_type.id, &mut conn)
+            .await
+            .unwrap();
+        let mut labware = Labware::create("lw-1".to_string(), location.id, &mut conn)
+            .await
+            .unwrap();
 
         labware.location_id = 3;
 
-        Labware::update(&labware, &mut conn).await.expect_err("Location not found!");
+        Labware::update(&labware, &mut conn)
+            .await
+            .expect_err("Location not found!");
     }
 
     #[tokio::test]

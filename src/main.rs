@@ -1,6 +1,6 @@
 use labwhere::db::init_db;
-use labwhere::errors::not_found_error::NotFoundError;
 use labwhere::errors::database_error::DatabaseError;
+use labwhere::errors::not_found_error::NotFoundError;
 use labwhere::errors::LabwhereError;
 use labwhere::models::location_type::LocationType;
 
