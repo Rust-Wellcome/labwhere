@@ -4,7 +4,7 @@ use sqlx::SqliteConnection;
 use std::fmt::Debug;
 use PartialEq;
 
-use crate::errors::database_error::DatabaseError;
+use crate::errors::database_error::ConnectivityError;
 use crate::errors::name_format_error::NameFormatError;
 use crate::errors::not_found_error::NotFoundError;
 use crate::errors::LabwhereError;
@@ -116,12 +116,12 @@ impl<'a> Location {
                     .await
                 {
                     Ok(_) => Ok(location),
-                    Err(err) => Err(LabwhereError::DatabaseError(DatabaseError {
+                    Err(err) => Err(LabwhereError::ConnectivityError(ConnectivityError {
                         message: err.to_string(),
                     })),
                 }
             }
-            Err(err) => Err(LabwhereError::DatabaseError(DatabaseError {
+            Err(err) => Err(LabwhereError::ConnectivityError(ConnectivityError {
                 message: err.to_string(),
             })),
         }

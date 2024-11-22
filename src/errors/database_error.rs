@@ -2,20 +2,20 @@ use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
 /// Database errors
-pub struct DatabaseError {
+pub struct ConnectivityError {
     pub message: String,
 }
 
-impl Display for DatabaseError {
+impl Display for ConnectivityError {
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
         write!(f, "{}", self.message.to_string())
     }
 }
 
-impl Debug for DatabaseError {
+impl Debug for ConnectivityError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.message.to_string())
     }
 }
 
-impl Error for DatabaseError {}
+impl Error for ConnectivityError {}

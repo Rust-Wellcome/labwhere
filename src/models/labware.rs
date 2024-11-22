@@ -1,5 +1,5 @@
 use super::location::UNKNOWN_LOCATION;
-use crate::errors::database_error::DatabaseError;
+use crate::errors::database_error::ConnectivityError;
 use crate::errors::not_found_error::NotFoundError;
 use crate::errors::LabwhereError;
 use crate::models::location::Location;
@@ -119,7 +119,7 @@ impl Labware {
                         ))
                     }
                     // Error from the database.
-                    Err(_) => Err(LabwhereError::DatabaseError(DatabaseError {
+                    Err(_) => Err(LabwhereError::ConnectivityError(ConnectivityError {
                         message: "Error from the database!".to_string(),
                     })),
                 }

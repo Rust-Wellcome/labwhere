@@ -2,7 +2,7 @@ pub mod database_error;
 pub mod name_format_error;
 pub mod not_found_error;
 
-use crate::errors::database_error::DatabaseError;
+use crate::errors::database_error::ConnectivityError;
 use crate::errors::not_found_error::NotFoundError;
 use std::error::Error;
 use std::fmt::Debug;
@@ -11,14 +11,14 @@ use std::fmt::Debug;
 #[derive(Debug)]
 pub enum LabwhereError {
     NotFound(NotFoundError),
-    DatabaseError(DatabaseError),
+    ConnectivityError(ConnectivityError),
 }
 
 impl std::fmt::Display for LabwhereError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             LabwhereError::NotFound(err) => write!(f, "{}", err),
-            LabwhereError::DatabaseError(err) => write!(f, "{}", err),
+            LabwhereError::ConnectivityError(err) => write!(f, "{}", err),
         }
     }
 }
@@ -31,8 +31,8 @@ impl From<NotFoundError> for LabwhereError {
     }
 }
 
-impl From<DatabaseError> for LabwhereError {
-    fn from(err: DatabaseError) -> Self {
-        LabwhereError::DatabaseError(err)
+impl From<ConnectivityError> for LabwhereError {
+    fn from(err: ConnectivityError) -> Self {
+        LabwhereError::ConnectivityError(err)
     }
 }

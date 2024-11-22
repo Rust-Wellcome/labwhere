@@ -1,4 +1,4 @@
-use crate::errors::database_error::DatabaseError;
+use crate::errors::database_error::ConnectivityError;
 use sqlx::{Connection, SqliteConnection};
 use std::fs;
 
@@ -41,12 +41,12 @@ pub async fn init_db(url: &str) -> Result<SqliteConnection, LabwhereError> {
                 .expect("Something went wrong reading the file");
             match sqlx::query(&schemas).execute(&mut conn).await {
                 Ok(_) => Ok(conn),
-                Err(_) => Err(LabwhereError::DatabaseError(DatabaseError {
+                Err(_) => Err(LabwhereError::ConnectivityError(ConnectivityError {
                     message: "Error creating the schemas".to_string(),
                 })),
             }
         }
-        Err(_) => Err(LabwhereError::DatabaseError(DatabaseError {
+        Err(_) => Err(LabwhereError::ConnectivityError(ConnectivityError {
             message: "Error connecting to the database".to_string(),
         })),
     }

@@ -1,5 +1,5 @@
 use labwhere::db::init_db;
-use labwhere::errors::database_error::DatabaseError;
+use labwhere::errors::database_error::ConnectivityError;
 use labwhere::errors::not_found_error::NotFoundError;
 use labwhere::errors::LabwhereError;
 use labwhere::models::location_type::LocationType;
@@ -38,7 +38,7 @@ async fn main() -> Result<(), LabwhereError> {
             assert_eq!(result.len(), 1);
         }
         Err(_) => {
-            return Err(LabwhereError::DatabaseError(DatabaseError {
+            return Err(LabwhereError::ConnectivityError(ConnectivityError {
                 message: "Not found".to_string(),
             }))
         }
