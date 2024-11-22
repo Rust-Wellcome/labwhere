@@ -36,12 +36,12 @@ async fn main() -> Result<(), LabwhereError> {
                     }
                 };
             assert_eq!(result.len(), 1);
+            Ok(())
         }
         Err(_) => {
             return Err(LabwhereError::ConnectivityError(ConnectivityError {
                 message: "Not found".to_string(),
             }))
         }
-    };
-    Ok(())
+    }
 }
