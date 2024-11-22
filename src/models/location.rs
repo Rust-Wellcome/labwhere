@@ -6,7 +6,7 @@ use PartialEq;
 
 use crate::errors::name_format_error::NameFormatError;
 use crate::errors::not_found_error::NotFoundError;
-use crate::errors::sql_error::DatabaseError;
+use crate::errors::database_error::DatabaseError;
 use crate::errors::LabwhereError;
 
 /// The `UNKNOWN_LOCATION` constant is initialized only when it is first accessed.

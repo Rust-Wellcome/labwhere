@@ -1,6 +1,6 @@
 use super::location::UNKNOWN_LOCATION;
 use crate::errors::not_found_error::NotFoundError;
-use crate::errors::sql_error::DatabaseError;
+use crate::errors::database_error::DatabaseError;
 use crate::errors::LabwhereError;
 use crate::models::location::Location;
 use sqlx::SqliteConnection;

@@ -39,9 +39,9 @@ pub async fn init_db(url: &str) -> Result<SqliteConnection, LabwhereError> {
             let schemas = fs::read_to_string("./src/db/schema.sql").expect("Something went wrong reading the file");
             match sqlx::query(&schemas).execute(&mut conn).await {
                 Ok(_) => Ok(conn),
-                Err(_) => Err(LabwhereError::DatabaseError(crate::errors::sql_error::DatabaseError { message: "Error creating the schemas".to_string() }))
+                Err(_) => Err(LabwhereError::DatabaseError(crate::errors::database_error::DatabaseError { message: "Error creating the schemas".to_string() }))
             }
         },
-        Err(_) => Err(LabwhereError::DatabaseError(crate::errors::sql_error::DatabaseError { message: "Error connecting to the database".to_string() }))
+        Err(_) => Err(LabwhereError::DatabaseError(crate::errors::database_error::DatabaseError { message: "Error connecting to the database".to_string() }))
     }
 }
