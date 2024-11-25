@@ -1,5 +1,8 @@
-use sqlx::{Connection, Error, SqliteConnection};
+use sqlx::{Connection, SqliteConnection};
+use crate::errors::database_error::ConnectivityError;
 use std::fs;
+
+use crate::errors::LabwhereError;
 
 pub mod savable;
 
@@ -11,6 +14,11 @@ pub mod savable;
 /// the lib crate (which is under the same name as `labwhere`) but not to the binary crate. Because this initialization
 /// logic needs to run in our binary executable as well (upon application startup), we will keep this function visibility
 /// as `pub`.
+///
+/// Better to use pooling instead of a single connection.
+///
+/// Returns an `SqliteConnection` if successful in connecting with the database. If not, panics
+/// with a `LabwhereError`.
 ///
 /// Example usage:
 /// ```
@@ -29,10 +37,15 @@ pub mod savable;
 ///     let location_types = location_types_result.unwrap();
 ///     assert_eq!(location_types.len(), 1);
 /// }
-pub async fn init_db(url: &str) -> Result<SqliteConnection, Error> {
-    let mut connection = SqliteConnection::connect(url).await?;
-    let schemas =
-        fs::read_to_string("./src/db/schema.sql").expect("Something went wrong reading the file");
-    sqlx::query(&schemas).execute(&mut connection).await?;
-    Ok(connection)
+pub async fn init_db(url: &str) -> Result<SqliteConnection, LabwhereError> {
+    match SqliteConnection::connect(url).await {
+        Ok(mut conn) => {
+            let schemas = fs::read_to_string("./src/db/schema.sql").expect("Something went wrong reading the file");
+            match sqlx::query(&schemas).execute(&mut conn).await {
+                Ok(_) => Ok(conn),
+                Err(_) => Err(LabwhereError::ConnectivityError(ConnectivityError { message: "Error creating the schemas".to_string() }))
+            }
+        },
+        Err(_) => Err(LabwhereError::ConnectivityError(ConnectivityError { message: "Error connecting to the database".to_string() }))
+    }
 }

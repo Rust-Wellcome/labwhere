@@ -1,4 +1,7 @@
 use labwhere::db::init_db;
+use labwhere::errors::database_error::ConnectivityError;
+use labwhere::errors::not_found_error::NotFoundError;
+use labwhere::errors::LabwhereError;
 use labwhere::models::location_type::LocationType;
 
 // Any module that is imported into here (e.g., `use abc_module;`) has its ancestry as the binary
@@ -8,25 +11,37 @@ use labwhere::models::location_type::LocationType;
 // name listed in Cargo.toml); because stuff from library crate are imported in line 1 and 2.
 
 #[tokio::main]
-async fn main() -> Result<(), sqlx::Error> {
+async fn main() -> Result<(), LabwhereError> {
     // Another option is to use SqlitePool. A pool gives a bunch of active connections and will
     //  resolve a connection from the pool when an database operation starts.
     let mut conn = init_db("sqlite::memory:").await.unwrap();
 
-    sqlx::query("INSERT INTO location_types (id, name) VALUES (?, ?)")
+    match sqlx::query("INSERT INTO location_types (id, name) VALUES (?, ?)")
         .bind(150_i64)
         .bind("Freezer")
         .execute(&mut conn)
-        .await?;
-
-    let result: Vec<LocationType> =
-        sqlx::query_as::<_, LocationType>("SELECT * FROM location_types")
-            .fetch_all(&mut conn)
-            .await?;
-
-    println!("{:?}", result);
-
-    assert_eq!(result.len(), 1);
-
+        .await
+    {
+        Ok(_) => {
+            let result: Vec<LocationType> =
+                match sqlx::query_as::<_, LocationType>("SELECT * FROM location_types")
+                    .fetch_all(&mut conn)
+                    .await
+                {
+                    Ok(result) => result,
+                    Err(_) => {
+                        return Err(LabwhereError::NotFound(NotFoundError {
+                            message: "Not found".to_string(),
+                        }));
+                    }
+                };
+            assert_eq!(result.len(), 1);
+        }
+        Err(_) => {
+            return Err(LabwhereError::ConnectivityError(ConnectivityError {
+                message: "Not found".to_string(),
+            }))
+        }
+    };
     Ok(())
 }
