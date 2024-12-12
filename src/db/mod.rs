@@ -4,6 +4,7 @@ use std::fs;
 
 use crate::errors::LabwhereError;
 
+pub mod create_db;
 pub mod savable;
 
 /// Initializes a test database and injects the schemas.
@@ -14,11 +15,6 @@ pub mod savable;
 /// the lib crate (which is under the same name as `labwhere`) but not to the binary crate. Because this initialization
 /// logic needs to run in our binary executable as well (upon application startup), we will keep this function visibility
 /// as `pub`.
-///
-/// Better to use pooling instead of a single connection.
-///
-/// Returns an `SqliteConnection` if successful in connecting with the database. If not, panics
-/// with a `LabwhereError`.
 ///
 /// Example usage:
 /// ```
