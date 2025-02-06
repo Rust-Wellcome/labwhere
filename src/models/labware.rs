@@ -61,26 +61,21 @@ impl Labware {
         match insert_labware_result {
             Ok(result) => {
                 let id = result.last_insert_rowid();
-                let location_result = sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
-                    .bind(location_id)
-                    .fetch_one(&mut *connection)
-                    .await;
+                let location_result =
+                    sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
+                        .bind(location_id)
+                        .fetch_one(&mut *connection)
+                        .await;
                 match location_result {
-                    Ok(location) => {
-                        Ok(Labware::new(id as u32, barcode, Some(&location)))
-                    },
-                    Err(_) => {
-                        Err(LabwhereError::NotFound(NotFoundError {
-                            message: "Location not found!".to_string(),
-                        }))
-                    }
+                    Ok(location) => Ok(Labware::new(id as u32, barcode, Some(&location))),
+                    Err(_) => Err(LabwhereError::NotFound(NotFoundError {
+                        message: "Location not found!".to_string(),
+                    })),
                 }
-            },
-            Err(_) => {
-                Err(LabwhereError::ConnectivityError(ConnectivityError {
-                    message: "Error saving the labware!".to_string(),
-                }))
             }
+            Err(_) => Err(LabwhereError::ConnectivityError(ConnectivityError {
+                message: "Error saving the labware!".to_string(),
+            })),
         }
     }
 

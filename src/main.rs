@@ -1,9 +1,3 @@
-use labwhere::db::init_db;
-use labwhere::errors::database_error::ConnectivityError;
-use labwhere::errors::not_found_error::NotFoundError;
-use labwhere::errors::LabwhereError;
-use labwhere::models::location_type::LocationType;
-
 // Any module that is imported into here (e.g., `use abc_module;`) has its ancestry as the binary
 // crate. Therefore, any function that is declared in the module (e.g., `abc_module`) under `pub(crate)`
 // visibility can be accessed by the binary crate and NOT the library crate. If the module needs to be accessed
