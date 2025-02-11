@@ -1,6 +1,10 @@
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
+pub enum LabwhereError {
+    NotFoundError(NotFoundError),
+}
+
 pub struct NotFoundError {
     pub message: String,
 }

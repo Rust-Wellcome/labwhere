@@ -1,4 +1,4 @@
-use crate::errors::NotFoundError;
+use crate::errors::LabwhereError;
 use crate::models::location::Location;
 use serde::{Deserialize, Serialize};
 use sqlx::sqlite::SqliteConnection;
@@ -27,7 +27,7 @@ impl Scan {
     pub async fn create(
         scan: Scan,
         connection: &mut SqliteConnection,
-    ) -> Result<Scan, NotFoundError> {
+    ) -> Result<Scan, LabwhereError> {
         // TODO: Complete this function.
 
         // let location_result = Location::find_by_barcode(scan.location_barcode);
@@ -35,8 +35,7 @@ impl Scan {
             match Location::find_by_barcode(scan.location_barcode, connection).await {
                 Ok(location) => location,
                 Err(error) => {
-                    // Respond with a 404
-                    return Err(error);
+                    return Err(LabwhereError::NotFoundError(error));
                 }
             };
 
