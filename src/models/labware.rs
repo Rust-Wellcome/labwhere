@@ -1,5 +1,5 @@
 use super::location::UNKNOWN_LOCATION;
-use crate::errors::{ NotFoundError, LabwhereError, BarcodeEmptyError };
+use crate::errors::{BarcodeEmptyError, LabwhereError, NotFoundError};
 use crate::models::location::Location;
 use sqlx::SqliteConnection;
 
@@ -117,7 +117,7 @@ impl Labware {
     ) -> Result<Labware, LabwhereError> {
         if barcode.is_empty() {
             return Err(LabwhereError::BarcodeEmptyError(BarcodeEmptyError {
-                message: "Labware not found".to_string(),
+                message: "Barcode is empty".to_string(),
             }));
         }
         match sqlx::query_as::<_, Labware>("SELECT * FROM labwares WHERE barcode = ?")
@@ -126,9 +126,9 @@ impl Labware {
             .await
         {
             Ok(labware) => Ok(labware),
-            Err(_) => Err(NotFoundError {
-                message: "Labware not found".to_string(),
-            }),
+            Err(_) => Err(LabwhereError::NotFound(NotFoundError {
+                message: "Labware not found!".to_string(),
+            })),
         }
     }
 }
@@ -228,7 +228,12 @@ mod tests {
         let result = Labware::find_by_barcode(&"".to_string(), &mut conn).await;
         assert!(result.is_err());
         if let Err(err) = result {
-            assert_eq!(err.message, "Barcode is empty".to_string());
+            match err {
+                LabwhereError::BarcodeEmptyError(err) => {
+                    assert_eq!(err.message, "Barcode is empty".to_string())
+                }
+                _ => panic!("Unexpected error"),
+            }
         }
     }
 
@@ -238,7 +243,12 @@ mod tests {
         let result = Labware::find_by_barcode(&"lw-1".to_string(), &mut conn).await;
         assert!(result.is_err());
         if let Err(err) = result {
-            assert_eq!(err.message, "Labware not found".to_string());
+            match err {
+                LabwhereError::NotFound(err) => {
+                    assert_eq!(err.message, "Labware not found!".to_string())
+                }
+                _ => panic!("Unexpected error"),
+            }
         }
     }
 }
