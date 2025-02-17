@@ -42,3 +42,15 @@ pub enum LabwhereError {
     NotFoundError(NotFoundError),
     BarcodeEmptyError(BarcodeEmptyError),
 }
+
+impl From<NotFoundError> for LabwhereError {
+    fn from(err: NotFoundError) -> Self {
+        LabwhereError::NotFoundError(err)
+    }
+}
+
+impl From<BarcodeEmptyError> for LabwhereError {
+    fn from(err: BarcodeEmptyError) -> Self {
+        LabwhereError::BarcodeEmptyError(err)
+    }
+}
