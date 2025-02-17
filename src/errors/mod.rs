@@ -1,6 +1,25 @@
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
+// Dynamically adds the Display and Debug traits.
+macro_rules! impl_error {
+    ($err_type:ident) => {
+        impl Display for $err_type {
+            fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
+                write!(f, "{}", self.message)
+            }
+        }
+
+        impl Debug for $err_type {
+            fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+                write!(f, "{}", self.message)
+            }
+        }
+
+        impl Error for $err_type {}
+    };
+}
+
 pub struct NotFoundError {
     pub message: String,
 }
@@ -9,32 +28,8 @@ pub struct BarcodeEmptyError {
     pub message: String,
 }
 
-impl Display for NotFoundError {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Debug for NotFoundError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Display for BarcodeEmptyError {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Debug for BarcodeEmptyError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Error for NotFoundError {}
-impl Error for BarcodeEmptyError {}
+impl_error!(NotFoundError);
+impl_error!(BarcodeEmptyError);
 
 /// A generalised error for Labware
 #[derive(Debug)]
