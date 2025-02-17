@@ -116,9 +116,7 @@ impl Labware {
         connection: &mut SqliteConnection,
     ) -> Result<Labware, LabwhereError> {
         if barcode.is_empty() {
-            return Err(LabwhereError::BarcodeEmptyError(BarcodeEmptyError {
-                message: "Barcode is empty".to_string(),
-            }));
+            return Err(LabwhereError::barcode_empty_error());
         }
         match sqlx::query_as::<_, Labware>("SELECT * FROM labwares WHERE barcode = ?")
             .bind(barcode)
@@ -126,9 +124,7 @@ impl Labware {
             .await
         {
             Ok(labware) => Ok(labware),
-            Err(_) => Err(LabwhereError::NotFoundError(NotFoundError {
-                message: "Labware not found!".to_string(),
-            })),
+            Err(_) => Err(LabwhereError::not_found_error("Labware")),
         }
     }
 }
@@ -230,7 +226,7 @@ mod tests {
         if let Err(err) = result {
             match err {
                 LabwhereError::BarcodeEmptyError(err) => {
-                    assert_eq!(err.message, "Barcode is empty".to_string())
+                    assert_eq!(err.message, "Barcode is empty!".to_string())
                 }
                 _ => panic!("Unexpected error"),
             }

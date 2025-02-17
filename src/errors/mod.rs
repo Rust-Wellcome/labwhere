@@ -43,6 +43,20 @@ pub enum LabwhereError {
     BarcodeEmptyError(BarcodeEmptyError),
 }
 
+impl LabwhereError {
+    pub fn not_found_error(entity: &str) -> LabwhereError {
+        LabwhereError::NotFoundError(NotFoundError {
+            message: format!("{} not found!", entity),
+        })
+    }
+
+    pub fn barcode_empty_error() -> LabwhereError {
+        LabwhereError::BarcodeEmptyError(BarcodeEmptyError {
+            message: "Barcode is empty!".to_string(),
+        })
+    }
+}
+
 impl From<NotFoundError> for LabwhereError {
     fn from(err: NotFoundError) -> Self {
         LabwhereError::NotFoundError(err)
