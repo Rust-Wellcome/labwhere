@@ -1,3 +1,4 @@
+use crate::errors::LabwhereError;
 use crate::errors::NameFormatError;
 use crate::errors::NotFoundError;
 use once_cell::sync::Lazy;
@@ -67,11 +68,9 @@ impl<'a> Location {
         name: String,
         location_type_id: u32,
         barcode: Option<String>,
-    ) -> Result<Location, NameFormatError> {
+    ) -> Result<Location, LabwhereError> {
         if !Location::validate_name(name.clone()) {
-            return Err(NameFormatError {
-                message: "Invalid name format!".to_string(),
-            });
+            return Err(LabwhereError::name_format_error());
         }
         let location = Location {
             id,

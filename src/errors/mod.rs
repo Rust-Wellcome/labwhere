@@ -68,7 +68,7 @@ impl LabwhereError {
     }
 
     pub fn name_format_error() -> LabwhereError {
-        LabwhereError::BarcodeEmptyError(BarcodeEmptyError {
+        LabwhereError::NameFormatError(NameFormatError {
             message: "Invalid name format!".to_string(),
         })
     }
