@@ -52,12 +52,14 @@ impl LabwhereError {
     }
 }
 
+/// Converts from `NotFoundError` into a `LabwhereError`
 impl From<NotFoundError> for LabwhereError {
     fn from(err: NotFoundError) -> Self {
         LabwhereError::NotFoundError(err)
     }
 }
 
+/// Converts from `BarcodeEmptyError` into a `LabwhereError`
 impl From<BarcodeEmptyError> for LabwhereError {
     fn from(err: BarcodeEmptyError) -> Self {
         LabwhereError::BarcodeEmptyError(err)
