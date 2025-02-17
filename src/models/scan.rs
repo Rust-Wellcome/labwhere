@@ -1,7 +1,10 @@
-use crate::errors::NotFoundError;
+use crate::errors::{NotFoundError, LabwhereError};
 use crate::models::location::Location;
+use crate::models::labware::Labware;
 use serde::{Deserialize, Serialize};
 use sqlx::sqlite::SqliteConnection;
+
+use super::labware;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Scan {
@@ -27,18 +30,30 @@ impl Scan {
     pub async fn create(
         scan: Scan,
         connection: &mut SqliteConnection,
-    ) -> Result<Scan, NotFoundError> {
+    ) -> Result<Scan, LabwhereError> {
         // TODO: Complete this function.
 
         // let location_result = Location::find_by_barcode(scan.location_barcode);
         let location: Location =
             match Location::find_by_barcode(scan.location_barcode, connection).await {
                 Ok(location) => location,
-                Err(error) => {
-                    // Respond with a 404
-                    return Err(error);
-                }
+                Err(_) => return Err(LabwhereError::NotFound(NotFoundError {
+                    message: "Location not found!".to_string(),
+                }))
             };
+
+        let labware = match Labware::find_by_barcode(&scan.labware_barcode, connection).await {
+            Ok(labware) => labware,
+            Err(_) => {
+
+                return Labware::create(scan.labware_barcode, location.id, connection).await.unwrap()
+            }
+        };
+        
+        // get labware by barcode
+        // if labware doesn't exist, create it
+        // scan the labware into the location
+        // return the scan
 
         Ok(Scan {
             labware_barcode: "".to_string(),
@@ -50,7 +65,7 @@ impl Scan {
 #[cfg(test)]
 mod tests {
     use crate::db::init_db;
-    use crate::models::scan::Scan;
+    use crate::models::{location::Location, location_type::LocationType, scan::Scan};
 
     #[test]
     fn test_scan_new() {
@@ -63,8 +78,29 @@ mod tests {
     async fn test_scan_create_no_location() {
         let scan = Scan::new("lw-bc-1".to_string(), "lc-bc-1".to_string());
         let mut connection = init_db("sqlite::memory:").await.unwrap();
-        Scan::create(scan, &mut connection)
-            .await
-            .expect_err("Location not found");
+        let result = Scan::create(scan, &mut connection).await;
+        assert!(result.is_err());
+        if let Err(err) = result {
+            assert_eq!(err.message, "Location not found".to_string());
+        }
     }
+
+    #[tokio::test]
+    async fn test_scan_with_dodgy_labware_returns_an_error() {
+        let mut connection = init_db("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &mut connection)
+        .await
+        .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &mut connection)
+            .await
+            .unwrap();
+        let scan = Scan::new("".to_string(), location.barcode.unwrap());
+        let result = Scan::create(scan, &mut connection).await;
+        println!("{:?}", result);
+        assert!(result.is_err());
+        if let Err(err) = result {
+            assert_eq!(err.message, "Barcode is empty".to_string());
+        }
+    }
+
 }
