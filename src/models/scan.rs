@@ -47,6 +47,7 @@ impl Scan {
                         .await
                         .unwrap()
                 }
+                _ => panic!("Unrecognised error!"), // It never reaches this point.
             },
         };
 

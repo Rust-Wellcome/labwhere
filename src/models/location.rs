@@ -1,9 +1,9 @@
+use crate::errors::NameFormatError;
 use crate::errors::NotFoundError;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sqlx::SqliteConnection;
-use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
+use std::fmt::Debug;
 use PartialEq;
 
 /// The `UNKNOWN_LOCATION` constant is initialized only when it is first accessed.
@@ -70,7 +70,7 @@ impl<'a> Location {
     ) -> Result<Location, NameFormatError> {
         if !Location::validate_name(name.clone()) {
             return Err(NameFormatError {
-                message: "Invalid name format".to_string(),
+                message: "Invalid name format!".to_string(),
             });
         }
         let location = Location {
@@ -188,26 +188,6 @@ impl Default for Location {
         }
     }
 }
-
-/// Error struct for containing name formatting errors
-struct NameFormatError {
-    /// Message contained within the exception
-    message: String,
-}
-
-impl Display for NameFormatError {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Debug for NameFormatError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Error for NameFormatError {}
 
 #[cfg(test)]
 mod tests {

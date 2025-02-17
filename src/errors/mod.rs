@@ -20,6 +20,17 @@ macro_rules! impl_error {
     };
 }
 
+// Dynamically adds From traits converting custom error types to global `LabwhereError` enum.
+macro_rules! impl_error_conversion {
+    ($err_type:ident) => {
+        impl From<$err_type> for LabwhereError {
+            fn from(err: $err_type) -> Self {
+                LabwhereError::$err_type(err)
+            }
+        }
+    };
+}
+
 pub struct NotFoundError {
     pub message: String,
 }
@@ -27,15 +38,20 @@ pub struct NotFoundError {
 pub struct BarcodeEmptyError {
     pub message: String,
 }
+pub struct NameFormatError {
+    pub message: String,
+}
 
 impl_error!(NotFoundError);
 impl_error!(BarcodeEmptyError);
+impl_error!(NameFormatError);
 
 /// A generalised error for Labware
 #[derive(Debug)]
 pub enum LabwhereError {
     NotFoundError(NotFoundError),
     BarcodeEmptyError(BarcodeEmptyError),
+    NameFormatError(NameFormatError),
 }
 
 impl LabwhereError {
@@ -50,18 +66,14 @@ impl LabwhereError {
             message: "Barcode is empty!".to_string(),
         })
     }
-}
 
-/// Converts from `NotFoundError` into a `LabwhereError`
-impl From<NotFoundError> for LabwhereError {
-    fn from(err: NotFoundError) -> Self {
-        LabwhereError::NotFoundError(err)
+    pub fn name_format_error() -> LabwhereError {
+        LabwhereError::BarcodeEmptyError(BarcodeEmptyError {
+            message: "Invalid name format!".to_string(),
+        })
     }
 }
 
-/// Converts from `BarcodeEmptyError` into a `LabwhereError`
-impl From<BarcodeEmptyError> for LabwhereError {
-    fn from(err: BarcodeEmptyError) -> Self {
-        LabwhereError::BarcodeEmptyError(err)
-    }
-}
+impl_error_conversion!(NotFoundError);
+impl_error_conversion!(BarcodeEmptyError);
+impl_error_conversion!(NameFormatError);
