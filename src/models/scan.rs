@@ -44,7 +44,7 @@ impl Scan {
                 }
             };
 
-        let labware = match Labware::find_by_barcode(&scan.labware_barcode, connection).await {
+        let _ = match Labware::find_by_barcode(&scan.labware_barcode, connection).await {
             Ok(labware) => labware,
             Err(error) => match error {
                 LabwhereError::BarcodeEmptyError(err) => {
