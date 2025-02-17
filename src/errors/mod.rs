@@ -39,6 +39,6 @@ impl Error for BarcodeEmptyError {}
 /// A generalised error for Labware
 #[derive(Debug)]
 pub enum LabwhereError {
-    NotFound(NotFoundError),
+    NotFoundError(NotFoundError),
     BarcodeEmptyError(BarcodeEmptyError),
 }

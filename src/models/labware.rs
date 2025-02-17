@@ -126,7 +126,7 @@ impl Labware {
             .await
         {
             Ok(labware) => Ok(labware),
-            Err(_) => Err(LabwhereError::NotFound(NotFoundError {
+            Err(_) => Err(LabwhereError::NotFoundError(NotFoundError {
                 message: "Labware not found!".to_string(),
             })),
         }
@@ -244,7 +244,7 @@ mod tests {
         assert!(result.is_err());
         if let Err(err) = result {
             match err {
-                LabwhereError::NotFound(err) => {
+                LabwhereError::NotFoundError(err) => {
                     assert_eq!(err.message, "Labware not found!".to_string())
                 }
                 _ => panic!("Unexpected error"),

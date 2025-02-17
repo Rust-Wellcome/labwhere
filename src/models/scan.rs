@@ -38,7 +38,7 @@ impl Scan {
             match Location::find_by_barcode(scan.location_barcode, connection).await {
                 Ok(location) => location,
                 Err(_) => {
-                    return Err(LabwhereError::NotFound(NotFoundError {
+                    return Err(LabwhereError::NotFoundError(NotFoundError {
                         message: "Location not found!".to_string(),
                     }))
                 }
@@ -50,7 +50,7 @@ impl Scan {
                 LabwhereError::BarcodeEmptyError(err) => {
                     return Err(LabwhereError::BarcodeEmptyError(err))
                 }
-                LabwhereError::NotFound(_) => {
+                LabwhereError::NotFoundError(_) => {
                     Labware::create(scan.labware_barcode, location.id, connection)
                         .await
                         .unwrap()
@@ -91,7 +91,7 @@ mod tests {
         assert!(result.is_err());
         if let Err(err) = result {
             match err {
-                LabwhereError::NotFound(err) => {
+                LabwhereError::NotFoundError(err) => {
                     assert_eq!(err.message, "Location not found!".to_string())
                 }
                 _ => panic!("Unexpected error"),
