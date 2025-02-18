@@ -54,26 +54,32 @@ pub enum LabwhereError {
     NameFormatError(NameFormatError),
 }
 
-impl LabwhereError {
-    pub fn not_found_error(entity: &str) -> LabwhereError {
-        LabwhereError::NotFoundError(NotFoundError {
-            message: format!("{} not found!", entity),
-        })
-    }
-
-    pub fn barcode_empty_error() -> LabwhereError {
-        LabwhereError::BarcodeEmptyError(BarcodeEmptyError {
-            message: "Barcode is empty!".to_string(),
-        })
-    }
-
-    pub fn name_format_error() -> LabwhereError {
-        LabwhereError::NameFormatError(NameFormatError {
-            message: "Invalid name format!".to_string(),
-        })
-    }
-}
-
 impl_error_conversion!(NotFoundError);
 impl_error_conversion!(BarcodeEmptyError);
 impl_error_conversion!(NameFormatError);
+
+/// As we have implemented the `From` trait on each of our error types
+/// that converts them into Labwhere error, we can invoke `into()` on each
+/// of the sub error types which will convert them to `LabwhereError`.
+impl LabwhereError {
+    pub fn not_found_error(entity: &str) -> LabwhereError {
+        (NotFoundError {
+            message: format!("{} not found!", entity),
+        })
+        .into()
+    }
+
+    pub fn barcode_empty_error() -> LabwhereError {
+        (BarcodeEmptyError {
+            message: "Barcode is empty!".to_string(),
+        })
+        .into()
+    }
+
+    pub fn name_format_error() -> LabwhereError {
+        (NameFormatError {
+            message: "Invalid name format!".to_string(),
+        })
+        .into()
+    }
+}
