@@ -1,6 +1,12 @@
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
+/// When creating a new error:
+/// 1. Create the new struct.
+/// 2. Invoke `impl_error` macro on the new type.
+/// 3. Invoke `impl_error_conversion` on the new type.
+/// 4. Add an associated function in `impl LabwhereError`.
+
 // Dynamically adds the Display and Debug traits.
 macro_rules! impl_error {
     ($err_type:ident) => {
