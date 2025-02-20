@@ -1,6 +1,8 @@
 use sqlx::SqliteConnection;
 use PartialEq;
 
+use crate::errors::LabwhereError;
+
 /// LocationType struct
 /// A LocationType is a type of location, e.g. Building, Room, etc.
 #[derive(Debug, PartialEq, sqlx::FromRow)]
@@ -37,13 +39,18 @@ impl LocationType {
     pub(crate) async fn create(
         name: String,
         connection: &mut SqliteConnection,
-    ) -> Result<LocationType, sqlx::Error> {
-        let insert_query_result = sqlx::query("INSERT INTO location_types (name) VALUES (?)")
+    ) -> Result<LocationType, LabwhereError> {
+        match sqlx::query("INSERT INTO location_types (name) VALUES (?)")
             .bind(name.clone())
             .execute(&mut *connection)
-            .await?;
-        let id = insert_query_result.last_insert_rowid();
-        Ok(LocationType::new(id as u32, name))
+            .await
+        {
+            Ok(insert_query_result) => {
+                let id = insert_query_result.last_insert_rowid();
+                return Ok(LocationType::new(id as u32, name));
+            }
+            Err(_) => return Err(LabwhereError::database_error()),
+        };
     }
 }
 

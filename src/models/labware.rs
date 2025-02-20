@@ -1,5 +1,5 @@
 use super::location::UNKNOWN_LOCATION;
-use crate::errors::{BarcodeEmptyError, LabwhereError, NotFoundError};
+use crate::errors::LabwhereError;
 use crate::models::location::Location;
 use sqlx::SqliteConnection;
 
@@ -49,21 +49,26 @@ impl Labware {
         barcode: String,
         location_id: u32,
         connection: &mut SqliteConnection,
-    ) -> Result<Labware, sqlx::Error> {
-        let insert_labware_result =
-            sqlx::query("INSERT INTO labwares (barcode, location_id) VALUES (?, ?)")
-                .bind(barcode.clone())
-                .bind(location_id)
-                .execute(&mut *connection)
-                .await?;
-        let id = insert_labware_result.last_insert_rowid();
-
-        let location = sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
+    ) -> Result<Labware, LabwhereError> {
+        match sqlx::query("INSERT INTO labwares (barcode, location_id) VALUES (?, ?)")
+            .bind(barcode.clone())
             .bind(location_id)
-            .fetch_one(&mut *connection)
-            .await?;
-
-        Ok(Labware::new(id as u32, barcode, Some(&location)))
+            .execute(&mut *connection)
+            .await
+        {
+            Ok(insert_labware_result) => {
+                let id = insert_labware_result.last_insert_rowid();
+                match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
+                    .bind(location_id)
+                    .fetch_one(&mut *connection)
+                    .await
+                {
+                    Ok(location) => return Ok(Labware::new(id as u32, barcode, Some(&location))),
+                    Err(_) => return Err(LabwhereError::database_error()),
+                }
+            }
+            Err(_) => return Err(LabwhereError::database_error()),
+        }
     }
 
     /// Updates the location of the Labware
@@ -83,24 +88,33 @@ impl Labware {
     pub(crate) async fn update(
         labware: &Labware,
         connection: &mut SqliteConnection,
-    ) -> Result<Labware, sqlx::Error> {
-        let update_labware_result = sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
+    ) -> Result<Labware, LabwhereError> {
+        match sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
             .bind(labware.location_id)
             .bind(labware.id)
             .execute(&mut *connection)
-            .await?;
-        let id = update_labware_result.last_insert_rowid();
+            .await
+        {
+            Ok(update_labware_result) => {
+                let id = update_labware_result.last_insert_rowid();
 
-        let location = sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
-            .bind(labware.location_id)
-            .fetch_one(&mut *connection)
-            .await?;
-
-        Ok(Labware::new(
-            id as u32,
-            labware.barcode.clone(),
-            Some(&location),
-        ))
+                match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
+                    .bind(labware.location_id)
+                    .fetch_one(&mut *connection)
+                    .await
+                {
+                    Ok(location) => {
+                        return Ok(Labware::new(
+                            id as u32,
+                            labware.barcode.clone(),
+                            Some(&location),
+                        ))
+                    }
+                    Err(_) => return Err(LabwhereError::database_error()),
+                };
+            }
+            Err(_) => return Err(LabwhereError::database_error()),
+        };
     }
 
     /// Find labware by barcode

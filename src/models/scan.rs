@@ -1,4 +1,4 @@
-use crate::errors::{LabwhereError, NotFoundError};
+use crate::errors::LabwhereError;
 use crate::models::labware::Labware;
 use crate::models::location::Location;
 use serde::{Deserialize, Serialize};
