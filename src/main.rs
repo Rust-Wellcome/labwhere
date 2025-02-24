@@ -108,6 +108,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     info!("Server running on port: {:?}", port);
 
     loop {
+        // This loop progresses ONLY IF an incoming TCP Stream is there.
         let (stream, _) = listener.accept().await?;
         // After the loop is gone, the clone is destroyed.
         let url_clone = url.clone();
@@ -122,6 +123,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                     io,
                     service_fn(|req| async {
                         // After the loop is gone, the clone is destroyed.
+                        // As this task is spawn ONLY upon an incoming TCP stream, it is okay
+                        // to have a connection opened.
+                        //
+                        // This is similar to having a database connection open for each client.
                         let mut connection = init_db(&url_clone.clone()).await.unwrap();
                         services::scan::scan(req, &mut connection).await
                     }),
