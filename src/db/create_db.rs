@@ -1,3 +1,4 @@
+use log::info;
 use sqlx::migrate::MigrateDatabase;
 
 /// Creates an SQLite database.
@@ -18,7 +19,7 @@ use sqlx::migrate::MigrateDatabase;
 /// create_db("src/db", "test").await;
 /// }
 /// ```
-pub async fn create_db(path: Option<&str>, environment: &str) -> Result<(), sqlx::Error> {
+pub async fn create_db(path: Option<String>, environment: &str) -> Result<String, sqlx::Error> {
     let url = match path {
         Some(path) => {
             format!("sqlite://{}/{}.db", path, environment)
@@ -27,8 +28,9 @@ pub async fn create_db(path: Option<&str>, environment: &str) -> Result<(), sqlx
             format!("sqlite://{}.db", environment)
         }
     };
+    info!("Creating the database in {}", url);
     sqlx::Sqlite::create_database(&url).await?;
-    Ok(())
+    Ok(url)
 }
 
 #[cfg(test)]
@@ -49,7 +51,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_db_with_path() {
-        let result = create_db(Some("src/db"), "test").await;
+        let result = create_db(Some("src/db".to_string()), "test").await;
         init_db("sqlite://src/db/test.db").await.unwrap();
         assert_eq!(result.is_ok(), true);
         sqlx::Sqlite::drop_database("sqlite://src/db/test.db")

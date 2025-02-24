@@ -10,7 +10,7 @@ pub struct LocationType {
     /// The unique identifier for the LocationType
     pub id: u32,
     /// The unique name of the LocationType
-    name: String,
+    pub name: String,
 }
 
 /// Implementation of the LocationType struct
@@ -24,7 +24,7 @@ impl LocationType {
     /// let locationType = LocationType::new(1, "Building".to_string());
     /// # }
     /// ```
-    fn new(id: u32, name: String) -> LocationType {
+    pub fn new(id: u32, name: String) -> LocationType {
         LocationType { id, name }
     }
 
@@ -36,7 +36,7 @@ impl LocationType {
     /// let locationType = LocationType::create("Building".to_string()).await.unwrap();
     /// # }
     /// ```
-    pub(crate) async fn create(
+    pub async fn create(
         name: String,
         connection: &mut SqliteConnection,
     ) -> Result<LocationType, LabwhereError> {

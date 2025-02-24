@@ -1,7 +1,7 @@
-use log::__private_api::loc;
 use crate::errors::LabwhereError;
 use crate::models::labware::Labware;
 use crate::models::location::Location;
+use log::__private_api::loc;
 use serde::{Deserialize, Serialize};
 use sqlx::sqlite::SqliteConnection;
 
@@ -15,7 +15,7 @@ impl Clone for Scan {
     fn clone(&self) -> Self {
         Scan {
             labware_barcode: self.labware_barcode.clone(),
-            location_barcode: self.location_barcode.clone()
+            location_barcode: self.location_barcode.clone(),
         }
     }
 }
@@ -54,9 +54,9 @@ impl Scan {
                 labware.location_id = location.id;
                 match Labware::update(&labware, connection).await {
                     Ok(lw) => lw,
-                    Err(_) => return Err(LabwhereError::database_error())
+                    Err(_) => return Err(LabwhereError::database_error()),
                 }
-            },
+            }
             Err(error) => match error {
                 LabwhereError::BarcodeEmptyError(err) => return Err(err.into()),
                 LabwhereError::NotFoundError(_) => {
@@ -84,8 +84,8 @@ impl Scan {
 mod tests {
     use crate::db::init_db;
     use crate::errors::LabwhereError;
-    use crate::models::{location::Location, location_type::LocationType, scan::Scan};
     use crate::models::labware::Labware;
+    use crate::models::{location::Location, location_type::LocationType, scan::Scan};
 
     #[test]
     fn test_scan_new() {

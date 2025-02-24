@@ -1,4 +1,3 @@
-use crate::errors::DatabaseError;
 use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
 use once_cell::sync::Lazy;
@@ -89,7 +88,7 @@ impl<'a> Location {
     /// let location = Location::create("location1".to_string(), 1).await.unwrap();
     /// # }
     /// ```
-    pub(crate) async fn create(
+    pub async fn create(
         name: String,
         location_type_id: u32,
         connection: &mut SqliteConnection,
