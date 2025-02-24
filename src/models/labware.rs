@@ -11,9 +11,9 @@ pub struct Labware {
     /// The unique identifier for the Labware
     id: u32,
     /// The unique barcode of the Labware
-    barcode: String,
+    pub barcode: String,
     /// The location ID of the Labware
-    location_id: u32,
+    pub location_id: u32,
 }
 
 /// Implementation of the Labware struct

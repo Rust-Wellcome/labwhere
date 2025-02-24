@@ -1,3 +1,4 @@
+use log::__private_api::loc;
 use crate::errors::LabwhereError;
 use crate::models::labware::Labware;
 use crate::models::location::Location;
@@ -8,6 +9,15 @@ use sqlx::sqlite::SqliteConnection;
 pub struct Scan {
     labware_barcode: String,
     location_barcode: String,
+}
+
+impl Clone for Scan {
+    fn clone(&self) -> Self {
+        Scan {
+            labware_barcode: self.labware_barcode.clone(),
+            location_barcode: self.location_barcode.clone()
+        }
+    }
 }
 
 impl Scan {
@@ -38,8 +48,15 @@ impl Scan {
                 Err(_) => return Err(LabwhereError::not_found_error("Location")),
             };
 
-        let _ = match Labware::find_by_barcode(&scan.labware_barcode, connection).await {
-            Ok(labware) => labware,
+        let labware = match Labware::find_by_barcode(&scan.labware_barcode, connection).await {
+            Ok(mut labware) => {
+                // Scan the labware into the location
+                labware.location_id = location.id;
+                match Labware::update(&labware, connection).await {
+                    Ok(lw) => lw,
+                    Err(_) => return Err(LabwhereError::database_error())
+                }
+            },
             Err(error) => match error {
                 LabwhereError::BarcodeEmptyError(err) => return Err(err.into()),
                 LabwhereError::NotFoundError(_) => {
@@ -47,7 +64,7 @@ impl Scan {
                         .await
                         .unwrap()
                 }
-                _ => panic!("Unrecognised error!"), // It never reaches this point.
+                _ => return Err(LabwhereError::database_error()), // It never reaches this point.
             },
         };
 
@@ -57,8 +74,8 @@ impl Scan {
         // return the scan
 
         Ok(Scan {
-            labware_barcode: "".to_string(),
-            location_barcode: "".to_string(),
+            labware_barcode: labware.barcode.to_string(),
+            location_barcode: location.barcode.unwrap(),
         })
     }
 }
@@ -68,6 +85,7 @@ mod tests {
     use crate::db::init_db;
     use crate::errors::LabwhereError;
     use crate::models::{location::Location, location_type::LocationType, scan::Scan};
+    use crate::models::labware::Labware;
 
     #[test]
     fn test_scan_new() {
@@ -113,5 +131,43 @@ mod tests {
                 _ => panic!("Unexpected error"),
             }
         }
+    }
+
+    #[tokio::test]
+    async fn test_scan_for_a_new_labware() {
+        let mut connection = init_db("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &mut connection)
+            .await
+            .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &mut connection)
+            .await
+            .unwrap();
+
+        let scan = Scan::new("lw-1".to_string(), location.barcode.clone().unwrap());
+        let result: Scan = Scan::create(scan.clone(), &mut connection).await.unwrap();
+
+        assert_eq!(location.barcode.unwrap(), result.location_barcode);
+        assert_eq!("lw-1".to_string(), scan.labware_barcode);
+    }
+
+    #[tokio::test]
+    async fn test_scan_for_an_existing_labware() {
+        let mut connection = init_db("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &mut connection)
+            .await
+            .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &mut connection)
+            .await
+            .unwrap();
+
+        let labware = Labware::create("lw-1".to_string(), location.id, &mut connection)
+            .await
+            .unwrap();
+
+        let scan = Scan::new("lw-1".to_string(), location.barcode.clone().unwrap());
+        let result: Scan = Scan::create(scan.clone(), &mut connection).await.unwrap();
+
+        assert_eq!(location.barcode.unwrap(), result.location_barcode);
+        assert_eq!("lw-1".to_string(), scan.labware_barcode);
     }
 }
