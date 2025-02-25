@@ -15,6 +15,7 @@ use labwhere::models::location_type::LocationType;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tokio::net::TcpListener;
 
 pub mod config;
@@ -100,7 +101,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 
     // Initiates the database by seeding it
     let url = create_database(&config_path).await;
-    let pool = initiate_pool(&url.clone()).await.unwrap();
+    let pool = Arc::new(initiate_pool(&url.clone()).await.unwrap());
 
     info!("Server running on port: {:?}", port);
 
@@ -108,8 +109,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         // This loop progresses ONLY IF an incoming TCP Stream is there.
         let (stream, _) = listener.accept().await?;
         // After the loop is gone, the clone is destroyed.
-        let url_clone = url.clone();
-        let pool_clone = pool.clone();
+        let pool_clone = Arc::clone(&pool);
         let io = TokioIo::new(stream);
 
         // Spawn tokio task for concurrent processing of incoming streams

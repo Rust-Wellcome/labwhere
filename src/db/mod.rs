@@ -65,7 +65,9 @@ pub async fn init_db(url: &str) -> Result<SqliteConnection, Error> {
 /// # }
 /// ```
 pub async fn initiate_pool(url: &str) -> Result<Pool<Sqlite>, LabwhereError> {
-    let connection_options = SqliteConnectOptions::from_str(&url).unwrap();
+    let connection_options = SqliteConnectOptions::from_str(&url)
+        .unwrap()
+        .auto_vacuum(sqlx::sqlite::SqliteAutoVacuum::Full);
     let pool_result: Result<Pool<Sqlite>, LabwhereError> = SqlitePoolOptions::new()
         .max_connections(20)
         .acquire_timeout(Duration::from_secs(5))
