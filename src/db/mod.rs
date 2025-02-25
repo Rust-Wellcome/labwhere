@@ -68,6 +68,7 @@ pub async fn initiate_pool(url: &str) -> Result<Pool<Sqlite>, LabwhereError> {
     let connection_options = SqliteConnectOptions::from_str(&url)
         .unwrap()
         .auto_vacuum(sqlx::sqlite::SqliteAutoVacuum::Full);
+    // TODO: The number of connections and the timeout for acquiring the given number of connections needs to be taken from the config file.
     let pool_result: Result<Pool<Sqlite>, LabwhereError> = SqlitePoolOptions::new()
         .max_connections(20)
         .acquire_timeout(Duration::from_secs(5))

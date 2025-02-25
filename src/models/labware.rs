@@ -1,8 +1,7 @@
 use super::location::UNKNOWN_LOCATION;
 use crate::errors::LabwhereError;
 use crate::models::location::Location;
-use hyper::client::conn;
-use sqlx::{Pool, Sqlite, SqliteConnection};
+use sqlx::{Pool, Sqlite};
 
 /// Labware is stored in a location.
 /// LabWhere needs to know nothing about it apart from its barcode and where it is.
