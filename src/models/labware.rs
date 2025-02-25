@@ -96,9 +96,7 @@ impl Labware {
             .execute(connection)
             .await
         {
-            Ok(update_labware_result) => {
-                let id = update_labware_result.last_insert_rowid();
-
+            Ok(_) => {
                 match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
                     .bind(labware.location_id)
                     .fetch_one(connection)
@@ -106,7 +104,7 @@ impl Labware {
                 {
                     Ok(location) => {
                         return Ok(Labware::new(
-                            id as u32,
+                            labware.id,
                             labware.barcode.clone(),
                             Some(&location),
                         ))
