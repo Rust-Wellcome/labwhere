@@ -10,15 +10,11 @@ use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::create_db;
 use labwhere::db::init_db;
-use labwhere::errors::LabwhereError;
 use labwhere::models::location::Location;
 use labwhere::models::location_type::LocationType;
 use log::{error, info, warn};
-use sqlx::{Error, SqliteConnection};
 use std::env;
-use std::future::Future;
 use std::net::SocketAddr;
-use tokio::fs;
 use tokio::net::TcpListener;
 
 pub mod config;
