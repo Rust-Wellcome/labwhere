@@ -9,7 +9,7 @@ use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::create_db;
-use labwhere::db::init_db;
+use labwhere::db::initiate_pool;
 use labwhere::models::location::Location;
 use labwhere::models::location_type::LocationType;
 use log::{error, info, warn};
@@ -54,13 +54,13 @@ async fn initiate_database(config_path: &str) -> String {
     .await
     {
         Ok(url) => {
-            let mut conn = init_db(&url).await.unwrap();
+            let conn = initiate_pool(&url).await.unwrap();
 
             info!("Seeding data into {}", url);
-            let location_type = LocationType::create("location-type-1".to_string(), &mut conn)
+            let location_type = LocationType::create("location-type-1".to_string(), &conn)
                 .await
                 .unwrap();
-            let _ = Location::create("location".to_string(), location_type.id, &mut conn)
+            let _ = Location::create("location".to_string(), location_type.id, &conn)
                 .await
                 .unwrap();
 
@@ -123,8 +123,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                         // to have a connection opened.
                         //
                         // This is similar to having a database connection open for each client.
-                        let mut connection = init_db(&url_clone.clone()).await.unwrap();
-                        services::scan::scan(req, &mut connection).await
+                        let connection = initiate_pool(&url_clone.clone()).await.unwrap();
+                        services::scan::scan(req, &connection).await
                     }),
                 )
                 .await

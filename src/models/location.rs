@@ -1,7 +1,10 @@
 use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
+use hyper::client::conn;
 use once_cell::sync::Lazy;
 use regex::Regex;
+use sqlx::Pool;
+use sqlx::Sqlite;
 use sqlx::SqliteConnection;
 use std::fmt::Debug;
 use PartialEq;
@@ -91,12 +94,12 @@ impl<'a> Location {
     pub async fn create(
         name: String,
         location_type_id: u32,
-        connection: &mut SqliteConnection,
+        connection: &Pool<Sqlite>,
     ) -> Result<Location, LabwhereError> {
         match sqlx::query("INSERT INTO locations (name, location_type_id) VALUES (?, ?)")
             .bind(name.clone())
             .bind(location_type_id)
-            .execute(&mut *connection)
+            .execute(connection)
             .await
         {
             Ok(insert_query_result) => {
@@ -109,7 +112,7 @@ impl<'a> Location {
                 return match sqlx::query("UPDATE locations SET barcode = ? WHERE id = ?")
                     .bind(barcode)
                     .bind(id)
-                    .execute(&mut *connection)
+                    .execute(connection)
                     .await
                 {
                     Ok(_) => Ok(location),
@@ -131,11 +134,11 @@ impl<'a> Location {
     /// ```
     pub(crate) async fn find_by_barcode(
         barcode: String,
-        connection: &mut SqliteConnection,
+        connection: &Pool<Sqlite>,
     ) -> Result<Location, NotFoundError> {
         match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE barcode = ?")
             .bind(barcode)
-            .fetch_one(&mut *connection)
+            .fetch_one(connection)
             .await
         {
             Ok(location) => Ok(location),
@@ -195,7 +198,7 @@ impl Default for Location {
 
 #[cfg(test)]
 mod tests {
-    use crate::db::init_db;
+    use crate::db::initiate_pool;
     use crate::models::location::*;
     use crate::models::location_type::LocationType;
 
@@ -263,11 +266,11 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_location() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
-        let location = Location::create("location1".to_string(), location_type.id, &mut conn)
+        let location = Location::create("location1".to_string(), location_type.id, &conn)
             .await
             .unwrap();
         assert_eq!(location.name, "location1");
@@ -277,25 +280,24 @@ mod tests {
 
     #[tokio::test]
     async fn test_find_by_barcode() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn)
+        let mut conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
         let location = Location::create("location1".to_string(), location_type.id, &mut conn)
             .await
             .unwrap();
-        let found_location =
-            Location::find_by_barcode(location.barcode.clone().unwrap(), &mut conn)
-                .await
-                .unwrap();
+        let found_location = Location::find_by_barcode(location.barcode.clone().unwrap(), &conn)
+            .await
+            .unwrap();
 
         assert_eq!(location.barcode, found_location.barcode);
     }
 
     #[tokio::test]
     async fn test_find_by_barcode_for_not_found() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        Location::find_by_barcode("lw-location-1".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        Location::find_by_barcode("lw-location-1".to_string(), &conn)
             .await
             .expect_err("Location not found");
     }
