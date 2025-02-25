@@ -77,7 +77,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_location_type() {
-        let mut conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
         let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
