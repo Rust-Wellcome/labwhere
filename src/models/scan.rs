@@ -3,7 +3,7 @@ use crate::models::labware::Labware;
 use crate::models::location::Location;
 use log::__private_api::loc;
 use serde::{Deserialize, Serialize};
-use sqlx::sqlite::SqliteConnection;
+use sqlx::{sqlite::SqliteConnection, Pool, Sqlite};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Scan {
@@ -35,10 +35,7 @@ impl Scan {
     /// depending on the error type.
     /// 3. Find the labware by its barcode `labware_barcode`.
     /// 4. If the labware exists, return it. If it doesn't exist, create the labware in the database.
-    pub async fn create(
-        scan: Scan,
-        connection: &mut SqliteConnection,
-    ) -> Result<Scan, LabwhereError> {
+    pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
         // TODO: Complete this function.
 
         // let location_result = Location::find_by_barcode(scan.location_barcode);
@@ -82,7 +79,7 @@ impl Scan {
 
 #[cfg(test)]
 mod tests {
-    use crate::db::init_db;
+    use crate::db::{init_db, initiate_pool};
     use crate::errors::LabwhereError;
     use crate::models::labware::Labware;
     use crate::models::{location::Location, location_type::LocationType, scan::Scan};
@@ -97,8 +94,8 @@ mod tests {
     #[tokio::test]
     async fn test_scan_create_no_location() {
         let scan = Scan::new("lw-bc-1".to_string(), "lc-bc-1".to_string());
-        let mut connection = init_db("sqlite::memory:").await.unwrap();
-        let result = Scan::create(scan, &mut connection).await;
+        let connection = initiate_pool("sqlite::memory:").await.unwrap();
+        let result = Scan::create(scan, &connection).await;
         assert!(result.is_err());
         if let Err(err) = result {
             match err {
@@ -112,15 +109,15 @@ mod tests {
 
     #[tokio::test]
     async fn test_scan_with_dodgy_labware_returns_an_error() {
-        let mut connection = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut connection)
+        let connection = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &connection)
             .await
             .unwrap();
-        let location = Location::create("location1".to_string(), location_type.id, &mut connection)
+        let location = Location::create("location1".to_string(), location_type.id, &connection)
             .await
             .unwrap();
         let scan = Scan::new("".to_string(), location.barcode.unwrap());
-        let result = Scan::create(scan, &mut connection).await;
+        let result = Scan::create(scan, &connection).await;
         println!("{:?}", result);
         assert!(result.is_err());
         if let Err(err) = result {
@@ -135,16 +132,16 @@ mod tests {
 
     #[tokio::test]
     async fn test_scan_for_a_new_labware() {
-        let mut connection = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut connection)
+        let connection = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &connection)
             .await
             .unwrap();
-        let location = Location::create("location1".to_string(), location_type.id, &mut connection)
+        let location = Location::create("location1".to_string(), location_type.id, &connection)
             .await
             .unwrap();
 
         let scan = Scan::new("lw-1".to_string(), location.barcode.clone().unwrap());
-        let result: Scan = Scan::create(scan.clone(), &mut connection).await.unwrap();
+        let result: Scan = Scan::create(scan.clone(), &connection).await.unwrap();
 
         assert_eq!(location.barcode.unwrap(), result.location_barcode);
         assert_eq!("lw-1".to_string(), scan.labware_barcode);
@@ -152,20 +149,20 @@ mod tests {
 
     #[tokio::test]
     async fn test_scan_for_an_existing_labware() {
-        let mut connection = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut connection)
+        let connection = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &connection)
             .await
             .unwrap();
-        let location = Location::create("location1".to_string(), location_type.id, &mut connection)
+        let location = Location::create("location1".to_string(), location_type.id, &connection)
             .await
             .unwrap();
 
-        let labware = Labware::create("lw-1".to_string(), location.id, &mut connection)
+        let labware = Labware::create("lw-1".to_string(), location.id, &connection)
             .await
             .unwrap();
 
         let scan = Scan::new("lw-1".to_string(), location.barcode.clone().unwrap());
-        let result: Scan = Scan::create(scan.clone(), &mut connection).await.unwrap();
+        let result: Scan = Scan::create(scan.clone(), &connection).await.unwrap();
 
         assert_eq!(location.barcode.unwrap(), result.location_barcode);
         assert_eq!("lw-1".to_string(), scan.labware_barcode);

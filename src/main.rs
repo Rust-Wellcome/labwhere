@@ -9,12 +9,13 @@ use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::create_db;
-use labwhere::db::init_db;
+use labwhere::db::initiate_pool;
 use labwhere::models::location::Location;
 use labwhere::models::location_type::LocationType;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tokio::net::TcpListener;
 
 pub mod config;
@@ -40,10 +41,10 @@ pub mod services;
 /// # Example
 ///
 /// ```rust
-/// let url = initiate_database("config.yml").await;
+/// let url = create_database("config.yml").await;
 /// println!("Database URL: {}", url);
 /// ```
-async fn initiate_database(config_path: &str) -> String {
+async fn create_database(config_path: &str) -> String {
     info!("Config location: {}", config_path);
     let config: AppConfig = read_config(config_path).await.unwrap();
 
@@ -54,13 +55,13 @@ async fn initiate_database(config_path: &str) -> String {
     .await
     {
         Ok(url) => {
-            let mut conn = init_db(&url).await.unwrap();
+            let conn = initiate_pool(&url).await.unwrap();
 
             info!("Seeding data into {}", url);
-            let location_type = LocationType::create("location-type-1".to_string(), &mut conn)
+            let location_type = LocationType::create("location-type-1".to_string(), &conn)
                 .await
                 .unwrap();
-            let _ = Location::create("location".to_string(), location_type.id, &mut conn)
+            let _ = Location::create("location".to_string(), location_type.id, &conn)
                 .await
                 .unwrap();
 
@@ -99,7 +100,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         env::var("CONFIG_PATH").unwrap_or_else(|_| "./config.yml".to_string());
 
     // Initiates the database by seeding it
-    let url = initiate_database(&config_path).await;
+    let url = create_database(&config_path).await;
+    let pool = Arc::new(initiate_pool(&url.clone()).await.unwrap());
 
     info!("Server running on port: {:?}", port);
 
@@ -107,7 +109,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         // This loop progresses ONLY IF an incoming TCP Stream is there.
         let (stream, _) = listener.accept().await?;
         // After the loop is gone, the clone is destroyed.
-        let url_clone = url.clone();
+        let pool_clone = Arc::clone(&pool);
         let io = TokioIo::new(stream);
 
         // Spawn tokio task for concurrent processing of incoming streams
@@ -122,9 +124,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                         // As this task is spawn ONLY upon an incoming TCP stream, it is okay
                         // to have a connection opened.
                         //
-                        // This is similar to having a database connection open for each client.
-                        let mut connection = init_db(&url_clone.clone()).await.unwrap();
-                        services::scan::scan(req, &mut connection).await
+                        services::scan::scan(req, &pool_clone).await
                     }),
                 )
                 .await

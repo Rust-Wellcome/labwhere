@@ -5,8 +5,7 @@ use hyper::body::{Body, Bytes};
 use hyper::{header::CONTENT_TYPE, Error, Method, Request, Response, Result, StatusCode};
 use labwhere::models::scan::Scan;
 use log::{error, info};
-use serde_json::Value;
-use sqlx::SqliteConnection;
+use sqlx::{Pool, Sqlite};
 use std::pin::Pin;
 use std::task::{Context, Poll};
 
@@ -17,7 +16,7 @@ use std::task::{Context, Poll};
 /// call.
 pub async fn scan(
     req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
-    connection: &mut SqliteConnection,
+    connection: &Pool<Sqlite>,
 ) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     info!("Processing request for /scan endpoint");
 
@@ -96,20 +95,20 @@ impl Body for MockBody {
 
 #[cfg(test)]
 mod tests {
+    use crate::services::scan::MockBody;
     use hyper::{header::CONTENT_TYPE, StatusCode};
-    use labwhere::db::init_db;
+    use labwhere::db::{init_db, initiate_pool};
     use labwhere::errors::LabwhereError;
     use labwhere::models::location::Location;
     use labwhere::models::location_type::LocationType;
-    use crate::services::scan::MockBody;
 
     #[tokio::test]
     async fn test_scan() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("location-type-1".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("location-type-1".to_string(), &conn)
             .await
             .unwrap();
-        let _ = Location::create("location".to_string(), location_type.id, &mut conn)
+        let _ = Location::create("location".to_string(), location_type.id, &conn)
             .await
             .unwrap();
         let body: MockBody = MockBody::new(
@@ -124,17 +123,17 @@ mod tests {
             .header(CONTENT_TYPE, "application/json")
             .body(body)
             .unwrap();
-        let res = super::scan(req, &mut conn).await.unwrap();
+        let res = super::scan(req, &conn).await.unwrap();
         assert_eq!(res.status(), StatusCode::OK);
     }
 
     #[tokio::test]
     async fn test_scan_without_correct_content_type() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("location-type-1".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("location-type-1".to_string(), &conn)
             .await
             .unwrap();
-        let _ = Location::create("location".to_string(), location_type.id, &mut conn)
+        let _ = Location::create("location".to_string(), location_type.id, &conn)
             .await
             .unwrap();
         let body: MockBody = MockBody::new(b"anything");
@@ -144,8 +143,8 @@ mod tests {
             .header(CONTENT_TYPE, "text/plain")
             .body(body)
             .unwrap();
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let res = super::scan(req, &mut conn).await.unwrap();
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let res = super::scan(req, &conn).await.unwrap();
         assert_eq!(res.status(), StatusCode::BAD_REQUEST);
     }
 }

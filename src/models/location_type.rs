@@ -1,4 +1,4 @@
-use sqlx::SqliteConnection;
+use sqlx::{Pool, Sqlite, SqliteConnection};
 use PartialEq;
 
 use crate::errors::LabwhereError;
@@ -38,18 +38,18 @@ impl LocationType {
     /// ```
     pub async fn create(
         name: String,
-        connection: &mut SqliteConnection,
+        connection: &Pool<Sqlite>,
     ) -> Result<LocationType, LabwhereError> {
-        match sqlx::query("INSERT INTO location_types (name) VALUES (?)")
+        return match sqlx::query("INSERT INTO location_types (name) VALUES (?)")
             .bind(name.clone())
-            .execute(&mut *connection)
+            .execute(connection)
             .await
         {
             Ok(insert_query_result) => {
                 let id = insert_query_result.last_insert_rowid();
-                return Ok(LocationType::new(id as u32, name));
+                Ok(LocationType::new(id as u32, name))
             }
-            Err(_) => return Err(LabwhereError::database_error()),
+            Err(_) => Err(LabwhereError::database_error()),
         };
     }
 }
@@ -65,7 +65,7 @@ impl Default for LocationType {
 
 #[cfg(test)]
 mod tests {
-    use crate::db::init_db;
+    use crate::db::initiate_pool;
     use crate::models::location_type::LocationType;
 
     #[test]
@@ -77,8 +77,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_location_type() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
         assert_eq!(location_type.id, 1);
