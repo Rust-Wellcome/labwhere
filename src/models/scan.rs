@@ -1,9 +1,8 @@
 use crate::errors::LabwhereError;
 use crate::models::labware::Labware;
 use crate::models::location::Location;
-use log::__private_api::loc;
 use serde::{Deserialize, Serialize};
-use sqlx::{sqlite::SqliteConnection, Pool, Sqlite};
+use sqlx::{Pool, Sqlite};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Scan {
@@ -28,17 +27,49 @@ impl Scan {
         }
     }
 
-    /// Creates a Scan model after validations.
-    ///
-    /// 1. Find the location by its barcode `location_barcode`.
-    /// 2. If the location doesn't exist, it would err. The service would respond to the client
-    /// depending on the error type.
-    /// 3. Find the labware by its barcode `labware_barcode`.
-    /// 4. If the labware exists, return it. If it doesn't exist, create the labware in the database.
+/// Creates a Scan model after validations.
+///
+/// 1. Find the location by its barcode `location_barcode`.
+/// 2. If the location doesn't exist, it returns an error.
+/// 3. Find the labware by its barcode `labware_barcode`.
+/// 4. If the labware exists, update its location. If it doesn't exist, create the labware in the database.
+///
+/// # Arguments
+///
+/// * `scan` - A `Scan` struct containing the labware and location barcodes.
+/// * `connection` - A reference to the SQLite connection pool.
+///
+/// # Returns
+///
+/// Returns a `Result` containing the created `Scan` or a `LabwhereError` if an error occurs.
+///
+/// # Errors
+///
+/// This function will return a `LabwhereError` if:
+/// * The location is not found.
+/// * The labware barcode is empty.
+/// * There is a database error.
+///
+/// # Examples
+///
+/// ```rust
+/// # #[cfg(doctest)] {
+/// use crate::models::scan::Scan;
+/// use crate::db::initiate_pool;
+///
+/// #[tokio::main]
+/// async fn main() {
+///     let connection = initiate_pool("sqlite::memory:").await.unwrap();
+///     let scan = Scan::new("lw-1".to_string(), "lc-1".to_string());
+///     let result = Scan::create(scan, &connection).await;
+///     match result {
+///         Ok(scan) => println!("Scan created: {:?}", scan),
+///         Err(err) => println!("Error creating scan: {:?}", err),
+///     }
+/// }
+/// # }
     pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
-        // TODO: Complete this function.
 
-        // let location_result = Location::find_by_barcode(scan.location_barcode);
         let location: Location =
             match Location::find_by_barcode(scan.location_barcode, connection).await {
                 Ok(location) => location,
@@ -79,7 +110,7 @@ impl Scan {
 
 #[cfg(test)]
 mod tests {
-    use crate::db::{init_db, initiate_pool};
+    use crate::db::initiate_pool;
     use crate::errors::LabwhereError;
     use crate::models::labware::Labware;
     use crate::models::{location::Location, location_type::LocationType, scan::Scan};
