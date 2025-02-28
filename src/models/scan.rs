@@ -188,7 +188,7 @@ mod tests {
             .await
             .unwrap();
 
-        let labware = Labware::create("lw-1".to_string(), location.id, &connection)
+        let _ = Labware::create("lw-1".to_string(), location.id, &connection)
             .await
             .unwrap();
 
