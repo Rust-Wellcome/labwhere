@@ -10,8 +10,6 @@ use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::create_db;
 use labwhere::db::initiate_pool;
-use labwhere::models::location::Location;
-use labwhere::models::location_type::LocationType;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
@@ -58,12 +56,11 @@ async fn create_database(config_path: &str) -> String {
             let conn = initiate_pool(&url).await.unwrap();
 
             info!("Seeding data into {}", url);
-            let location_type = LocationType::create("location-type-1".to_string(), &conn)
-                .await
-                .unwrap();
-            let _ = Location::create("location".to_string(), location_type.id, &conn)
-                .await
-                .unwrap();
+
+            // Read the seeds.sql file using std::fs
+            let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
+            // Execute the SQL script
+            sqlx::query(&seeds_sql).execute(&conn).await.unwrap();
 
             url
         }
