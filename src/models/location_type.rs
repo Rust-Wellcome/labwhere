@@ -1,4 +1,4 @@
-use sqlx::{Pool, Sqlite, SqliteConnection};
+use sqlx::{Pool, Sqlite};
 use PartialEq;
 
 use crate::errors::LabwhereError;

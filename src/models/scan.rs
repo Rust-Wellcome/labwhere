@@ -27,49 +27,48 @@ impl Scan {
         }
     }
 
-/// Creates a Scan model after validations.
-///
-/// 1. Find the location by its barcode `location_barcode`.
-/// 2. If the location doesn't exist, it returns an error.
-/// 3. Find the labware by its barcode `labware_barcode`.
-/// 4. If the labware exists, update its location. If it doesn't exist, create the labware in the database.
-///
-/// # Arguments
-///
-/// * `scan` - A `Scan` struct containing the labware and location barcodes.
-/// * `connection` - A reference to the SQLite connection pool.
-///
-/// # Returns
-///
-/// Returns a `Result` containing the created `Scan` or a `LabwhereError` if an error occurs.
-///
-/// # Errors
-///
-/// This function will return a `LabwhereError` if:
-/// * The location is not found.
-/// * The labware barcode is empty.
-/// * There is a database error.
-///
-/// # Examples
-///
-/// ```rust
-/// # #[cfg(doctest)] {
-/// use crate::models::scan::Scan;
-/// use crate::db::initiate_pool;
-///
-/// #[tokio::main]
-/// async fn main() {
-///     let connection = initiate_pool("sqlite::memory:").await.unwrap();
-///     let scan = Scan::new("lw-1".to_string(), "lc-1".to_string());
-///     let result = Scan::create(scan, &connection).await;
-///     match result {
-///         Ok(scan) => println!("Scan created: {:?}", scan),
-///         Err(err) => println!("Error creating scan: {:?}", err),
-///     }
-/// }
-/// # }
+    /// Creates a Scan model after validations.
+    ///
+    /// 1. Find the location by its barcode `location_barcode`.
+    /// 2. If the location doesn't exist, it returns an error.
+    /// 3. Find the labware by its barcode `labware_barcode`.
+    /// 4. If the labware exists, update its location. If it doesn't exist, create the labware in the database.
+    ///
+    /// # Arguments
+    ///
+    /// * `scan` - A `Scan` struct containing the labware and location barcodes.
+    /// * `connection` - A reference to the SQLite connection pool.
+    ///
+    /// # Returns
+    ///
+    /// Returns a `Result` containing the created `Scan` or a `LabwhereError` if an error occurs.
+    ///
+    /// # Errors
+    ///
+    /// This function will return a `LabwhereError` if:
+    /// * The location is not found.
+    /// * The labware barcode is empty.
+    /// * There is a database error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # #[cfg(doctest)] {
+    /// use crate::models::scan::Scan;
+    /// use crate::db::initiate_pool;
+    ///
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let connection = initiate_pool("sqlite::memory:").await.unwrap();
+    ///     let scan = Scan::new("lw-1".to_string(), "lc-1".to_string());
+    ///     let result = Scan::create(scan, &connection).await;
+    ///     match result {
+    ///         Ok(scan) => println!("Scan created: {:?}", scan),
+    ///         Err(err) => println!("Error creating scan: {:?}", err),
+    ///     }
+    /// }
+    /// # }
     pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
-
         let location: Location =
             match Location::find_by_barcode(scan.location_barcode, connection).await {
                 Ok(location) => location,

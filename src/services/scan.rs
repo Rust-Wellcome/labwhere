@@ -97,8 +97,7 @@ impl Body for MockBody {
 mod tests {
     use crate::services::scan::MockBody;
     use hyper::{header::CONTENT_TYPE, StatusCode};
-    use labwhere::db::{init_db, initiate_pool};
-    use labwhere::errors::LabwhereError;
+    use labwhere::db::initiate_pool;
     use labwhere::models::location::Location;
     use labwhere::models::location_type::LocationType;
 

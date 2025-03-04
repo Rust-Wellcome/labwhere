@@ -40,6 +40,6 @@ pub(crate) async fn read_config(path: &str) -> Result<AppConfig, LabwhereError> 
             info!("{}", format!("{:?}", result));
             Ok(result)
         }
-        Err(err) => return Err(LabwhereError::config_error("Failed to read config.")),
+        Err(_err) => return Err(LabwhereError::config_error("Failed to read config.")),
     }
 }

@@ -1,11 +1,9 @@
 use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
-use hyper::client::conn;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sqlx::Pool;
 use sqlx::Sqlite;
-use sqlx::SqliteConnection;
 use std::fmt::Debug;
 use PartialEq;
 

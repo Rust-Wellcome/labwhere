@@ -1,4 +1,3 @@
-use core::error;
 use sqlx::sqlite::SqliteConnectOptions;
 use sqlx::{sqlite::SqlitePoolOptions, Connection, Error, Pool, Sqlite, SqliteConnection};
 use std::str::FromStr;
