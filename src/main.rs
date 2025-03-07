@@ -11,6 +11,7 @@ use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::create_db;
 use labwhere::db::initiate_pool;
 use log::{error, info, warn};
+use sqlx::{Pool, Sqlite};
 use std::env;
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -54,18 +55,46 @@ async fn create_database(config_path: &str) -> String {
     {
         Ok(url) => {
             let conn = initiate_pool(&url).await.unwrap();
-
             info!("Seeding data into {}", url);
-
-            // Read the seeds.sql file using std::fs
-            let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
-            // Execute the SQL script
-            sqlx::query(&seeds_sql).execute(&conn).await.unwrap();
-
+            // Reads config
+            let seed_needed: bool = env::var("SEED_DATA")
+                .unwrap_or_else(|_| "false".to_string())
+                .parse()
+                .unwrap_or(false);
+            if seed_needed {
+                seed_database(&conn).await;
+            }
             url
         }
         Err(_) => panic!("Error in initiating the database."),
     }
+}
+
+/// Seeds the database with initial data.
+///
+/// This function reads the `seeds.sql` file and executes the SQL script to seed the database with initial data.
+///
+/// # Arguments
+///
+/// * `conn` - A reference to the SQLite connection pool.
+///
+/// # Panics
+///
+/// This function will panic if:
+/// * The `seeds.sql` file cannot be read.
+/// * The SQL script cannot be executed.
+///
+/// # Example
+///
+/// ```rust
+/// let conn = initiate_pool("sqlite::memory:").await.unwrap();
+/// seed_database(&conn).await;
+/// ```
+async fn seed_database(conn: &Pool<Sqlite>) {
+    // Read the seeds.sql file using std::fs
+    let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
+    // Execute the SQL script
+    sqlx::query(&seeds_sql).execute(conn).await.unwrap();
 }
 
 // Notes
