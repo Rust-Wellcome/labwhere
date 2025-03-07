@@ -10,6 +10,7 @@ use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::create_db;
 use labwhere::db::initiate_pool;
+use labwhere::errors::LabwhereError;
 use log::{error, info, warn};
 use sqlx::{Pool, Sqlite};
 use std::env;
@@ -62,7 +63,8 @@ async fn create_database(config_path: &str) -> String {
                 .parse()
                 .unwrap_or(false);
             if seed_needed {
-                seed_database(&conn).await;
+                // Panics if seeding fails.
+                seed_database(&conn).await.unwrap();
             }
             url
         }
@@ -90,11 +92,14 @@ async fn create_database(config_path: &str) -> String {
 /// let conn = initiate_pool("sqlite::memory:").await.unwrap();
 /// seed_database(&conn).await;
 /// ```
-async fn seed_database(conn: &Pool<Sqlite>) {
+async fn seed_database(conn: &Pool<Sqlite>) -> Result<(), LabwhereError> {
     // Read the seeds.sql file using std::fs
     let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
     // Execute the SQL script
-    sqlx::query(&seeds_sql).execute(conn).await.unwrap();
+    match sqlx::query(&seeds_sql).execute(conn).await {
+        Ok(_) => Ok(()),
+        Err(_) => Err(LabwhereError::database_error()),
+    }
 }
 
 // Notes
