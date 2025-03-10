@@ -44,6 +44,7 @@ pub async fn create_db(path: Option<String>, environment: &str) -> Result<String
 // TODO: Add documenatation
 pub async fn seed_data(connection: &Pool<Sqlite>) -> Result<(), sqlx::Error> {
     let name: String = "seeded".to_string();
+    // TODO: Uppercase query
     match sqlx::query_as::<_, Property>("select name, value from properties where name = ?")
         .bind(name)
         .fetch_one(connection)
