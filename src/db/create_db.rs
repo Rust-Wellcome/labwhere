@@ -1,5 +1,13 @@
+use std::os::unix::process;
+
 use log::info;
-use sqlx::migrate::MigrateDatabase;
+use sqlx::{migrate::MigrateDatabase, Pool, Sqlite};
+
+#[derive(Debug, sqlx::FromRow)]
+struct Property {
+    pub name: String,
+    pub value: String,
+}
 
 /// Creates an SQLite database.
 ///
@@ -31,6 +39,26 @@ pub async fn create_db(path: Option<String>, environment: &str) -> Result<String
     info!("Creating the database in {}", url);
     sqlx::Sqlite::create_database(&url).await?;
     Ok(url)
+}
+
+pub async fn seed_data(connection: &Pool<Sqlite>) -> Result<(), sqlx::Error> {
+    let name: String = "seeded".to_string();
+    match sqlx::query_as::<_,Property>("select name, value from properties where name = ?")
+        .bind(name)
+        .fetch_one(connection)
+        .await
+        {
+            // Ok(property) => {
+            //     info!("Data already seeded");
+            //     return Ok(());
+            // }
+            // Err(_) => {
+            //     info!("Seeding data");
+            // }
+        }
+    let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
+    sqlx::query(&seeds_sql).execute(connection).await?;
+    Ok(())
 }
 
 #[cfg(test)]

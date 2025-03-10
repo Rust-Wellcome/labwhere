@@ -18,3 +18,7 @@ CREATE TABLE IF NOT EXISTS labwares (
     FOREIGN KEY (location_id) REFERENCES locations(id)
 );
 
+CREATE TABLE IF NOT EXISTS properties (
+    name VARCHAR(255) PRIMARY KEY,
+    value VARCHAR(4096)
+);
