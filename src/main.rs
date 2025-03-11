@@ -8,7 +8,7 @@ use crate::config::{read_config, AppConfig};
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
-use labwhere::db::create_db::create_db;
+use labwhere::db::create_db::{create_db, seed_data};
 use labwhere::db::initiate_pool;
 use log::{error, info, warn};
 use std::env;
@@ -57,11 +57,9 @@ async fn create_database(config_path: &str) -> String {
 
             info!("Seeding data into {}", url);
 
-            // Read the seeds.sql file using std::fs
-            let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
-            // Execute the SQL script
-            sqlx::query(&seeds_sql).execute(&conn).await.unwrap();
-
+            // Seed data and allow to panic if fails.
+            seed_data(&conn).await.unwrap();
+            
             url
         }
         Err(_) => panic!("Error in initiating the database."),

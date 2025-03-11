@@ -43,7 +43,10 @@ pub async fn create_db(path: Option<String>, environment: &str) -> Result<String
 
 /// Seeds the database with initial data.
 ///
-/// This function reads the `seeds.sql` file and executes the SQL script to seed the database with initial data.
+/// This function checks if the database has already been seeded by querying the `properties` table
+/// for a property with the name "seeded". If the property exists and its value is `true`, the function
+/// will read the `seeds.sql` file and execute the SQL script to seed the database with initial data.
+/// If the property does not exist or its value is not `true`, the function will log a message and return.
 ///
 /// # Arguments
 ///
@@ -57,6 +60,7 @@ pub async fn create_db(path: Option<String>, environment: &str) -> Result<String
 ///
 /// This function will panic if:
 /// * The `seeds.sql` file cannot be read.
+/// * There is an error in querying the database.
 ///
 /// # Examples
 ///
@@ -88,7 +92,7 @@ pub async fn seed_data(connection: &Pool<Sqlite>) -> Result<(), sqlx::Error> {
         }
         Err(err) => {
             // Send an error.
-            return Err(err);
+            panic!("Error in seeding data: {:?}", err);
         }
     }
 }
