@@ -41,11 +41,34 @@ pub async fn create_db(path: Option<String>, environment: &str) -> Result<String
     Ok(url)
 }
 
-// TODO: Add documenatation
+/// Seeds the database with initial data.
+///
+/// This function reads the `seeds.sql` file and executes the SQL script to seed the database with initial data.
+///
+/// # Arguments
+///
+/// * `connection` - A reference to the SQLite connection pool.
+///
+/// # Returns
+///
+/// Returns a `Result` containing `()` or a `sqlx::Error` if an error occurs.
+///
+/// # Panics
+///
+/// This function will panic if:
+/// * The `seeds.sql` file cannot be read.
+///
+/// # Examples
+///
+/// ```rust
+/// # #[cfg(doctest)] {
+/// let conn = initiate_pool("sqlite::memory:").await.unwrap();
+/// seed_data(&conn).await.unwrap();
+/// # }
+/// ```
 pub async fn seed_data(connection: &Pool<Sqlite>) -> Result<(), sqlx::Error> {
     let name: String = "seeded".to_string();
-    // TODO: Uppercase query
-    match sqlx::query_as::<_, Property>("select name, value from properties where name = ?")
+    match sqlx::query_as::<_, Property>("SELECT name, value FROM properties WHERE name = ?")
         .bind(name)
         .fetch_one(connection)
         .await
@@ -54,16 +77,20 @@ pub async fn seed_data(connection: &Pool<Sqlite>) -> Result<(), sqlx::Error> {
             // Check if property.value exists and true.
             // If it is, do not seed.
             // Else, seed.
-            return Ok(());
+            if property.value.parse().unwrap() {
+                let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
+                sqlx::query(&seeds_sql).execute(connection).await?;
+                return Ok(());
+            } else {
+                info!("Not seeding the database.");
+                return Ok(());
+            }
         }
-        Err(_) => {
+        Err(err) => {
             // Send an error.
-            info!("Seeding data");
+            return Err(err);
         }
     }
-    let seeds_sql = std::fs::read_to_string("src/db/seeds.sql").unwrap();
-    sqlx::query(&seeds_sql).execute(connection).await?;
-    Ok(())
 }
 
 #[cfg(test)]
