@@ -22,3 +22,4 @@ Cargo.lock
 
 # ignore any databases that are created.
 **/*.db
+**/*.db-*

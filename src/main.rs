@@ -4,15 +4,67 @@
 // by both crates, it needs to be made `pub`. The binary crate depends on the library crate (which has the same
 // name listed in Cargo.toml); because stuff from library crate are imported in line 1 and 2.
 
+use crate::config::{read_config, AppConfig};
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
+use labwhere::db::create_db::{create_db, seed_data};
+use labwhere::db::initiate_pool;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tokio::net::TcpListener;
 
+pub mod config;
 pub mod services;
+
+/// Initiates the database by reading the configuration, creating the database, and seeding it with initial data.
+///
+/// # Arguments
+///
+/// * `config_path` - A string slice that holds the path to the configuration file.
+///
+/// # Returns
+///
+/// * `String` - The URL of the created database.
+///
+/// # Errors
+///
+/// This function will panic if:
+/// * The configuration file cannot be read.
+/// * The database cannot be created.
+/// * The initial data cannot be inserted into the database.
+///
+/// # Example
+///
+/// ```rust
+/// let url = create_database("config.yml").await;
+/// println!("Database URL: {}", url);
+/// ```
+async fn create_database(config_path: &str) -> String {
+    info!("Config location: {}", config_path);
+    let config: AppConfig = read_config(config_path).await.unwrap();
+
+    match create_db(
+        config.database_directory,
+        &config.environment.unwrap().to_string(),
+    )
+    .await
+    {
+        Ok(url) => {
+            let conn = initiate_pool(&url).await.unwrap();
+
+            info!("Seeding data into {}", url);
+
+            // Seed data and allow to panic if fails.
+            seed_data(&conn).await.unwrap();
+            
+            url
+        }
+        Err(_) => panic!("Error in initiating the database."),
+    }
+}
 
 // Notes
 // 1. Implement graceful shutdowns : https://hyper.rs/guides/1/server/graceful-shutdown/
@@ -38,11 +90,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     // Create a TcpListener and bind the address to it.
     let listener = TcpListener::bind(address).await?;
 
+    // Reads config
+    let config_path: String =
+        env::var("CONFIG_PATH").unwrap_or_else(|_| "./config.yml".to_string());
+
+    // Initiates the database by seeding it
+    let url = create_database(&config_path).await;
+    let pool = Arc::new(initiate_pool(&url.clone()).await.unwrap());
+
     info!("Server running on port: {:?}", port);
 
     loop {
+        // This loop progresses ONLY IF an incoming TCP Stream is there.
         let (stream, _) = listener.accept().await?;
-
+        // After the loop is gone, the clone is destroyed.
+        let pool_clone = Arc::clone(&pool);
         let io = TokioIo::new(stream);
 
         // Spawn tokio task for concurrent processing of incoming streams
@@ -50,7 +112,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
             if let Err(err) = http1::Builder::new()
                 // This is the global service handler.
                 // This service handler should delegate the request to the relevant endpoint
-                .serve_connection(io, service_fn(services::scan::scan))
+                .serve_connection(
+                    io,
+                    service_fn(|req| async {
+                        // After the loop is gone, the clone is destroyed.
+                        // As this task is spawn ONLY upon an incoming TCP stream, it is okay
+                        // to have a connection opened.
+                        //
+                        services::scan::scan(req, &pool_clone).await
+                    }),
+                )
                 .await
             {
                 error!("Error serving the connection: {:?}", err);

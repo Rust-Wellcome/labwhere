@@ -3,8 +3,9 @@ use http_body_util::combinators::BoxBody;
 use http_body_util::{BodyExt, Full};
 use hyper::body::{Body, Bytes};
 use hyper::{header::CONTENT_TYPE, Error, Method, Request, Response, Result, StatusCode};
+use labwhere::models::scan::Scan;
 use log::{error, info};
-use serde_json::Value;
+use sqlx::{Pool, Sqlite};
 use std::pin::Pin;
 use std::task::{Context, Poll};
 
@@ -15,6 +16,7 @@ use std::task::{Context, Poll};
 /// call.
 pub async fn scan(
     req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
+    connection: &Pool<Sqlite>,
 ) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     info!("Processing request for /scan endpoint");
 
@@ -38,9 +40,9 @@ pub async fn scan(
             let body_bytes: Bytes = boxed_body.collect().await?.to_bytes();
             let string = String::from_utf8(body_bytes.to_vec()).unwrap();
 
-            let json: Value = serde_json::from_str(&string).unwrap();
+            let json: Scan = serde_json::from_str(&string).unwrap();
 
-            println!("{:?}", json);
+            let _ = Scan::create(json, connection).await.unwrap();
 
             Ok(Response::builder()
                 .header(CONTENT_TYPE, "application/json")
@@ -93,16 +95,25 @@ impl Body for MockBody {
 
 #[cfg(test)]
 mod tests {
-    use hyper::{header::CONTENT_TYPE, StatusCode};
-
     use crate::services::scan::MockBody;
+    use hyper::{header::CONTENT_TYPE, StatusCode};
+    use labwhere::db::initiate_pool;
+    use labwhere::models::location::Location;
+    use labwhere::models::location_type::LocationType;
 
     #[tokio::test]
     async fn test_scan() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("location-type-1".to_string(), &conn)
+            .await
+            .unwrap();
+        let _ = Location::create("location".to_string(), location_type.id, &conn)
+            .await
+            .unwrap();
         let body: MockBody = MockBody::new(
             b"{
-                    \"location_barcode\": \"1234\",
-                    \"labware_barcode\": \"32321\"
+                    \"location_barcode\": \"lw-location-1\",
+                    \"labware_barcode\": \"labware\"
             }",
         );
         let req = hyper::Request::builder()
@@ -111,12 +122,19 @@ mod tests {
             .header(CONTENT_TYPE, "application/json")
             .body(body)
             .unwrap();
-        let res = super::scan(req).await.unwrap();
+        let res = super::scan(req, &conn).await.unwrap();
         assert_eq!(res.status(), StatusCode::OK);
     }
 
     #[tokio::test]
     async fn test_scan_without_correct_content_type() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("location-type-1".to_string(), &conn)
+            .await
+            .unwrap();
+        let _ = Location::create("location".to_string(), location_type.id, &conn)
+            .await
+            .unwrap();
         let body: MockBody = MockBody::new(b"anything");
         let req = hyper::Request::builder()
             .method("POST")
@@ -124,7 +142,8 @@ mod tests {
             .header(CONTENT_TYPE, "text/plain")
             .body(body)
             .unwrap();
-        let res = super::scan(req).await.unwrap();
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let res = super::scan(req, &conn).await.unwrap();
         assert_eq!(res.status(), StatusCode::BAD_REQUEST);
     }
 }

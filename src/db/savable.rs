@@ -6,6 +6,7 @@ use sqlx::SqliteConnection;
 ///
 /// The visibility of this trait is confined to the library crate. Ideally, the main crate should not use
 /// the savable trait as it is the library crate that should encapsulate model logic.
+#[allow(dead_code)]
 pub(crate) trait Savable: Sized {
     /// Saves the object to the database.
     ///

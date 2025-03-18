@@ -1,9 +1,10 @@
+use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
 use once_cell::sync::Lazy;
 use regex::Regex;
-use sqlx::SqliteConnection;
-use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
+use sqlx::Pool;
+use sqlx::Sqlite;
+use std::fmt::Debug;
 use PartialEq;
 
 /// The `UNKNOWN_LOCATION` constant is initialized only when it is first accessed.
@@ -67,11 +68,9 @@ impl<'a> Location {
         name: String,
         location_type_id: u32,
         barcode: Option<String>,
-    ) -> Result<Location, NameFormatError> {
+    ) -> Result<Location, LabwhereError> {
         if !Location::validate_name(name.clone()) {
-            return Err(NameFormatError {
-                message: "Invalid name format".to_string(),
-            });
+            return Err(LabwhereError::name_format_error());
         }
         let location = Location {
             id,
@@ -90,30 +89,36 @@ impl<'a> Location {
     /// let location = Location::create("location1".to_string(), 1).await.unwrap();
     /// # }
     /// ```
-    pub(crate) async fn create(
+    pub async fn create(
         name: String,
         location_type_id: u32,
-        connection: &mut SqliteConnection,
-    ) -> Result<Location, sqlx::Error> {
-        let insert_query_result =
-            sqlx::query("INSERT INTO locations (name, location_type_id) VALUES (?, ?)")
-                .bind(name.clone())
-                .bind(location_type_id)
-                .execute(&mut *connection)
-                .await?;
-        let id = insert_query_result.last_insert_rowid();
+        connection: &Pool<Sqlite>,
+    ) -> Result<Location, LabwhereError> {
+        match sqlx::query("INSERT INTO locations (name, location_type_id) VALUES (?, ?)")
+            .bind(name.clone())
+            .bind(location_type_id)
+            .execute(connection)
+            .await
+        {
+            Ok(insert_query_result) => {
+                let id = insert_query_result.last_insert_rowid();
+                let mut location =
+                    Location::new(id as u32, name.clone(), location_type_id, None).unwrap();
+                let barcode = location.create_barcode();
 
-        let mut location = Location::new(id as u32, name.clone(), location_type_id, None).unwrap();
-        let barcode = location.create_barcode();
-
-        // Catch errors (if any) and handle
-        sqlx::query("UPDATE locations SET barcode = ? WHERE id = ?")
-            .bind(barcode)
-            .bind(id)
-            .execute(&mut *connection)
-            .await?;
-
-        Ok(location)
+                // Catch errors (if any) and handle
+                return match sqlx::query("UPDATE locations SET barcode = ? WHERE id = ?")
+                    .bind(barcode)
+                    .bind(id)
+                    .execute(connection)
+                    .await
+                {
+                    Ok(_) => Ok(location),
+                    Err(_) => return Err(LabwhereError::database_error()),
+                };
+            }
+            Err(_) => return Err(LabwhereError::database_error()),
+        }
     }
 
     /// Find a location by barcode
@@ -127,11 +132,11 @@ impl<'a> Location {
     /// ```
     pub(crate) async fn find_by_barcode(
         barcode: String,
-        connection: &mut SqliteConnection,
+        connection: &Pool<Sqlite>,
     ) -> Result<Location, NotFoundError> {
         match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE barcode = ?")
             .bind(barcode)
-            .fetch_one(&mut *connection)
+            .fetch_one(connection)
             .await
         {
             Ok(location) => Ok(location),
@@ -189,29 +194,9 @@ impl Default for Location {
     }
 }
 
-/// Error struct for containing name formatting errors
-struct NameFormatError {
-    /// Message contained within the exception
-    message: String,
-}
-
-impl Display for NameFormatError {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Debug for NameFormatError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.message.to_string())
-    }
-}
-
-impl Error for NameFormatError {}
-
 #[cfg(test)]
 mod tests {
-    use crate::db::init_db;
+    use crate::db::initiate_pool;
     use crate::models::location::*;
     use crate::models::location_type::LocationType;
 
@@ -279,11 +264,11 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_location() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
-        let location = Location::create("location1".to_string(), location_type.id, &mut conn)
+        let location = Location::create("location1".to_string(), location_type.id, &conn)
             .await
             .unwrap();
         assert_eq!(location.name, "location1");
@@ -293,25 +278,24 @@ mod tests {
 
     #[tokio::test]
     async fn test_find_by_barcode() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &mut conn)
+        let mut conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
         let location = Location::create("location1".to_string(), location_type.id, &mut conn)
             .await
             .unwrap();
-        let found_location =
-            Location::find_by_barcode(location.barcode.clone().unwrap(), &mut conn)
-                .await
-                .unwrap();
+        let found_location = Location::find_by_barcode(location.barcode.clone().unwrap(), &conn)
+            .await
+            .unwrap();
 
         assert_eq!(location.barcode, found_location.barcode);
     }
 
     #[tokio::test]
     async fn test_find_by_barcode_for_not_found() {
-        let mut conn = init_db("sqlite::memory:").await.unwrap();
-        Location::find_by_barcode("lw-location-1".to_string(), &mut conn)
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        Location::find_by_barcode("lw-location-1".to_string(), &conn)
             .await
             .expect_err("Location not found");
     }
