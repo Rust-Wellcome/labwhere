@@ -10,6 +10,7 @@ use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
 use labwhere::db::create_db::{create_db, seed_data};
 use labwhere::db::initiate_pool;
+use labwhere::db::seeds::seed;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
@@ -58,8 +59,8 @@ async fn create_database(config_path: &str) -> String {
             info!("Seeding data into {}", url);
 
             // Seed data and allow to panic if fails.
-            seed_data(&conn).await.unwrap();
-            
+            seed(&conn).await;
+
             url
         }
         Err(_) => panic!("Error in initiating the database."),

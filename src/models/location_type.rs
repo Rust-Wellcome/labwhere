@@ -52,6 +52,45 @@ impl LocationType {
             Err(_) => Err(LabwhereError::database_error()),
         };
     }
+
+    /// Finds a `LocationType` by its name.
+    ///
+    /// # Arguments
+    ///
+    /// * `name` - A string that holds the name of the `LocationType`.
+    /// * `connection` - A reference to the SQLite connection pool.
+    ///
+    /// # Returns
+    ///
+    /// * `Result<LocationType, LabwhereError>` - On success, returns the `LocationType` with the specified name. On failure, returns a `LabwhereError`.
+    ///
+    /// # Errors
+    ///
+    /// This function will return a `LabwhereError` if:
+    /// * The `LocationType` with the specified name is not found.
+    /// * There is an error executing the query.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # #[cfg(doctest)] {
+    /// let location_type = LocationType::find_by_name("Freezer".to_string(), &connection).await.unwrap();
+    /// println!("Found LocationType: {:?}", location_type);
+    /// # }
+    /// ```
+    pub async fn find_by_name(
+        name: String,
+        connection: &Pool<Sqlite>,
+    ) -> Result<LocationType, LabwhereError> {
+        match sqlx::query_as::<_, LocationType>("SELECT * FROM location_types WHERE name = ?")
+            .bind(name)
+            .fetch_optional(connection)
+            .await
+        {
+            Ok(location_type) => Ok(location_type.unwrap()),
+            Err(_) => Err(LabwhereError::not_found_error("LocationType")),
+        }
+    }
 }
 
 impl Default for LocationType {
@@ -82,6 +121,18 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(location_type.id, 1);
+        assert_eq!(location_type.name, "Freezer");
+    }
+
+    #[tokio::test]
+    async fn test_find_location_type() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
+            .await
+            .unwrap();
+        let location_type = LocationType::find_by_name("Freezer".to_string(), &conn)
+            .await
+            .unwrap();
         assert_eq!(location_type.name, "Freezer");
     }
 }

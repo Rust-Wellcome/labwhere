@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS location_types  (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS locations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
     barcode VARCHAR(255),
     location_type_id INT NOT NULL,
     FOREIGN KEY (location_type_id) REFERENCES location_types(id)
