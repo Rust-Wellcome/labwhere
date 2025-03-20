@@ -56,11 +56,17 @@ async fn seed_location_types(connection: &Pool<Sqlite>) -> Result<(), LabwhereEr
     Ok(())
 }
 
+// 1. Find location_type(s) by name
+// 2. If exists, create a location(s) using the ID of the location type (i.e., Location.create() function).
+// 3. Else, panic with proper logging.
 async fn seed_location(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
     // TODO: Complete this
     Ok(())
 }
 
+// 1. Find location(s) by name.
+// 2. If exists, create a labware(s) using the ID of the location (i.e., Labware.create() function).
+// 3. Else, panic with proper logging.
 async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
     // TODO: Complete this
     Ok(())
