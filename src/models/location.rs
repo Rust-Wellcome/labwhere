@@ -117,7 +117,13 @@ impl<'a> Location {
                     Err(_) => return Err(LabwhereError::database_error()),
                 };
             }
-            Err(_) => return Err(LabwhereError::database_error()),
+            Err(error) => {
+                if error.as_database_error().unwrap().is_unique_violation() {
+                    Err(LabwhereError::unique_constraint_violation())
+                } else {
+                    Err(LabwhereError::database_error())
+                }
+            }
         }
     }
 
@@ -143,6 +149,20 @@ impl<'a> Location {
             Err(_) => Err(NotFoundError {
                 message: "Location not found".to_string(),
             }),
+        }
+    }
+
+    pub async fn find_by_name(
+        name: String,
+        connection: &Pool<Sqlite>,
+    ) -> Result<Location, LabwhereError> {
+        match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE name = ?")
+            .bind(name)
+            .fetch_optional(connection)
+            .await
+        {
+            Ok(location) => Ok(location.unwrap()),
+            Err(_) => Err(LabwhereError::not_found_error("Location")),
         }
     }
 
@@ -197,7 +217,7 @@ impl Default for Location {
 #[cfg(test)]
 mod tests {
     use crate::db::initiate_pool;
-    use crate::models::location::*;
+    use crate::models::location::{self, *};
     use crate::models::location_type::LocationType;
 
     #[test]
@@ -298,5 +318,21 @@ mod tests {
         Location::find_by_barcode("lw-location-1".to_string(), &conn)
             .await
             .expect_err("Location not found");
+    }
+
+    #[tokio::test]
+    async fn test_find_location_by_name() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
+            .await
+            .unwrap();
+        Location::create("Freezer-1".to_string(), location_type.id, &conn)
+            .await
+            .unwrap();
+
+        let location = Location::find_by_name("Freezer-1".to_string(), &conn)
+            .await
+            .unwrap();
+        assert_eq!(location.name, "Freezer-1");
     }
 }

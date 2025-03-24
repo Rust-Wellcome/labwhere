@@ -1,4 +1,6 @@
 use crate::errors::LabwhereError;
+use crate::models::labware::Labware;
+use crate::models::location::Location;
 use crate::models::location_type::LocationType;
 use sqlx::{Pool, Sqlite};
 
@@ -21,9 +23,9 @@ use sqlx::{Pool, Sqlite};
 /// seed(&conn).await;
 /// # }
 pub async fn seed(connection: &Pool<Sqlite>) {
-    seed_location_types(connection).await.unwrap()
-    // seed_location().await.unwrap()
-    // seed_labware().await.unwrap()
+    seed_location_types(connection).await.unwrap();
+    seed_location(connection).await.unwrap();
+    seed_labware(connection).await.unwrap();
 }
 
 /// Seeds the database with initial location types.
@@ -50,9 +52,20 @@ pub async fn seed(connection: &Pool<Sqlite>) {
 /// # }
 /// ```
 async fn seed_location_types(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
-    LocationType::create(String::from("freezer"), connection).await?;
-    LocationType::create(String::from("box"), connection).await?;
-
+    match LocationType::create(String::from("freezer"), connection).await {
+        Ok(_) => (),
+        Err(err) => match err {
+            LabwhereError::UniqueConstraintViolation(_) => (),
+            _ => panic!("Error creating location type"),
+        },
+    }
+    match LocationType::create(String::from("box"), connection).await {
+        Ok(_) => (),
+        Err(err) => match err {
+            LabwhereError::UniqueConstraintViolation(_) => (),
+            _ => panic!("Error creating location type"),
+        },
+    }
     Ok(())
 }
 
@@ -60,7 +73,16 @@ async fn seed_location_types(connection: &Pool<Sqlite>) -> Result<(), LabwhereEr
 // 2. If exists, create a location(s) using the ID of the location type (i.e., Location.create() function).
 // 3. Else, panic with proper logging.
 async fn seed_location(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
-    // TODO: Complete this
+    let freezer_location_type =
+        LocationType::find_by_name(String::from("freezer"), connection).await?;
+    let box_location_type = LocationType::find_by_name(String::from("box"), connection).await?;
+    Location::create(
+        "Freezer 1".to_string(),
+        freezer_location_type.id,
+        connection,
+    )
+    .await?;
+    Location::create("Box 1".to_string(), box_location_type.id, connection).await?;
     Ok(())
 }
 
@@ -68,6 +90,11 @@ async fn seed_location(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
 // 2. If exists, create a labware(s) using the ID of the location (i.e., Labware.create() function).
 // 3. Else, panic with proper logging.
 async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
-    // TODO: Complete this
+    let freezer_location = Location::find_by_name("Freezer 1".to_string(), connection).await?;
+    let box_location = Location::find_by_name("Box 1".to_string(), connection).await?;
+    Labware::create("labware-1".to_string(), freezer_location.id, connection).await?;
+    Labware::create("labware-2".to_string(), freezer_location.id, connection).await?;
+    Labware::create("labware-3".to_string(), box_location.id, connection).await?;
+    Labware::create("labware-4".to_string(), box_location.id, connection).await?;
     Ok(())
 }

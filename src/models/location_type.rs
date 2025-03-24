@@ -1,4 +1,5 @@
-use sqlx::{Pool, Sqlite};
+use serde_yml::libyml::error;
+use sqlx::{error::DatabaseError, Pool, Sqlite};
 use PartialEq;
 
 use crate::errors::LabwhereError;
@@ -49,7 +50,13 @@ impl LocationType {
                 let id = insert_query_result.last_insert_rowid();
                 Ok(LocationType::new(id as u32, name))
             }
-            Err(_) => Err(LabwhereError::database_error()),
+            Err(error) => {
+                if error.as_database_error().unwrap().is_unique_violation() {
+                    Err(LabwhereError::unique_constraint_violation())
+                } else {
+                    Err(LabwhereError::database_error())
+                }
+            }
         };
     }
 
@@ -125,7 +132,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_find_location_type() {
+    async fn test_find_location_type_by_name() {
         let conn = initiate_pool("sqlite::memory:").await.unwrap();
         let location_type = LocationType::create("Freezer".to_string(), &conn)
             .await

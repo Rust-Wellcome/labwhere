@@ -56,11 +56,16 @@ pub struct ConfigError {
     pub message: String,
 }
 
+pub struct UniqueConstraintViolation {
+    pub message: String,
+}
+
 impl_error!(NotFoundError);
 impl_error!(BarcodeEmptyError);
 impl_error!(NameFormatError);
 impl_error!(DatabaseError);
 impl_error!(ConfigError);
+impl_error!(UniqueConstraintViolation);
 
 /// A generalised error for Labware
 #[derive(Debug)]
@@ -70,6 +75,7 @@ pub enum LabwhereError {
     NameFormatError(NameFormatError),
     DatabaseError(DatabaseError),
     ConfigError(ConfigError),
+    UniqueConstraintViolation(UniqueConstraintViolation),
 }
 
 impl_error_conversion!(NotFoundError);
@@ -77,6 +83,7 @@ impl_error_conversion!(BarcodeEmptyError);
 impl_error_conversion!(NameFormatError);
 impl_error_conversion!(DatabaseError);
 impl_error_conversion!(ConfigError);
+impl_error_conversion!(UniqueConstraintViolation);
 
 /// As we have implemented the `From` trait on each of our error types
 /// that converts them into Labwhere error, we can invoke `into()` on each
@@ -113,6 +120,13 @@ impl LabwhereError {
     pub fn config_error(error: &str) -> LabwhereError {
         (DatabaseError {
             message: format!("Config error: {}", error),
+        })
+        .into()
+    }
+
+    pub fn unique_constraint_violation() -> LabwhereError {
+        (UniqueConstraintViolation {
+            message: "Unique constraint violation!".to_string(),
         })
         .into()
     }
