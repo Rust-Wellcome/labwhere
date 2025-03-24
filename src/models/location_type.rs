@@ -1,5 +1,4 @@
-use serde_yml::libyml::error;
-use sqlx::{error::DatabaseError, Pool, Sqlite};
+use sqlx::{Pool, Sqlite};
 use PartialEq;
 
 use crate::errors::LabwhereError;
@@ -137,7 +136,7 @@ mod tests {
     #[tokio::test]
     async fn test_find_location_type_by_name() {
         let conn = initiate_pool("sqlite::memory:").await.unwrap();
-        let location_type = LocationType::create("Freezer".to_string(), &conn)
+        let _ = LocationType::create("Freezer".to_string(), &conn)
             .await
             .unwrap();
         let location_type = LocationType::find_by_name("Freezer".to_string(), &conn)

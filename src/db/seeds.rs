@@ -1,5 +1,4 @@
 use crate::errors::LabwhereError;
-use crate::models::labware::Labware;
 use crate::models::location::Location;
 use crate::models::location_type::LocationType;
 use crate::models::scan::Scan;

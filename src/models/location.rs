@@ -217,7 +217,7 @@ impl Default for Location {
 #[cfg(test)]
 mod tests {
     use crate::db::initiate_pool;
-    use crate::models::location::{self, *};
+    use crate::models::location::*;
     use crate::models::location_type::LocationType;
 
     #[test]
