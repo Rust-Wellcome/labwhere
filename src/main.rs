@@ -8,7 +8,7 @@ use crate::config::{read_config, AppConfig};
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
-use labwhere::db::create_db::{create_db, seed_data};
+use labwhere::db::create_db::create_db;
 use labwhere::db::initiate_pool;
 use labwhere::db::seeds::seed;
 use log::{error, info, warn};

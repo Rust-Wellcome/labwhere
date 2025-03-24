@@ -2,6 +2,7 @@ use crate::errors::LabwhereError;
 use crate::models::labware::Labware;
 use crate::models::location::Location;
 use crate::models::location_type::LocationType;
+use crate::models::scan::Scan;
 use sqlx::{Pool, Sqlite};
 
 /// Seeds the database with initial data.
@@ -76,13 +77,26 @@ async fn seed_location(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
     let freezer_location_type =
         LocationType::find_by_name(String::from("freezer"), connection).await?;
     let box_location_type = LocationType::find_by_name(String::from("box"), connection).await?;
-    Location::create(
+    match Location::create(
         "Freezer 1".to_string(),
         freezer_location_type.id,
         connection,
     )
-    .await?;
-    Location::create("Box 1".to_string(), box_location_type.id, connection).await?;
+    .await
+    {
+        Ok(_) => (),
+        Err(err) => match err {
+            LabwhereError::UniqueConstraintViolation(_) => (),
+            _ => panic!("Error creating location type"),
+        },
+    }
+    match Location::create("Box 1".to_string(), box_location_type.id, connection).await {
+        Ok(_) => (),
+        Err(err) => match err {
+            LabwhereError::UniqueConstraintViolation(_) => (),
+            _ => panic!("Error creating location type"),
+        },
+    }
     Ok(())
 }
 
@@ -92,9 +106,42 @@ async fn seed_location(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
 async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
     let freezer_location = Location::find_by_name("Freezer 1".to_string(), connection).await?;
     let box_location = Location::find_by_name("Box 1".to_string(), connection).await?;
-    Labware::create("labware-1".to_string(), freezer_location.id, connection).await?;
-    Labware::create("labware-2".to_string(), freezer_location.id, connection).await?;
-    Labware::create("labware-3".to_string(), box_location.id, connection).await?;
-    Labware::create("labware-4".to_string(), box_location.id, connection).await?;
+
+    Scan::create(
+        Scan {
+            labware_barcode: "labware-1".to_string(),
+            location_barcode: freezer_location.barcode.clone().unwrap().to_string(),
+        },
+        connection,
+    )
+    .await?;
+
+    Scan::create(
+        Scan {
+            labware_barcode: "labware-2".to_string(),
+            location_barcode: freezer_location.barcode.unwrap().to_string(),
+        },
+        connection,
+    )
+    .await?;
+
+    Scan::create(
+        Scan {
+            labware_barcode: "labware-3".to_string(),
+            location_barcode: box_location.barcode.clone().unwrap().to_string(),
+        },
+        connection,
+    )
+    .await?;
+
+    Scan::create(
+        Scan {
+            labware_barcode: "labware-4".to_string(),
+            location_barcode: box_location.barcode.unwrap().to_string(),
+        },
+        connection,
+    )
+    .await?;
+
     Ok(())
 }

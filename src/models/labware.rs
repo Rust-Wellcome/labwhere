@@ -50,6 +50,10 @@ impl Labware {
         location_id: u32,
         connection: &Pool<Sqlite>,
     ) -> Result<Labware, LabwhereError> {
+        // Find the labware
+        // If it doesn't exist, insert
+        // If it does, update with the location ID.
+
         match sqlx::query("INSERT INTO labwares (barcode, location_id) VALUES (?, ?)")
             .bind(barcode.clone())
             .bind(location_id)
