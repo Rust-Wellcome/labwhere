@@ -51,8 +51,8 @@ impl LocationType {
                 Ok(LocationType::new(id as u32, name))
             }
             Err(error) => match error.as_database_error() {
-                Some(_) => {
-                    if error.as_database_error().unwrap().is_unique_violation() {
+                Some(database_error) => {
+                    if database_error.is_unique_violation() {
                         Err(LabwhereError::unique_constraint_violation())
                     } else {
                         Err(LabwhereError::database_error())
