@@ -50,13 +50,16 @@ impl LocationType {
                 let id = insert_query_result.last_insert_rowid();
                 Ok(LocationType::new(id as u32, name))
             }
-            Err(error) => {
-                if error.as_database_error().unwrap().is_unique_violation() {
-                    Err(LabwhereError::unique_constraint_violation())
-                } else {
-                    Err(LabwhereError::database_error())
+            Err(error) => match error.as_database_error() {
+                Some(_) => {
+                    if error.as_database_error().unwrap().is_unique_violation() {
+                        Err(LabwhereError::unique_constraint_violation())
+                    } else {
+                        Err(LabwhereError::database_error())
+                    }
                 }
-            }
+                None => Err(LabwhereError::unknown_error()),
+            },
         };
     }
 
