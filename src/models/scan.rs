@@ -6,8 +6,8 @@ use sqlx::{Pool, Sqlite};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Scan {
-    labware_barcode: String,
-    location_barcode: String,
+    pub(crate) labware_barcode: String,
+    pub(crate) location_barcode: String,
 }
 
 impl Clone for Scan {

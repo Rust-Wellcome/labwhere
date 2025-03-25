@@ -7,6 +7,7 @@ use crate::errors::{DatabaseError, LabwhereError};
 
 pub mod create_db;
 pub mod savable;
+pub mod seeds;
 
 /// Initializes a test database and injects the schemas.
 ///
