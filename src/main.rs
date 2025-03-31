@@ -4,7 +4,6 @@
 // by both crates, it needs to be made `pub`. The binary crate depends on the library crate (which has the same
 // name listed in Cargo.toml); because stuff from library crate are imported in line 1 and 2.
 
-use crate::config::{read_config, AppConfig};
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
@@ -17,7 +16,6 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::net::TcpListener;
 
-pub mod config;
 pub mod services;
 
 /// Initiates the database by reading the configuration, creating the database, and seeding it with initial data.
@@ -43,16 +41,8 @@ pub mod services;
 /// let url = create_database("config.yml").await;
 /// println!("Database URL: {}", url);
 /// ```
-async fn create_database(config_path: &str) -> String {
-    info!("Config location: {}", config_path);
-    let config: AppConfig = read_config(config_path).await.unwrap();
-
-    match create_db(
-        config.database_directory,
-        &config.environment.unwrap().to_string(),
-    )
-    .await
-    {
+async fn create_database() -> String {
+    match create_db(Some("db".to_string()), "labwhere").await {
         Ok(url) => {
             let conn = initiate_pool(&url).await.unwrap();
 
@@ -91,12 +81,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     // Create a TcpListener and bind the address to it.
     let listener = TcpListener::bind(address).await?;
 
-    // Reads config
-    let config_path: String =
-        env::var("CONFIG_PATH").unwrap_or_else(|_| "./config.yml".to_string());
-
     // Initiates the database by seeding it
-    let url = create_database(&config_path).await;
+    let url = create_database().await;
     let pool = Arc::new(initiate_pool(&url.clone()).await.unwrap());
 
     info!("Server running on port: {:?}", port);
