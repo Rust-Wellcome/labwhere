@@ -36,26 +36,32 @@ pub async fn create_db(path: Option<String>, environment: &str) -> Result<String
 #[cfg(test)]
 mod tests {
     use crate::db::create_db::create_db;
-    use crate::db::init_db;
+    // use crate::db::init_db;
+    use crate::db::initiate_pool;
     use sqlx::migrate::MigrateDatabase;
+    use tokio::fs;
 
     #[tokio::test]
     async fn test_create_db() {
         let result = create_db(None, "test").await;
-        init_db("sqlite://test.db").await.unwrap();
+        initiate_pool("sqlite://test.db").await.unwrap();
         assert_eq!(result.is_ok(), true);
         sqlx::Sqlite::drop_database("sqlite://test.db")
             .await
             .unwrap();
+        fs::remove_file("test.db-wal").await.ok();
+        fs::remove_file("test.db-shm").await.ok();
     }
 
     #[tokio::test]
     async fn test_create_db_with_path() {
-        let result = create_db(Some("src/db".to_string()), "test").await;
-        init_db("sqlite://src/db/test.db").await.unwrap();
+        let result = create_db(Some("db".to_string()), "test").await;
+        initiate_pool("sqlite://db/test.db").await.unwrap();
         assert_eq!(result.is_ok(), true);
-        sqlx::Sqlite::drop_database("sqlite://src/db/test.db")
+        sqlx::Sqlite::drop_database("sqlite://db/test.db")
             .await
             .unwrap();
+        fs::remove_file("db/test.db-wal").await.ok();
+        fs::remove_file("db/test.db-shm").await.ok();
     }
 }
