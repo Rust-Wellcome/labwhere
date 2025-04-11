@@ -98,7 +98,7 @@ impl Scan {
                 Err(error) => match error {
                     LabwhereError::BarcodeEmptyError(err) => return Err(err.into()),
                     LabwhereError::NotFoundError(_) => {
-                        Labware::create(labware_barcodes.clone(), location.id, connection)
+                        Labware::create(barcode.to_string(), location.id, connection)
                             .await
                             .unwrap()
                     }
