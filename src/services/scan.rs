@@ -34,20 +34,41 @@ pub async fn scan(
     }
 
     match (req.method(), req.uri().path()) {
-        // Use https://github.com/hyperium/hyper/blob/master/examples/web_api.rs for processing the request
         (&Method::POST, "/scan") => {
             let boxed_body: BoxBody<Bytes, Error> = req.into_body().boxed();
             let body_bytes: Bytes = boxed_body.collect().await?.to_bytes();
             let string = String::from_utf8(body_bytes.to_vec()).unwrap();
 
-            let json: Scan = serde_json::from_str(&string).unwrap();
+            let json: Scan = match serde_json::from_str(&string) {
+                Ok(scan) => scan,
+                Err(_) => {
+                    let mut bad_request = Response::new(empty());
+                    *bad_request.status_mut() = StatusCode::BAD_REQUEST;
+                    error!("Invalid JSON in request body");
+                    return Ok(bad_request);
+                }
+            };
 
-            let _ = Scan::create(json, connection).await.unwrap();
-
-            Ok(Response::builder()
-                .header(CONTENT_TYPE, "application/json")
-                .body(full(string))
-                .unwrap())
+            match Scan::create(json, connection).await {
+                Ok(scan) => {
+                    let labware_count = scan.labware_barcodes.split('\n').count();
+                    let success_message = format!(
+                        "{} labwares scanned into location {}",
+                        labware_count, scan.location_barcode
+                    );
+                    Ok(Response::builder()
+                        .header(CONTENT_TYPE, "application/json")
+                        .body(full(success_message))
+                        .unwrap())
+                }
+                Err(err) => {
+                    let error_message = format!("Error: {:?}", err);
+                    let mut error_response = Response::new(full(error_message));
+                    *error_response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+                    error!("Error processing scan: {:?}", err);
+                    Ok(error_response)
+                }
+            }
         }
         _ => {
             let mut not_found = Response::new(empty());
@@ -113,7 +134,7 @@ mod tests {
         let body: MockBody = MockBody::new(
             b"{
                     \"location_barcode\": \"lw-location-1\",
-                    \"labware_barcode\": \"labware\"
+                    \"labware_barcodes\": \"labware1\\nlabware2\"
             }",
         );
         let req = hyper::Request::builder()
