@@ -108,7 +108,7 @@ async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
 
     Scan::create(
         Scan {
-            labware_barcode: "labware-1".to_string(),
+            labware_barcodes: "labware-1".to_string(),
             location_barcode: freezer_location.barcode.clone().unwrap().to_string(),
         },
         connection,
@@ -117,7 +117,7 @@ async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
 
     Scan::create(
         Scan {
-            labware_barcode: "labware-2".to_string(),
+            labware_barcodes: "labware-2".to_string(),
             location_barcode: freezer_location.barcode.unwrap().to_string(),
         },
         connection,
@@ -126,7 +126,7 @@ async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
 
     Scan::create(
         Scan {
-            labware_barcode: "labware-3".to_string(),
+            labware_barcodes: "labware-3".to_string(),
             location_barcode: box_location.barcode.clone().unwrap().to_string(),
         },
         connection,
@@ -135,7 +135,7 @@ async fn seed_labware(connection: &Pool<Sqlite>) -> Result<(), LabwhereError> {
 
     Scan::create(
         Scan {
-            labware_barcode: "labware-4".to_string(),
+            labware_barcodes: "labware-4".to_string(),
             location_barcode: box_location.barcode.unwrap().to_string(),
         },
         connection,

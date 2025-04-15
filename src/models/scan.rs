@@ -4,25 +4,27 @@ use crate::models::location::Location;
 use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Sqlite};
 
+use super::labware;
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Scan {
-    pub(crate) labware_barcode: String,
-    pub(crate) location_barcode: String,
+    pub labware_barcodes: String,
+    pub location_barcode: String,
 }
 
 impl Clone for Scan {
     fn clone(&self) -> Self {
         Scan {
-            labware_barcode: self.labware_barcode.clone(),
+            labware_barcodes: self.labware_barcodes.clone(),
             location_barcode: self.location_barcode.clone(),
         }
     }
 }
 
 impl Scan {
-    pub fn new(labware_barcode: String, location_barcode: String) -> Scan {
+    pub fn new(labware_barcodes: String, location_barcode: String) -> Scan {
         Scan {
-            labware_barcode,
+            labware_barcodes,
             location_barcode,
         }
     }
@@ -31,7 +33,7 @@ impl Scan {
     ///
     /// 1. Find the location by its barcode `location_barcode`.
     /// 2. If the location doesn't exist, it returns an error.
-    /// 3. Find the labware by its barcode `labware_barcode`.
+    /// 3. Find the labware by its barcode `labware_barcodes`.
     /// 4. If the labware exists, update its location. If it doesn't exist, create the labware in the database.
     ///
     /// # Arguments
@@ -74,34 +76,45 @@ impl Scan {
                 Ok(location) => location,
                 Err(_) => return Err(LabwhereError::not_found_error("Location")),
             };
+        let labware_barcodes = scan.labware_barcodes.clone();
+        let split_barcodes = labware_barcodes
+            .split('\n')
+            .filter(|s| !s.is_empty())
+            .collect::<Vec<&str>>();
+        // Split the labware barcodes by newline, filter out empty strings, and collect them into a vector
 
-        let labware = match Labware::find_by_barcode(&scan.labware_barcode, connection).await {
-            Ok(mut labware) => {
-                // Scan the labware into the location
-                labware.location_id = location.id;
-                match Labware::update(&labware, connection).await {
-                    Ok(lw) => lw,
-                    Err(_) => return Err(LabwhereError::database_error()),
+        if split_barcodes.is_empty() {
+            return Err(LabwhereError::barcode_empty_error());
+        }
+
+        for barcode in split_barcodes.iter() {
+            match Labware::find_by_barcode(&barcode.to_string(), connection).await {
+                Ok(mut labware) => {
+                    // Scan the labware into the location
+                    labware.location_id = location.id;
+                    match Labware::update(&labware, connection).await {
+                        Ok(lw) => lw,
+                        Err(_) => return Err(LabwhereError::database_error()),
+                    }
                 }
-            }
-            Err(error) => match error {
-                LabwhereError::BarcodeEmptyError(err) => return Err(err.into()),
-                LabwhereError::NotFoundError(_) => {
-                    Labware::create(scan.labware_barcode, location.id, connection)
-                        .await
-                        .unwrap()
-                }
-                _ => return Err(LabwhereError::database_error()), // It never reaches this point.
-            },
-        };
+                Err(error) => match error {
+                    LabwhereError::BarcodeEmptyError(err) => return Err(err.into()),
+                    LabwhereError::NotFoundError(_) => {
+                        Labware::create(barcode.to_string(), location.id, connection)
+                            .await
+                            .unwrap()
+                    }
+                    _ => return Err(LabwhereError::database_error()), // It never reaches this point.
+                },
+            };
+        }
 
         // get labware by barcode
         // if labware doesn't exist, create it
         // scan the labware into the location
         // return the scan
-
         Ok(Scan {
-            labware_barcode: labware.barcode.to_string(),
+            labware_barcodes: labware_barcodes,
             location_barcode: location.barcode.unwrap(),
         })
     }
@@ -118,7 +131,7 @@ mod tests {
     fn test_scan_new() {
         let scan = Scan::new("lw-bc-1".to_string(), "lc-bc-1".to_string());
         assert_eq!(scan.location_barcode, "lc-bc-1".to_string());
-        assert_eq!(scan.labware_barcode, "lw-bc-1".to_string());
+        assert_eq!(scan.labware_barcodes, "lw-bc-1".to_string());
     }
 
     #[tokio::test]
@@ -174,7 +187,7 @@ mod tests {
         let result: Scan = Scan::create(scan.clone(), &connection).await.unwrap();
 
         assert_eq!(location.barcode.unwrap(), result.location_barcode);
-        assert_eq!("lw-1".to_string(), scan.labware_barcode);
+        assert_eq!("lw-1".to_string(), scan.labware_barcodes);
     }
 
     #[tokio::test]
@@ -195,6 +208,33 @@ mod tests {
         let result: Scan = Scan::create(scan.clone(), &connection).await.unwrap();
 
         assert_eq!(location.barcode.unwrap(), result.location_barcode);
-        assert_eq!("lw-1".to_string(), scan.labware_barcode);
+        assert_eq!("lw-1".to_string(), scan.labware_barcodes);
+    }
+
+    #[tokio::test]
+    async fn test_scan_for_multiple_labware_barcodes() {
+        let connection = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &connection)
+            .await
+            .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &connection)
+            .await
+            .unwrap();
+
+        let scan = Scan::new(
+            "lw-1\nlw-2\nlw-3".to_string(),
+            location.barcode.clone().unwrap(),
+        );
+
+        let result: Scan = Scan::create(scan.clone(), &connection).await.unwrap();
+
+        let db_result: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM labwares")
+            .fetch_one(&connection)
+            .await
+            .unwrap();
+
+        assert_eq!(location.barcode.unwrap(), result.location_barcode);
+        assert_eq!("lw-1\nlw-2\nlw-3".to_string(), scan.labware_barcodes);
+        assert_eq!(3, db_result.0);
     }
 }
