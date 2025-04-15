@@ -208,4 +208,31 @@ mod tests {
         assert_eq!(location.barcode.unwrap(), result.location_barcode);
         assert_eq!("lw-1".to_string(), scan.labware_barcodes);
     }
+
+    #[tokio::test]
+    async fn test_scan_for_multiple_labware_barcodes() {
+        let connection = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &connection)
+            .await
+            .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &connection)
+            .await
+            .unwrap();
+
+        let scan = Scan::new(
+            "lw-1\nlw-2\nlw-3".to_string(),
+            location.barcode.clone().unwrap(),
+        );
+
+        let result: Scan = Scan::create(scan.clone(), &connection).await.unwrap();
+
+        let db_result: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM labwares")
+            .fetch_one(&connection)
+            .await
+            .unwrap();
+
+        assert_eq!(location.barcode.unwrap(), result.location_barcode);
+        assert_eq!("lw-1\nlw-2\nlw-3".to_string(), scan.labware_barcodes);
+        assert_eq!(3, db_result.0);
+    }
 }
