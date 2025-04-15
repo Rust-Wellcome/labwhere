@@ -51,7 +51,7 @@ pub async fn scan(
 
             match Scan::create(json, connection).await {
                 Ok(scan) => {
-                    let labware_count = scan.labware_barcodes.split('\n').count();
+                    let labware_count = scan.labware_barcodes.split('\n').filter(|s| !s.is_empty()).count();
                     let success_message = format!(
                         "{} labwares scanned into location {}",
                         labware_count, scan.location_barcode
