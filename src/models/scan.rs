@@ -77,9 +77,11 @@ impl Scan {
                 Err(_) => return Err(LabwhereError::not_found_error("Location")),
             };
         let labware_barcodes = scan.labware_barcodes.clone();
-        let split_barcodes = labware_barcodes.split('\n').collect::<Vec<&str>>();
-        // Split the labware barcodes by newline and collect them into a vector
-        // Check if the labware barcode is empty
+        let split_barcodes = labware_barcodes
+            .split('\n')
+            .filter(|s| !s.is_empty())
+            .collect::<Vec<&str>>();
+        // Split the labware barcodes by newline, filter out empty strings, and collect them into a vector
 
         if split_barcodes.is_empty() {
             return Err(LabwhereError::barcode_empty_error());
