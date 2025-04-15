@@ -117,6 +117,7 @@ impl Body for MockBody {
 #[cfg(test)]
 mod tests {
     use crate::services::scan::MockBody;
+    use http_body_util::BodyExt;
     use hyper::{header::CONTENT_TYPE, StatusCode};
     use labwhere::db::initiate_pool;
     use labwhere::models::location::Location;
@@ -144,7 +145,17 @@ mod tests {
             .body(body)
             .unwrap();
         let res = super::scan(req, &conn).await.unwrap();
+
         assert_eq!(res.status(), StatusCode::OK);
+
+        // Convert the response body to a string
+        let body_bytes = res.into_body().collect().await.unwrap().to_bytes();
+        let body_string = String::from_utf8(body_bytes.to_vec()).unwrap();
+
+        assert_eq!(
+            body_string,
+            "2 labwares scanned into location lw-location-1"
+        );
     }
 
     #[tokio::test]
