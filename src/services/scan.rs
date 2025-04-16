@@ -79,6 +79,8 @@ pub async fn scan(
     }
 }
 
+// Move this function to a utility module. This will be re-used by
+// other services.
 fn full<T: Into<Bytes>>(chunk: T) -> BoxBody<Bytes, hyper::Error> {
     Full::new(chunk.into())
         .map_err(|never| match never {})
