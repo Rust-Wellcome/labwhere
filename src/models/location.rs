@@ -1,5 +1,6 @@
 use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
+use crate::models::labware::Labware;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use sqlx::Pool;

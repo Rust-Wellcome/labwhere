@@ -51,7 +51,11 @@ pub async fn scan(
 
             match Scan::create(json, connection).await {
                 Ok(scan) => {
-                    let labware_count = scan.labware_barcodes.split('\n').filter(|s| !s.is_empty()).count();
+                    let labware_count = scan
+                        .labware_barcodes
+                        .split('\n')
+                        .filter(|s| !s.is_empty())
+                        .count();
                     let success_message = format!(
                         "{} labwares scanned into location {}",
                         labware_count, scan.location_barcode
@@ -70,6 +74,23 @@ pub async fn scan(
                 }
             }
         }
+        // TODO: We need to write a Search model to represent the search request.
+        (&Method::POST, "/search") => {
+            let boxed_body: BoxBody<Bytes, Error> = req.into_body().boxed();
+            let body_bytes: Bytes = boxed_body.collect().await?.to_bytes();
+            let string = String::from_utf8(body_bytes.to_vec()).unwrap();
+
+            let json: Search = match serde_json::from_str(&string) {
+                Ok(search) => search,
+                Err(_) => {
+                    let mut bad_request = Response::new(empty());
+                    *bad_request.status_mut() = StatusCode::BAD_REQUEST;
+                    error!("Invalid JSON in request body");
+                    return Ok(bad_request);
+                }
+            };
+        }
+
         _ => {
             let mut not_found = Response::new(empty());
             *not_found.status_mut() = StatusCode::NOT_FOUND;
