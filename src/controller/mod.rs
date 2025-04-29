@@ -29,7 +29,6 @@ impl Controller {
             }
         }
 
-        // TODO: Fix repeated creation of boxed_body, boxed_bytes and string
         match (req.method(), req.uri().path()) {
             (&Method::POST, "/scan") => {
                 Ok(scan(connection, &get_request_string(req).await?).await?)
