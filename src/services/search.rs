@@ -46,7 +46,7 @@ pub(crate) async fn search(
     labware_barcodes: String,
 ) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     let mut result: Vec<SearchResult> = Vec::new();
-    let split: Vec<&str> = labware_barcodes.split("|").collect();
+    let split: Vec<&str> = labware_barcodes.split("\n").collect();
     for barcode in split {
         match Labware::find_by_barcode(&barcode.to_string(), connection).await {
             Ok(_) => {
