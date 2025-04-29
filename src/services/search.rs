@@ -20,7 +20,7 @@ use labwhere::models::scan::Scan;
 /// # Arguments
 ///
 /// * `connection` - A reference to the database connection pool.
-/// * `labware_barcodes` - A `String` containing labware barcodes separated by `|`.
+/// * `labware_barcodes` - A `String` containing labware barcodes separated by `\n`.
 ///
 /// # Returns
 ///
