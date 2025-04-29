@@ -54,38 +54,9 @@ pub async fn scan(
     }
 }
 
-/// `MockBody` is a utility body written **only** for tests.
-struct MockBody {
-    data: &'static [u8],
-}
-
-impl MockBody {
-    fn new(data: &'static [u8]) -> Self {
-        Self { data }
-    }
-}
-
-impl Body for MockBody {
-    type Data = Bytes;
-    type Error = hyper::Error;
-
-    fn poll_frame(
-        mut self: Pin<&mut Self>,
-        _cx: &mut Context<'_>,
-    ) -> Poll<Option<Result<http_body::Frame<Bytes>>>> {
-        if self.data.is_empty() {
-            Poll::Ready(None)
-        } else {
-            let data = self.data;
-            self.data = &[];
-            Poll::Ready(Some(Ok(http_body::Frame::data(Bytes::from(data)))))
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
-    use crate::services::scan::MockBody;
+    use crate::services::MockBody;
     use http_body_util::combinators::BoxBody;
     use http_body_util::BodyExt;
     use hyper::body::Bytes;

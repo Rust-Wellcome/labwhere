@@ -45,7 +45,7 @@ impl Labware {
     /// let labware = Labware::create("trac-1".to_string(), 1, &mut connection);
     /// # }
     /// ```
-    pub(crate) async fn create(
+    pub async fn create(
         barcode: String,
         location_id: u32,
         connection: &Pool<Sqlite>,

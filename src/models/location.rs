@@ -406,7 +406,7 @@ mod tests {
 
         assert_eq!(location.name, "location1");
     }
-    
+
     #[tokio::test]
     async fn test_find_labware_by_barcode_for_not_found() {
         let conn = initiate_pool("sqlite::memory:").await.unwrap();
