@@ -12,8 +12,8 @@ use log::error;
 use sqlx::{Pool, Sqlite};
 
 pub(crate) async fn search(
-    labware_barcodes: String,
     connection: &Pool<Sqlite>,
+    labware_barcodes: String,
 ) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     let mut result: Vec<SearchResult> = Vec::new();
     let split: Vec<&str> = labware_barcodes.split("|").collect();
