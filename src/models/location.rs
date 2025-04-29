@@ -204,8 +204,8 @@ impl<'a> Location {
     ) -> Result<Location, LabwhereError> {
         match sqlx::query_as::<_, Location>(
             "SELECT locations.* FROM locations 
-                 JOIN labware ON labware.location_id = locations.id
-                 WHERE labware.barcode = ?",
+                 JOIN labwares ON labwares.location_id = locations.id
+                 WHERE labwares.barcode = ?",
         )
         .bind(barcode)
         .fetch_one(connection)
@@ -267,6 +267,7 @@ impl Default for Location {
 #[cfg(test)]
 mod tests {
     use crate::db::initiate_pool;
+    use crate::models::labware::Labware;
     use crate::models::location::*;
     use crate::models::location_type::LocationType;
 
@@ -384,5 +385,25 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(location.name, "Freezer-1");
+    }
+
+    #[tokio::test]
+    async fn test_find_labware_by_barcode() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
+            .await
+            .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &conn)
+            .await
+            .unwrap();
+        let labware = Labware::create("lw-1".to_string(), location.id, &conn)
+            .await
+            .unwrap();
+
+        let location = Location::find_by_labware_barcode("lw-1", &conn)
+            .await
+            .unwrap();
+
+        assert_eq!(location.name, "location1");
     }
 }
