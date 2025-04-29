@@ -29,6 +29,7 @@ impl Controller {
             }
         }
 
+        // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         match (req.method(), req.uri().path()) {
             (&Method::POST, "/scan") => {
                 Ok(scan(connection, &get_request_string(req).await?).await?)

@@ -1,4 +1,4 @@
-use crate::services::full;
+use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
 use http_body_util::{BodyExt, Full};
 use hyper::body::Bytes;
@@ -6,9 +6,10 @@ use hyper::header::CONTENT_TYPE;
 use hyper::{Response, StatusCode};
 use labwhere::models::labware::Labware;
 use labwhere::models::location::Location;
-use labwhere::models::search::SearchResult;
+use labwhere::models::search::{Search, SearchResult};
 use log::{error, warn};
 use sqlx::{Pool, Sqlite};
+use labwhere::models::scan::Scan;
 
 /// Searches for labware barcodes and retrieves their associated locations.
 ///
@@ -43,11 +44,19 @@ use sqlx::{Pool, Sqlite};
 /// ```
 pub(crate) async fn search(
     connection: &Pool<Sqlite>,
-    labware_barcodes: String,
+    request_string: String,
 ) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
+    let body: Search = match serde_json::from_str(&request_string) {
+        Ok(search) => search,
+        Err(_) => {
+            let mut bad_request = Response::new(empty());
+            *bad_request.status_mut() = StatusCode::BAD_REQUEST;
+            error!("Invalid JSON in request body");
+            return Ok(bad_request);
+        }
+    };
     let mut result: Vec<SearchResult> = Vec::new();
-    let split: Vec<&str> = labware_barcodes.split("\n").collect();
-    println!("{:?}", split);
+    let split: Vec<&str> = body.labware_barcodes.split("\n").collect();
     for barcode in split {
         match Labware::find_by_barcode(&barcode.to_string(), connection).await {
             Ok(_) => {
@@ -118,11 +127,7 @@ mod tests {
         let body_bytes: Bytes = boxed_body.collect().await.unwrap().to_bytes();
         let request_string = String::from_utf8(body_bytes.to_vec()).unwrap();
 
-        println!("{:?}", request_string);
-
-        let request: Search = serde_json::from_str(&request_string).unwrap();
-
-        let res = super::search(&conn, request.labware_barcodes)
+        let res = super::search(&conn, request_string)
             .await
             .unwrap();
 
