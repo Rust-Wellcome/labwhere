@@ -1,8 +1,8 @@
 use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
-use crate::models::labware::Labware;
 use once_cell::sync::Lazy;
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 use sqlx::Pool;
 use sqlx::Sqlite;
 use std::fmt::Debug;
@@ -33,7 +33,7 @@ pub(crate) static UNKNOWN_LOCATION: Lazy<Box<Location>> = Lazy::new(|| {
 });
 
 /// Location of the Labware
-#[derive(Debug, PartialEq, sqlx::FromRow)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, sqlx::FromRow)]
 pub struct Location {
     /// ID of the location record
     pub id: u32,
@@ -163,6 +163,55 @@ impl<'a> Location {
             .await
         {
             Ok(location) => Ok(location.unwrap()),
+            Err(_) => Err(LabwhereError::not_found_error("Location")),
+        }
+    }
+
+    /// Finds the location associated with a given labware barcode.
+    ///
+    /// This function queries the database to find the location of a labware item
+    /// based on its barcode. It performs a join between the `labware` and `locations`
+    /// tables to retrieve the location details.
+    ///
+    /// # Arguments
+    ///
+    /// * `barcode` - A `String` representing the barcode of the labware to search for.
+    /// * `connection` - A reference to the database connection pool.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Location)` - If a location is found for the given labware barcode.
+    /// * `Err(NotFoundError)` - If no location is found for the given labware barcode.
+    ///
+    /// # Errors
+    ///
+    /// This function returns a `NotFoundError` if the labware barcode does not exist
+    /// in the database or if no associated location is found.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # #[cfg(doctest)] {
+    /// let location = Location::find_by_labware_barcode("lw-barcode-123".to_string(), &connection)
+    ///     .await
+    ///     .unwrap();
+    /// assert_eq!(location.name, "Freezer-1");
+    /// # }
+    /// ```
+    pub async fn find_by_labware_barcode(
+        barcode: &str,
+        connection: &Pool<Sqlite>,
+    ) -> Result<Location, LabwhereError> {
+        match sqlx::query_as::<_, Location>(
+            "SELECT locations.* FROM locations 
+                 JOIN labware ON labware.location_id = locations.id
+                 WHERE labware.barcode = ?",
+        )
+        .bind(barcode)
+        .fetch_one(connection)
+        .await
+        {
+            Ok(location) => Ok(location),
             Err(_) => Err(LabwhereError::not_found_error("Location")),
         }
     }

@@ -4,6 +4,7 @@
 // by both crates, it needs to be made `pub`. The binary crate depends on the library crate (which has the same
 // name listed in Cargo.toml); because stuff from library crate are imported in line 1 and 2.
 
+use crate::controller::Controller;
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
@@ -16,6 +17,7 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::net::TcpListener;
 
+pub mod controller;
 pub mod services;
 
 /// Initiates the database by reading the configuration, creating the database, and seeding it with initial data.
@@ -106,7 +108,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                         // As this task is spawn ONLY upon an incoming TCP stream, it is okay
                         // to have a connection opened.
                         //
-                        services::scan::scan(req, &pool_clone).await
+                        Controller::process(req, &pool_clone).await
                     }),
                 )
                 .await
