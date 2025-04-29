@@ -7,7 +7,7 @@ use hyper::{Response, StatusCode};
 use labwhere::models::labware::Labware;
 use labwhere::models::location::Location;
 use labwhere::models::search::SearchResult;
-use log::error;
+use log::{error, warn};
 use sqlx::{Pool, Sqlite};
 
 /// Searches for labware barcodes and retrieves their associated locations.
@@ -60,11 +60,7 @@ pub(crate) async fn search(
                 })
             }
             Err(err) => {
-                let error_message = format!("Error: {:?}", err);
-                let mut error_response = Response::new(full(error_message));
-                *error_response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
-                error!("Error processing scan: {:?}", err);
-                return Ok(error_response);
+                warn!("Could not find labware barcode: {}", barcode);
             }
         }
     }
