@@ -32,10 +32,14 @@ impl Controller {
         // TODO: Fix repeated creation of boxed_body, boxed_bytes and string
         match (req.method(), req.uri().path()) {
             (&Method::POST, "/scan") => {
-                Ok(scan(connection, &get_request_string(req).await.unwrap()).await.unwrap())
+                Ok(scan(connection, &get_request_string(req).await.unwrap())
+                    .await
+                    .unwrap())
             }
             (&Method::POST, "/search") => {
-                Ok(search(connection, get_request_string(req).await.unwrap(),).await.unwrap())
+                Ok(search(connection, get_request_string(req).await.unwrap())
+                    .await
+                    .unwrap())
             }
             _ => {
                 let mut not_found = Response::new(empty());
