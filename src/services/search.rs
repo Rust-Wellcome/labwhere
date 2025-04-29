@@ -37,7 +37,7 @@ use sqlx::{Pool, Sqlite};
 ///
 /// ```rust
 /// # #[cfg(doctest)] {
-/// let response = search(&connection, "barcode1|barcode2".to_string()).await.unwrap();
+/// let response = search(&connection, "barcode1\nbarcode2".to_string()).await.unwrap();
 /// assert_eq!(response.status(), StatusCode::OK);
 /// # }
 /// ```
