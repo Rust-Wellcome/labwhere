@@ -6,7 +6,7 @@ use log::error;
 use sqlx::{Pool, Sqlite};
 
 use crate::services::empty;
-use crate::services::scan::scan_v2;
+use crate::services::scan::scan;
 use crate::services::search::search;
 
 pub struct Controller {}
@@ -35,7 +35,7 @@ impl Controller {
                 let boxed_body: BoxBody<Bytes, Error> = req.into_body().boxed();
                 let body_bytes: Bytes = boxed_body.collect().await?.to_bytes();
                 let request_string = String::from_utf8(body_bytes.to_vec()).unwrap();
-                Ok(scan_v2(connection, &request_string).await.unwrap())
+                Ok(scan(connection, &request_string).await.unwrap())
             }
             (&Method::POST, "/search") => {
                 let boxed_body: BoxBody<Bytes, Error> = req.into_body().boxed();
