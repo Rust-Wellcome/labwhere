@@ -55,7 +55,7 @@ async fn create_database() -> String {
 
             url
         }
-        Err(_) => panic!("Error in initiating the database."),
+        Err(err) => panic!("Error in initiating the database: {:?}", err),
     }
 }
 
