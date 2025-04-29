@@ -50,7 +50,7 @@ pub(crate) async fn search(
     for barcode in split {
         match Labware::find_by_barcode(&barcode.to_string(), connection).await {
             Ok(_) => {
-                let location = Location::find_by_labware_barcode(&barcode, connection)
+                let location = Location::find_by_labware_barcode(barcode, connection)
                     .await
                     .unwrap();
                 result.push(SearchResult {
