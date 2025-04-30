@@ -3,9 +3,9 @@ use http_body_util::combinators::BoxBody;
 use hyper::body::Bytes;
 use hyper::header::CONTENT_TYPE;
 use hyper::{Response, StatusCode};
-use labwhere::models::labware::Labware;
-use labwhere::models::location::Location;
-use labwhere::models::search::{Search, SearchResult};
+use crate::models::labware::Labware;
+use crate::models::location::Location;
+use crate::models::search::{Search, SearchResult};
 use log::{error, warn};
 use sqlx::{Pool, Sqlite};
 
@@ -95,10 +95,10 @@ mod tests {
     use hyper::body::Bytes;
     use hyper::header::CONTENT_TYPE;
     use hyper::{Error, StatusCode};
-    use labwhere::db::initiate_pool;
-    use labwhere::models::labware::Labware;
-    use labwhere::models::location::Location;
-    use labwhere::models::location_type::LocationType;
+    use crate::db::initiate_pool;
+    use crate::models::labware::Labware;
+    use crate::models::location::Location;
+    use crate::models::location_type::LocationType;
 
     #[tokio::test]
     async fn test_search() {

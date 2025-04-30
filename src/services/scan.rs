@@ -2,7 +2,7 @@ use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
 use hyper::body::Bytes;
 use hyper::{header::CONTENT_TYPE, Response, StatusCode};
-use labwhere::models::scan::Scan;
+use crate::models::scan::Scan;
 use log::error;
 use sqlx::{Pool, Sqlite};
 
@@ -58,9 +58,9 @@ mod tests {
     use http_body_util::BodyExt;
     use hyper::body::Bytes;
     use hyper::{header::CONTENT_TYPE, Error, StatusCode};
-    use labwhere::db::initiate_pool;
-    use labwhere::models::location::Location;
-    use labwhere::models::location_type::LocationType;
+    use crate::db::initiate_pool;
+    use crate::models::location::Location;
+    use crate::models::location_type::LocationType;
 
     #[tokio::test]
     async fn test_scan() {

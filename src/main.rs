@@ -4,21 +4,22 @@
 // by both crates, it needs to be made `pub`. The binary crate depends on the library crate (which has the same
 // name listed in Cargo.toml); because stuff from library crate are imported in line 1 and 2.
 
-use crate::controller::Controller;
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
-use labwhere::db::create_db::create_db;
-use labwhere::db::initiate_pool;
-use labwhere::db::seeds::seed;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::net::TcpListener;
 
-pub mod controller;
-pub mod services;
+
+// Imports from lib crate
+use labwhere::db::create_db::create_db;
+use labwhere::db::initiate_pool;
+use labwhere::db::seeds::seed;
+use labwhere::controller::Controller;
+
 
 /// Initiates the database by reading the configuration, creating the database, and seeding it with initial data.
 ///
