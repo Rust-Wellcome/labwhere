@@ -74,7 +74,15 @@ pub(crate) async fn search(
         }
     }
 
-    let json_result = serde_json::to_string(&result).unwrap();
+    let json_result = match serde_json::to_string(&result) {
+        Ok(json) => json,
+        Err(err) => {
+            error!("Failed to serialize search results: {}", err);
+            let mut internal_error = Response::new(empty());
+            *internal_error.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+            return Ok(internal_error);
+        }
+    };
     Ok(Response::builder()
         .header(CONTENT_TYPE, "application/json")
         .body(full(json_result))
