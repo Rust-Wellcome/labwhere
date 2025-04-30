@@ -107,7 +107,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                         // After the loop is gone, the clone is destroyed.
                         // As this task is spawn ONLY upon an incoming TCP stream, it is okay
                         // to have a connection opened.
-                        //
+                        
+                        // The controller proxies the request to the corresponding service.
                         Controller::process(req, &pool_clone).await
                     }),
                 )
