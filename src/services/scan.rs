@@ -1,13 +1,10 @@
 use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
-use http_body_util::{BodyExt, Full};
-use hyper::body::{Body, Bytes};
-use hyper::{header::CONTENT_TYPE, Error, Method, Request, Response, Result, StatusCode};
+use hyper::body::Bytes;
+use hyper::{header::CONTENT_TYPE, Response, StatusCode};
 use labwhere::models::scan::Scan;
-use log::{error, info};
+use log::error;
 use sqlx::{Pool, Sqlite};
-use std::pin::Pin;
-use std::task::{Context, Poll};
 
 /// Receives location barcode and labware, scans them into LabWhere.
 /// - The incoming request implements `Send` trait as it is safe to be sent to another thread.

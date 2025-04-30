@@ -396,7 +396,7 @@ mod tests {
         let location = Location::create("location1".to_string(), location_type.id, &conn)
             .await
             .unwrap();
-        let labware = Labware::create("lw-1".to_string(), location.id, &conn)
+        let _labware = Labware::create("lw-1".to_string(), location.id, &conn)
             .await
             .unwrap();
 

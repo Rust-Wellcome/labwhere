@@ -1,6 +1,5 @@
 use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
-use http_body_util::{BodyExt, Full};
 use hyper::body::Bytes;
 use hyper::header::CONTENT_TYPE;
 use hyper::{Response, StatusCode};
@@ -9,7 +8,6 @@ use labwhere::models::location::Location;
 use labwhere::models::search::{Search, SearchResult};
 use log::{error, warn};
 use sqlx::{Pool, Sqlite};
-use labwhere::models::scan::Scan;
 
 /// Searches for labware barcodes and retrieves their associated locations.
 ///
@@ -45,7 +43,7 @@ use labwhere::models::scan::Scan;
 pub(crate) async fn search(
     connection: &Pool<Sqlite>,
     request_string: String,
-) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
+) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
     let body: Search = match serde_json::from_str(&request_string) {
         Ok(search) => search,
         Err(_) => {
@@ -68,13 +66,13 @@ pub(crate) async fn search(
                     location,
                 })
             }
-            Err(err) => {
+            Err(_) => {
                 warn!("Could not find labware barcode: {}", barcode);
             }
         }
     }
 
-    let json_result = match serde_json::to_string(&result) {
+    let json_response = match serde_json::to_string(&result) {
         Ok(json) => json,
         Err(err) => {
             error!("Failed to serialize search results: {}", err);
@@ -85,7 +83,7 @@ pub(crate) async fn search(
     };
     Ok(Response::builder()
         .header(CONTENT_TYPE, "application/json")
-        .body(full(json_result))
+        .body(full(json_response))
         .unwrap())
 }
 
@@ -101,7 +99,6 @@ mod tests {
     use labwhere::models::labware::Labware;
     use labwhere::models::location::Location;
     use labwhere::models::location_type::LocationType;
-    use labwhere::models::search::{Search, SearchResult};
 
     #[tokio::test]
     async fn test_search() {
@@ -112,10 +109,10 @@ mod tests {
         let location = Location::create("location1".to_string(), location_type.id, &conn)
             .await
             .unwrap();
-        let labware1 = Labware::create("lw-1".to_string(), location.id, &conn)
+        let _labware1 = Labware::create("lw-1".to_string(), location.id, &conn)
             .await
             .unwrap();
-        let labware2 = Labware::create("lw-2".to_string(), location.id, &conn)
+        let _labware2 = Labware::create("lw-2".to_string(), location.id, &conn)
             .await
             .unwrap();
 
