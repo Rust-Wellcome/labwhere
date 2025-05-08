@@ -2,6 +2,7 @@ use crate::errors::LabwhereError;
 use crate::errors::NotFoundError;
 use once_cell::sync::Lazy;
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 use sqlx::Pool;
 use sqlx::Sqlite;
 use std::fmt::Debug;
@@ -32,7 +33,7 @@ pub(crate) static UNKNOWN_LOCATION: Lazy<Box<Location>> = Lazy::new(|| {
 });
 
 /// Location of the Labware
-#[derive(Debug, PartialEq, sqlx::FromRow)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, sqlx::FromRow)]
 pub struct Location {
     /// ID of the location record
     pub id: u32,
@@ -166,6 +167,55 @@ impl<'a> Location {
         }
     }
 
+    /// Finds the location associated with a given labware barcode.
+    ///
+    /// This function queries the database to find the location of a labware item
+    /// based on its barcode. It performs a join between the `labware` and `locations`
+    /// tables to retrieve the location details.
+    ///
+    /// # Arguments
+    ///
+    /// * `barcode` - A `String` representing the barcode of the labware to search for.
+    /// * `connection` - A reference to the database connection pool.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(Location)` - If a location is found for the given labware barcode.
+    /// * `Err(NotFoundError)` - If no location is found for the given labware barcode.
+    ///
+    /// # Errors
+    ///
+    /// This function returns a `NotFoundError` if the labware barcode does not exist
+    /// in the database or if no associated location is found.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # #[cfg(doctest)] {
+    /// let location = Location::find_by_labware_barcode("lw-barcode-123".to_string(), &connection)
+    ///     .await
+    ///     .unwrap();
+    /// assert_eq!(location.name, "Freezer-1");
+    /// # }
+    /// ```
+    pub async fn find_by_labware_barcode(
+        barcode: &str,
+        connection: &Pool<Sqlite>,
+    ) -> Result<Location, LabwhereError> {
+        match sqlx::query_as::<_, Location>(
+            "SELECT locations.* FROM locations 
+                 JOIN labwares ON labwares.location_id = locations.id
+                 WHERE labwares.barcode = ?",
+        )
+        .bind(barcode)
+        .fetch_one(connection)
+        .await
+        {
+            Ok(location) => Ok(location),
+            Err(_) => Err(LabwhereError::not_found_error("Location")),
+        }
+    }
+
     /// Create a new unknown location
     /// # Examples
     /// ```
@@ -217,6 +267,7 @@ impl Default for Location {
 #[cfg(test)]
 mod tests {
     use crate::db::initiate_pool;
+    use crate::models::labware::Labware;
     use crate::models::location::*;
     use crate::models::location_type::LocationType;
 
@@ -334,5 +385,34 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(location.name, "Freezer-1");
+    }
+
+    #[tokio::test]
+    async fn test_find_labware_by_barcode() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+        let location_type = LocationType::create("Freezer".to_string(), &conn)
+            .await
+            .unwrap();
+        let location = Location::create("location1".to_string(), location_type.id, &conn)
+            .await
+            .unwrap();
+        let _labware = Labware::create("lw-1".to_string(), location.id, &conn)
+            .await
+            .unwrap();
+
+        let location = Location::find_by_labware_barcode("lw-1", &conn)
+            .await
+            .unwrap();
+
+        assert_eq!(location.name, "location1");
+    }
+
+    #[tokio::test]
+    async fn test_find_labware_by_barcode_for_not_found() {
+        let conn = initiate_pool("sqlite::memory:").await.unwrap();
+
+        Location::find_by_labware_barcode("lw-6", &conn)
+            .await
+            .expect_err("Location not found");
     }
 }

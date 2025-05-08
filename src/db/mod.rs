@@ -1,5 +1,5 @@
 use sqlx::sqlite::SqliteConnectOptions;
-use sqlx::{sqlite::SqlitePoolOptions, Connection, Error, Pool, Sqlite, SqliteConnection};
+use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
 use std::str::FromStr;
 use std::{fs, time::Duration};
 

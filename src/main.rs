@@ -7,16 +7,19 @@
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
 use hyper_util::rt::TokioIo;
-use labwhere::db::create_db::create_db;
-use labwhere::db::initiate_pool;
-use labwhere::db::seeds::seed;
 use log::{error, info, warn};
 use std::env;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::net::TcpListener;
 
-pub mod services;
+
+// Imports from lib crate
+use labwhere::db::create_db::create_db;
+use labwhere::db::initiate_pool;
+use labwhere::db::seeds::seed;
+use labwhere::controller::Controller;
+
 
 /// Initiates the database by reading the configuration, creating the database, and seeding it with initial data.
 ///
@@ -53,7 +56,7 @@ async fn create_database() -> String {
 
             url
         }
-        Err(_) => panic!("Error in initiating the database."),
+        Err(err) => panic!("Error in initiating the database: {:?}", err),
     }
 }
 
@@ -105,8 +108,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                         // After the loop is gone, the clone is destroyed.
                         // As this task is spawn ONLY upon an incoming TCP stream, it is okay
                         // to have a connection opened.
-                        //
-                        services::scan::scan(req, &pool_clone).await
+                        
+                        // The controller proxies the request to the corresponding service.
+                        Controller::process(req, &pool_clone).await
                     }),
                 )
                 .await

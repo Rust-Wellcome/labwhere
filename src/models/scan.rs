@@ -4,8 +4,6 @@ use crate::models::location::Location;
 use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Sqlite};
 
-use super::labware;
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Scan {
     pub labware_barcodes: String,

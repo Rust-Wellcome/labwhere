@@ -45,7 +45,7 @@ impl Labware {
     /// let labware = Labware::create("trac-1".to_string(), 1, &mut connection);
     /// # }
     /// ```
-    pub(crate) async fn create(
+    pub async fn create(
         barcode: String,
         location_id: u32,
         connection: &Pool<Sqlite>,
@@ -127,7 +127,7 @@ impl Labware {
     /// let mut connection = init_db("sqlite::memory:").await.unwrap();
     /// let labware = Labware::find_by_barcode("lw-location-1", &mut connection);
     /// # }
-    pub(crate) async fn find_by_barcode(
+    pub async fn find_by_barcode(
         barcode: &String,
         connection: &Pool<Sqlite>,
     ) -> Result<Labware, LabwhereError> {
