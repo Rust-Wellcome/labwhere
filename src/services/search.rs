@@ -1,11 +1,11 @@
+use crate::models::labware::Labware;
+use crate::models::location::Location;
+use crate::models::search::{Search, SearchResult};
 use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
 use hyper::body::Bytes;
 use hyper::header::CONTENT_TYPE;
 use hyper::{Response, StatusCode};
-use crate::models::labware::Labware;
-use crate::models::location::Location;
-use crate::models::search::{Search, SearchResult};
 use log::{error, warn};
 use sqlx::{Pool, Sqlite};
 
@@ -89,16 +89,16 @@ pub(crate) async fn search(
 
 #[cfg(test)]
 mod tests {
+    use crate::db::initiate_pool;
+    use crate::models::labware::Labware;
+    use crate::models::location::Location;
+    use crate::models::location_type::LocationType;
     use crate::services::MockBody;
     use http_body_util::combinators::BoxBody;
     use http_body_util::BodyExt;
     use hyper::body::Bytes;
     use hyper::header::CONTENT_TYPE;
     use hyper::{Error, StatusCode};
-    use crate::db::initiate_pool;
-    use crate::models::labware::Labware;
-    use crate::models::location::Location;
-    use crate::models::location_type::LocationType;
 
     #[tokio::test]
     async fn test_search() {
@@ -132,9 +132,7 @@ mod tests {
         let body_bytes: Bytes = boxed_body.collect().await.unwrap().to_bytes();
         let request_string = String::from_utf8(body_bytes.to_vec()).unwrap();
 
-        let res = super::search(&conn, request_string)
-            .await
-            .unwrap();
+        let res = super::search(&conn, request_string).await.unwrap();
 
         assert_eq!(res.status(), StatusCode::OK);
 

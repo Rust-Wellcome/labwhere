@@ -12,7 +12,6 @@ use crate::services::search::search;
 pub struct Controller {}
 
 impl Controller {
-
     /// Processes an incoming HTTP request and routes it to the appropriate handler.
     ///
     /// This function acts as a controller for handling HTTP requests. It checks the request's
@@ -60,6 +59,67 @@ impl Controller {
             }
         }
 
+        // This code fragment is a bit akin to the concept of "routes" in web frameworks.
+        Self::route(req, connection).await
+    }
+
+    /// Routes an incoming HTTP request to the appropriate handler based on the method and URI.
+    ///
+    /// This function acts as a router for handling HTTP requests. It matches the request's method
+    /// and URI path to predefined routes and calls the corresponding service function. If no route
+    /// matches, it returns a `404 Not Found` response.
+    ///
+    /// # Arguments
+    ///
+    /// * `req` - An HTTP request implementing the `Body` trait with `Data` as `Bytes` and `Error` as `hyper::Error`.
+    /// * `connection` - A reference to the SQLite connection pool used for database operations.
+    ///
+    /// # Returns
+    ///
+    /// Returns a `Result` containing an HTTP `Response` with a boxed body if successful, or a `hyper::Error`
+    /// if an error occurs during processing.
+    ///
+    /// # Behavior
+    ///
+    /// - Routes:
+    ///   - `POST /scan`: Calls the `scan` service function to process the scan request.
+    ///   - `POST /search`: Calls the `search` service function to process the search request.
+    ///   - Any other route: Returns a `404 Not Found` response.
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error if:
+    /// - The request body cannot be collected or converted into a string.
+    /// - The service functions (`scan` or `search`) return an error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// #[cfg(doctest)] {
+    /// use hyper::{Request, Body, Method, Response, StatusCode};
+    /// use sqlx::Pool;
+    /// use sqlx::Sqlite;
+    /// use crate::controller::Controller;
+    ///
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     let connection = Pool::<Sqlite>::connect("sqlite::memory:").await.unwrap();
+    ///     let req = Request::builder()
+    ///         .method("POST")
+    ///         .uri("/scan")
+    ///         .header("Content-Type", "application/json")
+    ///         .body(Body::from("{\"location_barcode\": \"loc-1\", \"labware_barcodes\": \"lw-1\"}"))
+    ///         .unwrap();
+    ///
+    ///     let response = Controller::route(req, &connection).await.unwrap();
+    ///     assert_eq!(response.status(), StatusCode::OK);
+    /// }
+    /// # }
+    /// ```
+    async fn route(
+        req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
+        connection: &Pool<Sqlite>,
+    ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
         // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         match (req.method(), req.uri().path()) {
             (&Method::POST, "/scan") => {

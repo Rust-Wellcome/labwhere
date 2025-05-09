@@ -6,8 +6,8 @@
 // Both of these crates have the same name as the package listed in Cargo.toml.
 //
 // For more info, check https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html.
+pub mod controller;
 pub mod db;
 pub mod errors;
 pub mod models;
 pub mod services;
-pub mod controller;

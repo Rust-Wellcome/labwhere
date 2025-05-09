@@ -1,8 +1,8 @@
+use crate::models::scan::Scan;
 use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
 use hyper::body::Bytes;
 use hyper::{header::CONTENT_TYPE, Response, StatusCode};
-use crate::models::scan::Scan;
 use log::error;
 use sqlx::{Pool, Sqlite};
 
@@ -53,14 +53,14 @@ pub async fn scan(
 
 #[cfg(test)]
 mod tests {
+    use crate::db::initiate_pool;
+    use crate::models::location::Location;
+    use crate::models::location_type::LocationType;
     use crate::services::MockBody;
     use http_body_util::combinators::BoxBody;
     use http_body_util::BodyExt;
     use hyper::body::Bytes;
     use hyper::{header::CONTENT_TYPE, Error, StatusCode};
-    use crate::db::initiate_pool;
-    use crate::models::location::Location;
-    use crate::models::location_type::LocationType;
 
     #[tokio::test]
     async fn test_scan() {

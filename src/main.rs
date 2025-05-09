@@ -13,13 +13,11 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use tokio::net::TcpListener;
 
-
 // Imports from lib crate
+use labwhere::controller::Controller;
 use labwhere::db::create_db::create_db;
 use labwhere::db::initiate_pool;
 use labwhere::db::seeds::seed;
-use labwhere::controller::Controller;
-
 
 /// Initiates the database by reading the configuration, creating the database, and seeding it with initial data.
 ///
@@ -108,7 +106,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
                         // After the loop is gone, the clone is destroyed.
                         // As this task is spawn ONLY upon an incoming TCP stream, it is okay
                         // to have a connection opened.
-                        
+
                         // The controller proxies the request to the corresponding service.
                         Controller::process(req, &pool_clone).await
                     }),
