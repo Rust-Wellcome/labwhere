@@ -70,7 +70,6 @@ impl Controller {
         Ok(response)
     }
 
-
     /// Routes an incoming HTTP request to the appropriate handler based on the method and URI.
     ///
     /// This function acts as a router for handling HTTP requests. It matches the request's method
