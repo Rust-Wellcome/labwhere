@@ -47,21 +47,29 @@ impl Controller {
         connection: &Pool<Sqlite>,
     ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
         // Check if the content type is application/json
-        match req.headers().get(CONTENT_TYPE) {
-            Some(content_type) if content_type == "application/json" => {
-                // Continue with the request processing
-            }
-            _ => {
-                let mut bad_request = Response::new(empty());
-                *bad_request.status_mut() = StatusCode::BAD_REQUEST;
-                error!("Responding with bad request");
-                return Ok(bad_request);
-            }
+        if !Self::is_valid_content_type(&req) {
+            return Self::bad_request_response();
         }
 
         // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         Self::route(req, connection).await
     }
+
+    /// Validates if the `Content-Type` header is `application/json`.
+    fn is_valid_content_type(req: &Request<impl Body<Data = Bytes, Error = hyper::Error>>) -> bool {
+        req.headers()
+            .get(CONTENT_TYPE)
+            .map_or(false, |content_type| content_type == "application/json")
+    }
+
+    /// Returns a `400 Bad Request` response.
+    fn bad_request_response() -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
+        let mut response = Response::new(empty());
+        *response.status_mut() = StatusCode::BAD_REQUEST;
+        error!("Responding with bad request");
+        Ok(response)
+    }
+
 
     /// Routes an incoming HTTP request to the appropriate handler based on the method and URI.
     ///
