@@ -129,6 +129,7 @@ impl Controller {
     ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
         // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         match (req.method(), req.uri().path()) {
+            (&Method::OPTIONS, _) => Ok(preflight().await),
             (&Method::POST, "/scan") => {
                 Ok(scan(connection, &get_request_string(req).await?).await?)
             }
@@ -195,4 +196,32 @@ async fn get_request_string(
     let boxed_body: BoxBody<Bytes, Error> = req.into_body().boxed();
     let body_bytes: Bytes = boxed_body.collect().await?.to_bytes();
     Ok(String::from_utf8(body_bytes.to_vec()).unwrap())
+}
+
+/// Handles HTTP OPTIONS preflight requests for CORS support.
+/// reference: https://users.rust-lang.org/t/hyper-http-server-how-to-send-preflight-headers-cors/68320
+/// This asynchronous function constructs an HTTP response with the appropriate CORS headers
+/// to allow cross-origin requests. It sets the status to 204 No Content and includes headers
+/// for Access-Control-Allow-Origin, Access-Control-Allow-Headers, and Access-Control-Allow-Methods.
+///
+/// # Returns
+///
+/// Returns a Response with a boxed body and CORS headers set, suitable for responding to
+/// browser preflight (OPTIONS) requests.
+///
+/// # Example
+///
+/// ```rust
+/// 
+/// let response = preflight().await;   
+/// assert_eq!(response.status(), StatusCode::NO_CONTENT);
+/// ```
+async fn preflight() -> Response<BoxBody<Bytes, hyper::Error>> {
+    let response = Response::builder()
+        .status(StatusCode::NO_CONTENT)
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Access-Control-Allow-Headers", "*")
+        .header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+        .body(empty());
+    response.unwrap()
 }
