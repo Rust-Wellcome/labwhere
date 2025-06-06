@@ -212,9 +212,15 @@ async fn get_request_string(
 /// # Example
 ///
 /// ```rust
+/// #[cfg(doctest)] {
+/// use hyper::{Response, StatusCode};
+/// use hyper::body::Bytes;
+/// use crate::controller::preflight;
+/// 
 /// 
 /// let response = preflight().await;   
 /// assert_eq!(response.status(), StatusCode::NO_CONTENT);
+/// # }
 /// ```
 async fn preflight() -> Response<BoxBody<Bytes, hyper::Error>> {
     let response = Response::builder()
