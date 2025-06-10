@@ -47,12 +47,28 @@ impl Controller {
         connection: &Pool<Sqlite>,
     ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
         // Check if the content type is application/json
-        if !Self::is_valid_content_type(&req) {
+        if Self::is_post_or_put_request(&req) && !Self::is_valid_content_type(&req) {
             return Self::bad_request_response();
         }
 
         // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         Self::route(req, connection).await
+    }
+
+    /// Checks if the HTTP request method is either POST or PUT.
+    ///
+    /// This function evaluates the method of the given HTTP request and returns `true`
+    /// if the method is POST or PUT, otherwise it returns `false`.
+    ///
+    /// # Arguments
+    ///
+    /// * `req` - A reference to an HTTP request implementing the `Body` trait.
+    ///
+    /// # Returns
+    ///
+    /// * `bool` - `true` if the request method is POST or PUT, `false` otherwise.
+    fn is_post_or_put_request(req: &Request<impl Body>) -> bool {
+        req.method() == Method::POST || req.method() == Method::PUT
     }
 
     /// Validates if the `Content-Type` header is `application/json`.
@@ -216,8 +232,8 @@ async fn get_request_string(
 /// use hyper::{Response, StatusCode};
 /// use hyper::body::Bytes;
 /// use crate::controller::preflight;
-/// 
-/// 
+///
+///
 /// let response = preflight().await;   
 /// assert_eq!(response.status(), StatusCode::NO_CONTENT);
 /// # }
