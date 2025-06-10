@@ -53,7 +53,8 @@ impl Controller {
         Self::route(req, connection).await
     }
 
-    /// Checks if the HTTP request method is either POST or PUT.
+    /// Checks if the HTTP request method is either POST or PUT. POST and PUT were chosen
+    /// as they often consists of a request body.
     ///
     /// This function evaluates the method of the given HTTP request and returns `true`
     /// if the method is POST or PUT, otherwise it returns `false`.
