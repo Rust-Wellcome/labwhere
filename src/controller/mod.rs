@@ -46,13 +46,28 @@ impl Controller {
         req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
         connection: &Pool<Sqlite>,
     ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
-        // Check if the content type is application/json
-        if !Self::is_valid_content_type(&req) {
+        if Self::is_post_or_put_request(&req) && !Self::is_valid_content_type(&req) {
             return Self::bad_request_response();
         }
-
         // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         Self::route(req, connection).await
+    }
+
+    /// Checks if the HTTP request method is either POST or PUT. POST and PUT were chosen
+    /// as they often consists of a request body.
+    ///
+    /// This function evaluates the method of the given HTTP request and returns `true`
+    /// if the method is POST or PUT, otherwise it returns `false`.
+    ///
+    /// # Arguments
+    ///
+    /// * `req` - A reference to an HTTP request implementing the `Body` trait.
+    ///
+    /// # Returns
+    ///
+    /// * `bool` - `true` if the request method is POST or PUT, `false` otherwise.
+    fn is_post_or_put_request(req: &Request<impl Body>) -> bool {
+        req.method() == Method::POST || req.method() == Method::PUT
     }
 
     /// Validates if the `Content-Type` header is `application/json`.
@@ -129,10 +144,11 @@ impl Controller {
     ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
         // This code fragment is a bit akin to the concept of "routes" in web frameworks.
         match (req.method(), req.uri().path()) {
+            (&Method::OPTIONS, _) => Ok(preflight().await),
             (&Method::POST, "/scan") => {
                 Ok(scan(connection, &get_request_string(req).await?).await?)
             }
-            (&Method::POST, "/search") => {
+            (&Method::POST, "/searches") => {
                 Ok(search(connection, get_request_string(req).await?).await?)
             }
             _ => {
@@ -195,4 +211,38 @@ async fn get_request_string(
     let boxed_body: BoxBody<Bytes, Error> = req.into_body().boxed();
     let body_bytes: Bytes = boxed_body.collect().await?.to_bytes();
     Ok(String::from_utf8(body_bytes.to_vec()).unwrap())
+}
+
+/// Handles HTTP OPTIONS preflight requests for CORS support.
+/// reference: https://users.rust-lang.org/t/hyper-http-server-how-to-send-preflight-headers-cors/68320
+/// This asynchronous function constructs an HTTP response with the appropriate CORS headers
+/// to allow cross-origin requests. It sets the status to 204 No Content and includes headers
+/// for Access-Control-Allow-Origin, Access-Control-Allow-Headers, and Access-Control-Allow-Methods.
+///
+/// # Returns
+///
+/// Returns a Response with a boxed body and CORS headers set, suitable for responding to
+/// browser preflight (OPTIONS) requests.
+///
+/// # Example
+///
+/// ```rust
+/// #[cfg(doctest)] {
+/// use hyper::{Response, StatusCode};
+/// use hyper::body::Bytes;
+/// use crate::controller::preflight;
+///
+///
+/// let response = preflight().await;   
+/// assert_eq!(response.status(), StatusCode::NO_CONTENT);
+/// # }
+/// ```
+async fn preflight() -> Response<BoxBody<Bytes, hyper::Error>> {
+    let response = Response::builder()
+        .status(StatusCode::NO_CONTENT)
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Access-Control-Allow-Headers", "*")
+        .header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+        .body(empty());
+    response.unwrap()
 }

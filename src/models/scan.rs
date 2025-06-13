@@ -10,6 +10,30 @@ pub struct Scan {
     pub location_barcode: String,
 }
 
+/// Represents the result of a scan operation.
+///
+/// This struct is typically used to encapsulate the outcome or message resulting from a scan,
+/// such as a barcode or QR code scan. It is serializable and deserializable for easy use with
+/// APIs and data storage.
+///
+/// # Fields
+///
+/// * `message` - A `String` containing the result or status message of the scan.
+///
+/// # Examples
+///
+/// ```rust
+/// #[cfg(doctest)] {
+/// let result = ScanResult {
+///     message: "Scan successful".to_string(),
+/// };
+/// # }
+/// ```
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ScanResult {
+    pub message: String,
+}
+
 impl Clone for Scan {
     fn clone(&self) -> Self {
         Scan {

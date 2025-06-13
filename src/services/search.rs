@@ -83,6 +83,9 @@ pub(crate) async fn search(
     };
     Ok(Response::builder()
         .header(CONTENT_TYPE, "application/json")
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Access-Control-Allow-Headers", "*")
+        .header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
         .body(full(json_response))
         .unwrap())
 }

@@ -1,4 +1,4 @@
-use crate::models::scan::Scan;
+use crate::models::scan::{Scan, ScanResult};
 use crate::services::{empty, full};
 use http_body_util::combinators::BoxBody;
 use hyper::body::Bytes;
@@ -36,9 +36,24 @@ pub async fn scan(
                 "{} labwares scanned into location {}",
                 labware_count, scan.location_barcode
             );
+            let scan_response = ScanResult {
+                message: success_message,
+            };
+            let json_response = match serde_json::to_string(&scan_response) {
+                Ok(json) => json,
+                Err(err) => {
+                    error!("Failed to serialize search results: {}", err);
+                    let mut internal_error = Response::new(empty());
+                    *internal_error.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+                    return Ok(internal_error);
+                }
+            };
             Ok(Response::builder()
                 .header(CONTENT_TYPE, "application/json")
-                .body(full(success_message))
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+                .body(full(json_response))
                 .unwrap())
         }
         Err(err) => {
@@ -96,7 +111,7 @@ mod tests {
 
         assert_eq!(
             body_string,
-            "2 labwares scanned into location lw-location-1"
+            "{\"message\":\"2 labwares scanned into location lw-location-1\"}"
         );
     }
 
