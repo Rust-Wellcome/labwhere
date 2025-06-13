@@ -148,7 +148,7 @@ impl Controller {
             (&Method::POST, "/scan") => {
                 Ok(scan(connection, &get_request_string(req).await?).await?)
             }
-            (&Method::POST, "/search") => {
+            (&Method::POST, "/searches") => {
                 Ok(search(connection, get_request_string(req).await?).await?)
             }
             _ => {
