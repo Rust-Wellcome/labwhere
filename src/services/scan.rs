@@ -38,6 +38,9 @@ pub async fn scan(
             );
             Ok(Response::builder()
                 .header(CONTENT_TYPE, "application/json")
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
                 .body(full(success_message))
                 .unwrap())
         }
