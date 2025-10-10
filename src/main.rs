@@ -67,7 +67,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
     // Read environment variable key PORT and set the value.
-    // If no PORT environment varibale is set, the default is set, which is 3000.
+    // If no PORT environment variabale is set, the default is set, which is 3000.
     let port: u16 = env::var("PORT").map_or_else(
         |_| {
             warn!("Setting the default port 3000.");
