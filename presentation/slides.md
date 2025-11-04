@@ -276,7 +276,7 @@ transition: fade-out
 
 # Models
 
-<div class="grid md:grid-cols-2 gap-4">
+<div class="grid md:grid-cols-2 gap-4 dark:invert">
     <div>
         <img class="h-auto max-w-full rounded-lg" src="./models-l.png" alt="">
     </div>
