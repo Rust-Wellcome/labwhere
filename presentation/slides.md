@@ -389,6 +389,9 @@ class: text-xl
 
 Link to our code: [Rust-Wellcome/labwhere](https://github.com/Rust-Wellcome/labwhere)
 
+Link to our slides: [rust-wellcome.github.io/labwhere](https://rust-wellcome.github.io/labwhere)
+
+
 ---
 transition: fade-out
 layout: end
