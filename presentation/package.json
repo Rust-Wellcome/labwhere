@@ -7,9 +7,6 @@
     "dev": "slidev --open",
     "export": "slidev export"
   },
-  "slidev": {
-    "titleSuffix": ""
-  },
   "dependencies": {
     "@slidev/cli": "^52.6.0",
     "@slidev/theme-apple-basic": "^0.25.1",
