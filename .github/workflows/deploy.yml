@@ -1,9 +1,10 @@
 name: Deploy pages
 
 on:
-    workflow_dispatch:
-    push:
-        branches: [develop]
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
 
 permissions:
     contents: read
