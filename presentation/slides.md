@@ -6,6 +6,7 @@ theme: apple-basic
 # background: https://cover.sli.dev
 # some information about your slides (markdown enabled)
 title: Our Journey in Rust
+titleSuffix: ""
 info: |
   Our Journey in Rust.
 # apply UnoCSS classes to the current slide
