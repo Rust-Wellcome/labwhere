@@ -7,10 +7,7 @@ theme: apple-basic
 # some information about your slides (markdown enabled)
 title: Our Journey in Rust
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
+  Our Journey in Rust.
 # apply UnoCSS classes to the current slide
 # class: text-center
 # https://sli.dev/features/drawing
