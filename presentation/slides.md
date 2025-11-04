@@ -191,7 +191,7 @@ Controller, models and services.
 ::right::
 
 
-<div class="flex items-center justify-center h-full">
+<div class="flex items-center justify-center h-full dark:invert">
   <img src="./architecture.png" style="max-width: 500px; height: auto;"></img>
 </div>
 
