@@ -25,3 +25,5 @@ Cargo.lock
 **/*.db-*
 
 *.vscode
+presentation/dist
+presentation/node_modules
