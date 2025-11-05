@@ -130,7 +130,7 @@ level: 2
 # Demonstration
 
 <div class="border-l-4 border-blue-400/80 bg-blue-900/20 p-4  rounded-lg">
-  💡<strong class="text-blue-800">Note:</strong><img src="./labwhere-logo.png" style="height: 25px; display: inline-block; filter: invert(1);"></img> is an <b>application</b>. <code>Labware</code> 🧪 🧫 stands for a <b>container</b> (e.g., plates, tubes, etc.)</div>
+  💡<strong class="text-blue-800">Note:</strong><img src="./labwhere-logo.png" style="height: 25px; display: inline-block;"></img> is an <b>application</b>. <code>Labware</code> 🧪 🧫 stands for a <b>container</b> (e.g., plates, tubes, etc.)</div>
 
 Denoted here is how Traction <img src="./traction-logo.png" style="height:25px; display: inline-block;"> interacts with LabWhere.
 
