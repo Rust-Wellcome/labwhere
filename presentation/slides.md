@@ -40,10 +40,12 @@ The last comment block of each slide will be treated as slide notes. It will be 
 -->
 ---
 transition: fade-out
+layout: two-cols-header
 ---
 
  # The start of a wonderful journey..  
 
+::left::
 
 <div class="mt-6">
 
@@ -84,6 +86,12 @@ transition: fade-out
 <!-- <br> -->
 <!-- <br> -->
 
+::right::
+
+<div class="flex items-center justify-center h-full">
+  <img src="./image.png" class="rounded-lg"/>
+</div>
+
 
 <style>
 h1 {
@@ -99,22 +107,22 @@ h1 {
 
 <!--
 
-The decision on investing some time to learn Rust was unique for each of us. Steve and I decided to learn Rust’s low-level constructs as much as we can and potentially investigate any use cases for it within the institute. We had some involvement on an on-going project, and decided to start developing a prototype which is much closer to what we do in PSD. Abdullah - who wanted to try out learning a new language in a hands-on approach - and Shiv - who wanted to collaboratively explore and learn Rust joined later on in developing the prototype.
+The decision on investing some time to learn Rust was unique for each of us. Steve and I decided to learn Rust’s low-level constructs as much as we can and potentially investigate any use cases for it within the institute (plus, it was this shiny new language that everybody talks about). We had some involvement on an on-going project, but then decided to start developing a prototype which is much closer to what we do in PSD. Abdullah - who wanted to try out learning a new language in a hands-on approach - and Shiv - who wanted to collaboratively explore and learn Rust joined later on in developing the prototype.
 
-As I mentioned earlier, the prototype is something that we felt was very close to our domain. It is, in fact, a re-write - Rust community calls this an “oxidisation” - of an application called LabWhere that gives an interface to scan in the location of a particular labware and an interface to track locations for each labware - for example plates and tubes. 
+As I mentioned earlier, the prototype is something that we felt was very close to our domain. It is, in fact, a re-write - or an “oxidisation” - of an application called LabWhere that gives an interface to scan in the location of a particular labware and an interface to track locations for each labware - for example plates and tubes. 
 
 For the prototype, we chose two use cases:
 
-Scan-in a piece of labware into a pre-defined location.
-Search the labware and assert that the labware was scanned into the correct location.
+1. Scan-in a piece of labware into a pre-defined location.
+2. Search the labware and assert that the labware was scanned into the correct location.
 
 The prototype is a backend artefact. We have integrated the prototype with our long-read LIMS frontend Traction to demonstrate the workings of the prototype. The connection to the long-read LIMS is behind a feature flag and flipping the feature flag would direct the traffic to the actual service or to the prototype.
 
-We used as few abstractions as possible to build the prototype. This is because our intention was to learn the syntax and the semantics of the Rust language; not to learn a framework like Axum or Rocket. 
+We used as few abstractions as possible to build the prototype. This is because our intention was to learn the **syntax and the semantics** of the Rust language; not to learn a framework like Axum or Rocket, which are full-blown Rust web frameworks. 
 
 We need to emphasise the fact that this is in fact a prototype. This was not meant for production.
 
-One of the key points we want to highlight in this presentation is that we successfully learned a new language—its syntax and semantics—and used it to re-write a small part of an existing system and integrate it with our current infrastructure. We accomplished this by collaborating among ourselves for just about one to one and a half hours per week, and it’s been a process we’ve genuinely enjoyed.
+One of the key points we want to highlight in this presentation is that we successfully learned a new language — its syntax and semantics — and used it to re-write a small part of an existing system and integrate it with our current infrastructure. We accomplished this by collaborating among ourselves for just about one to one and a half hours per week, and it’s been a process we’ve genuinely enjoyed.
 
 So, to the next section of our presentation: Shiv will now demonstrate the working of the rust prototype we’ve built.
 
@@ -373,7 +381,7 @@ class: text-md
 </table>
 
 ---
-transition: slide-down
+transition: fade-out
 class: text-xl
 ---
 
@@ -397,7 +405,7 @@ layout: end
 
 # Thank You!
 
-You've heard about Rust, and now you have seen it too!
+You've head about Rust, and now you have seen it too!
 ✅ ✅
 
 <v-click>
