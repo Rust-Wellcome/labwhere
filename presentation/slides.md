@@ -152,7 +152,7 @@ sequenceDiagram
 </div>
 
 ---
-transition: slide-up
+transition: slide-left
 level: 2
 ---
 
@@ -172,7 +172,7 @@ Some tools we've used.
   - As the SQLite Driver.
 
 ---
-transition: slide-up
+transition: slide-right
 layout: two-cols
 layoutClass: gap-16
 class: text-xl
@@ -237,7 +237,7 @@ async fn route(
 ```
 
 ---
-transition: slide-up
+transition: slide-down
 ---
 
 # Services
@@ -287,7 +287,7 @@ transition: fade-out
 </div>
 
 ---
-transition: fade-out
+transition: slide-left
 ---
 
 # Code
@@ -312,7 +312,7 @@ Pardon the dog gifs 🐶
 </div>
 
 ---
-transition: fade-out
+transition: slide-right
 class: text-2xl
 ---
 
@@ -329,7 +329,7 @@ class: text-2xl
 
 
 ---
-transition: fade-out
+transition: slide-up
 class: text-md
 ---
 
@@ -373,7 +373,7 @@ class: text-md
 </table>
 
 ---
-transition: fade-out
+transition: slide-down
 class: text-xl
 ---
 
