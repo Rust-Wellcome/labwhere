@@ -35,9 +35,6 @@ The Challenges, Triumphs, and Takeaways
 </div>
 
 
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
 ---
 transition: fade-out
 layout: two-cols-header
@@ -49,7 +46,7 @@ layout: two-cols-header
 
 <div class="mt-6">
 
- ## Rust Group Project 
+ ## Rust Group Project
 
 </div>
 
@@ -107,7 +104,9 @@ h1 {
 
 <!--
 
-The decision on investing some time to learn Rust was unique for each of us. Steve and I decided to learn Rust’s low-level constructs as much as we can and potentially investigate any use cases for it within the institute (plus, it was this shiny new language that everybody talks about). We had some involvement on an on-going project, but then decided to start developing a prototype which is much closer to what we do in PSD. Abdullah - who wanted to try out learning a new language in a hands-on approach - and Shiv - who wanted to collaboratively explore and learn Rust joined later on in developing the prototype.
+The decision on investing some time to learn Rust was unique for each of us. Steve (who is my line-manager) and I decided to learn Rust’s low-level constructs as much as we can and potentially investigate any use cases for it within the institute (it was this shiny new language that everybody talks about, so we also wanted to have a go at it). We decided that the best way to learn a new language was to actually write something with it. We had some involvement on an on-going project, but then decided to start developing a **prototype** which is much closer to what we do in PSD. Abdullah - who wanted to try out learning a new language in a hands-on approach - and Shiv - who wanted to collaboratively explore and learn Rust joined later on in developing the prototype.
+
+➡️ ➡️ ➡️ 
 
 As I mentioned earlier, the prototype is something that we felt was very close to our domain. It is, in fact, a re-write - or an “oxidisation” - of an application called LabWhere that gives an interface to scan in the location of a particular labware and an interface to track locations for each labware - for example plates and tubes. 
 
@@ -121,6 +120,8 @@ The prototype is a backend artefact. We have integrated the prototype with our l
 We used as few abstractions as possible to build the prototype. This is because our intention was to learn the **syntax and the semantics** of the Rust language; not to learn a framework like Axum or Rocket, which are full-blown Rust web frameworks. 
 
 We need to emphasise the fact that this is in fact a prototype. This was not meant for production.
+
+➡️ ➡️ ➡️ 
 
 One of the key points we want to highlight in this presentation is that we successfully learned a new language — its syntax and semantics — and used it to re-write a small part of an existing system and integrate it with our current infrastructure. We accomplished this by collaborating among ourselves for just about one to one and a half hours per week, and it’s been a process we’ve genuinely enjoyed.
 
@@ -220,6 +221,20 @@ level: 2
 
 
 We check the HTTP method (courtesy of Hyper), and the URI to forward request to the service.
+````md magic-move {lines: true}
+```rs {*|9}{lines:true}
+pub async fn process(
+    req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
+    connection: &Pool<Sqlite>,
+) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
+    if Self::is_post_or_put_request(&req) && !Self::is_valid_content_type(&req) {
+        return Self::bad_request_response();
+    }
+    // This code fragment is a bit akin to the concept of "routes" in web frameworks.
+  Self::route(req, connection).await
+}
+```
+</div>
 
 ```rs {*|7-9|10-12|13-18|*}{lines:true}
 async fn route(
@@ -243,6 +258,7 @@ async fn route(
      }
  }
 ```
+````
 
 ---
 transition: slide-down
@@ -250,7 +266,7 @@ transition: slide-down
 
 # Services
 
-```rust
+```rust {*|1-4|6-10|*}{lines:true}
 pub(crate) async fn search(
     connection: &Pool<Sqlite>,
     request_string: String,
@@ -263,7 +279,7 @@ mod tests {
 }
 ```
 
-```rust
+```rust {*|1-4|6-12|*}{lines:true}
 pub async fn scan(
     connection: &Pool<Sqlite>,
     request: &str,
