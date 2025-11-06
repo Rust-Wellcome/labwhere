@@ -339,9 +339,9 @@ class: text-md
   <thead>
     <tr>
       <th></th>
-      <th v-click="1"><strong>Things we liked</strong></th>
-      <th v-click="2"><strong>Things we liked, but found difficult to grasp</strong></th>
-      <th v-click="3"><strong>Things we didn't/don't like</strong></th>
+      <th v-click="1"><strong>Things we liked 😊</strong></th>
+      <th v-click="2"><strong>Things we liked, but found difficult to grasp 🤔</strong></th>
+      <th v-click="3"><strong>Things we didn't/don't like 😞</strong></th>
     </tr>
   </thead>
   <tbody>
