@@ -227,10 +227,10 @@ pub async fn process(
     req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
     connection: &Pool<Sqlite>,
 ) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
-    if Self::is_post_or_put_request(&req) && !Self::is_valid_content_type(&req) {
-        return Self::bad_request_response();
-    }
-    // This code fragment is a bit akin to the concept of "routes" in web frameworks.
+  if Self::is_post_or_put_request(&req) && !Self::is_valid_content_type(&req) {
+      return Self::bad_request_response();
+  }
+  // This code fragment is a bit akin to the concept of "routes" in web frameworks.
   Self::route(req, connection).await
 }
 ```
