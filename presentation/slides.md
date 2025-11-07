@@ -111,8 +111,7 @@ The decision on investing some time to learn Rust was unique for each of us. Ste
 
 ➡️ ➡️ ➡️ 
 
-As I mentioned earlier, the prototype is something that we felt was very close to our domain. It is, in fact, a re-write - or an “oxidisation” - of an application called LabWhere that gives an interface to scan in the location of a particular labware and an interface to track locations for each labware - for example plates and tubes. 
-
+As I mentioned earlier, the prototype is something that we felt was very close to our domain. It is, in fact, a re-write - or an “oxidisation” - of an application called LabWhere that gives an interface to scan in the location of a particular plate or tube and an interface to track locations for each plate and tube.
 For the prototype, we chose two use cases:
 
 1. Scan-in a piece of labware into a pre-defined location.
@@ -376,7 +375,7 @@ class: text-md
       <td>1</td>
       <td v-click="1">Pattern matching <code>match</code> statements).</td>
       <td v-click="2">Borrow checker.</td>
-      <td v-click="3">Verbosity at times <code>?</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
+      <td v-click="3">Verbosity at times <code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
     </tr>
     <tr>
       <td>2</td>
