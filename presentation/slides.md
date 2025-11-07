@@ -8,6 +8,7 @@ theme: apple-basic
 title: Our Journey in Rust
 titleTemplate: '%s'
 favicon: study.png
+aspectRatio: 16/9
 info: |
   Our Journey in Rust.
 # apply UnoCSS classes to the current slide
@@ -430,5 +431,3 @@ You've head about Rust, and now you have seen it too!
 ## Questions❓🙋 🙋‍♀️
 
 </v-click>
-
-
