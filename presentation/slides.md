@@ -7,6 +7,7 @@ theme: apple-basic
 # some information about your slides (markdown enabled)
 title: Our Journey in Rust
 titleTemplate: '%s'
+favicon: study.png
 info: |
   Our Journey in Rust.
 # apply UnoCSS classes to the current slide
