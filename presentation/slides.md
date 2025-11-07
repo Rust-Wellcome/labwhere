@@ -9,6 +9,7 @@ title: Our Journey in Rust
 titleTemplate: '%s'
 favicon: study.png
 aspectRatio: 16/9
+lineNumbers: true
 info: |
   Our Journey in Rust.
 # apply UnoCSS classes to the current slide
