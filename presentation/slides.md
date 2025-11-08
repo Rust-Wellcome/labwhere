@@ -58,7 +58,7 @@ layout: two-cols-header
 
 <v-click>
 
-## Prototype Project
+## Prototype Project ("LabWhere")
 
 - Started something closer to our domain.
 - Built as a learning prototype (not production).
@@ -73,18 +73,8 @@ layout: two-cols-header
 - One session (1 - 1.5hours) a week.
 - Took turns in running the session.
 
-
 </v-click>
 
-<!-- - 📝 **Text-based** - focus on the content with Markdown, and then style them later -->
-<!-- - 🎨 **Themable** - themes can be shared and re-used as npm packages -->
-<!-- - 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion -->
-<!-- - 🤹 **Interactive** - embed Vue components to enhance your expressions -->
-<!-- - 🎥 **Recording** - built-in recording and camera view -->
-<!-- - 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA -->
-<!-- - 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev -->
-<!-- <br> -->
-<!-- <br> -->
 
 ::right::
 
@@ -107,25 +97,28 @@ h1 {
 
 <!--
 
-The decision on investing some time to learn Rust was unique for each of us. Steve (who is my line-manager) and I decided to learn Rust’s low-level constructs as much as we can and potentially investigate any use cases for it within the institute (it was this shiny new language that everybody talks about, so we also wanted to have a go at it). We decided that the best way to learn a new language was to actually write something with it. We had some involvement on an on-going project, but then decided to start developing a **prototype** which is much closer to what we do in PSD. Abdullah - who wanted to try out learning a new language in a hands-on approach - and Shiv - who wanted to collaboratively explore and learn Rust joined later on in developing the prototype.
+So, Rust was this shiny programming language that made everyone look at their code and say, “Hey, you know what this needs? A complete rewrite… but in Rust.” Naturally, we joined the cult. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer,” especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
+
+We've got Steve in our audience - he's my line manager. So we both decided to learn what Rust is all about and potentially investigate any use cases for it within the institute. We decided that the best way to learn a new language was to actually write something with it. We had some involvement on an on-going project, but then decided to start developing a **prototype** which was much closer to what we do in PSD. And then we found kindred spirits in Abdullah and Shiv — both equally excited to dive into Rust with a hands-on, collaborative approach.
 
 ➡️ ➡️ ➡️ 
 
-As I mentioned earlier, the prototype is something that we felt was very close to our domain. It is, in fact, a re-write - or an “oxidisation” - of an application called LabWhere that gives an interface to scan in the location of a particular plate or tube and an interface to track locations for each plate and tube.
-For the prototype, we chose two use cases:
+As I mentioned earlier, the prototype aligns closely with our domain. It’s essentially a reimagining — or rather, an “oxidation” — of an existing application called LabWhere, which provides an interface for scanning and tracking the locations of plates and tubes.
+
+For the prototype, we focused on two specific use cases:
 
 1. Scan-in a piece of labware into a pre-defined location.
 2. Search the labware and assert that the labware was scanned into the correct location.
 
-The prototype is a backend artefact. We have integrated the prototype with our long-read LIMS frontend Traction to demonstrate the workings of the prototype. The connection to the long-read LIMS is behind a feature flag and flipping the feature flag would direct the traffic to the actual service or to the prototype.
+The prototype is a backend component that we’ve integrated with our long-read LIMS frontend, Traction, to showcase its functionality. The connection to the long-read LIMS is controlled via a feature flag — flipping the flag redirects traffic between the original LabWhere service and the prototype.
 
-We used as few abstractions as possible to build the prototype. This is because our intention was to learn the **syntax and the semantics** of the Rust language; not to learn a framework like Axum or Rocket, which are full-blown Rust web frameworks. 
+We intentionally kept the prototype as simple and minimal as possible, using **few abstractions**. Our goal was to understand the syntax and semantics of Rust itself — not to dive into full-fledged web frameworks like Axum or Rocket.
 
 We need to emphasise the fact that this is in fact a prototype. This was not meant for production.
 
 ➡️ ➡️ ➡️ 
 
-One of the key points we want to highlight in this presentation is that we successfully learned a new language — its syntax and semantics — and used it to re-write a small part of an existing system and integrate it with our current infrastructure. We accomplished this by collaborating among ourselves for just about one to one and a half hours per week, and it’s been a process we’ve genuinely enjoyed.
+One of the key takeaways we want to highlight in this presentation is that we successfully learned a new programming language — its syntax and semantics — and used it to write a small part of an existing system, fully integrated with our current infrastructure. We achieved this through collaborative sessions of just about one to one and a half hours per week — and it’s been a process we’ve genuinely enjoyed.
 
 So, to the next section of our presentation: Shiv will now demonstrate the working of the rust prototype we’ve built.
 
