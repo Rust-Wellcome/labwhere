@@ -33,9 +33,19 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    Dasun, Abdullah and Shiv
+    Dasun 👾 {<code style="color: grey">dp27</code>}, Abdullah {<code style="color: grey">ay6</code>} and Shiv {<code style="color: grey">sb78</code>}
   </span>
 </div>
+
+<!-- 
+
+Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv presenting alongside with me. We are from PSD - which stands for Production Software Development. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
+
+This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
+
+And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us; or for people in Zoom you can always contact us via Slack or Email (our user IDs are there in the slide along with our names).
+
+ -->
 
 
 ---
@@ -97,7 +107,7 @@ h1 {
 
 <!--
 
-So, Rust was this shiny programming language that made everyone look at their code and say, “Hey, you know what this needs? A complete rewrite… but in Rust.” Naturally, we joined the cult. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer,” especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
+So, Rust was this shiny programming language that made everyone look at their code and say, “Hey, you know what this needs? A complete rewrite… but in Rust.” Naturally, we wanted to join the cult. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer,” especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
 
 We've got Steve in our audience - he's my line manager. So we both decided to learn what Rust is all about and potentially investigate any use cases for it within the institute. We decided that the best way to learn a new language was to actually write something with it. We had some involvement on an on-going project, but then decided to start developing a **prototype** which was much closer to what we do in PSD. And then we found kindred spirits in Abdullah and Shiv — both equally excited to dive into Rust with a hands-on, collaborative approach.
 
@@ -107,8 +117,8 @@ As I mentioned earlier, the prototype aligns closely with our domain. It’s ess
 
 For the prototype, we focused on two specific use cases:
 
-1. Scan-in a piece of labware into a pre-defined location.
-2. Search the labware and assert that the labware was scanned into the correct location.
+1. Scan-in a plate or a tube into a pre-defined location.
+2. Search the plate or tube and assert that the they were scanned into the correct location.
 
 The prototype is a backend component that we’ve integrated with our long-read LIMS frontend, Traction, to showcase its functionality. The connection to the long-read LIMS is controlled via a feature flag — flipping the flag redirects traffic between the original LabWhere service and the prototype.
 
@@ -317,18 +327,24 @@ Let's dive into the code.
 Pardon the dog gifs 🐶
 
 <div class="flex items-center justify-center">
-<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-    <div>
-        <img class="h-auto max-w-full rounded-lg" src="./dog-1.gif" alt="">
-    </div>
-    <div>
-        <img class="h-auto max-w-full rounded-lg" src="./dog-2.webp" alt="">
-    </div>
-    <div>
-        <img class="h-auto max-w-full rounded-lg" src="./dog-3.webp" alt="">
-    </div>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div>
+          <img class="h-auto max-w-full rounded-lg" src="./dog-1.gif" alt="">
+      </div>
+      <div>
+          <img class="h-auto max-w-full rounded-lg" src="./dog-2.webp" alt="">
+      </div>
+      <div>
+          <img class="h-auto max-w-full rounded-lg" src="./dog-3.webp" alt="">
+      </div>
+  </div>
 </div>
-</div>
+
+<!-- 
+
+So now, I’ll walk you through some of the code running behind the demonstration that Shiv just showed. The goal here is simply to give you a sense of how things are structured under the hood. The full codebase is available on GitHub for you to explore at your own pace. We will share the GitHub links for you to go through after the presentation.
+
+-->
 
 ---
 transition: slide-right
