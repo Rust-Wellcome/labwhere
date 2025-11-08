@@ -33,7 +33,7 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    Dasun, Adullah and Shiv
+    Dasun, Abdullah and Shiv
   </span>
 </div>
 
