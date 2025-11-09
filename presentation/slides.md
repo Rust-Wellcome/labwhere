@@ -33,7 +33,7 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    Dasun 👾 {<code style="color: grey">dp27</code>}, Abdullah {<code style="color: grey">ay6</code>} and Shiv {<code style="color: grey">sb78</code>}
+    Dasun 👾 <span v-mark.circle.blue="1">{<code style="color: grey">dp27</code>}</span>, Abdullah <span v-mark.circle.blue="1">{<code style="color: grey">ay6</code>}</span> and Shiv <span v-mark.circle.blue="1">{<code style="color: grey">sb78</code>}</span>
   </span>
 </div>
 
@@ -43,7 +43,11 @@ Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv prese
 
 This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
 
-And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us; or for people in Zoom you can always contact us via Slack or Email (our user IDs are there in the slide along with our names).
+And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us;
+
+➡️ ➡️ ➡️ 
+
+or for people in Zoom you can always contact us via Slack or Email (our user IDs are there in the slide along with our names).
 
  -->
 
@@ -71,12 +75,12 @@ layout: two-cols-header
 ## Prototype Project ("LabWhere")
 
 - Started something closer to our domain.
-- Built as a learning prototype (not production).
+- Built as a learning <span v-mark.highlight.orange="2"> prototype (not production) </span>.
 - Avoided ready-made frameworks.
 
 </v-click>
 
-<v-click>
+<v-click at="+2">
 
 ## Ways of working
 
@@ -123,6 +127,8 @@ For the prototype, we focused on two specific use cases:
 The prototype is a backend component that we’ve integrated with our long-read LIMS frontend, Traction, to showcase its functionality. The connection to the long-read LIMS is controlled via a feature flag — flipping the flag redirects traffic between the original LabWhere service and the prototype.
 
 We intentionally kept the prototype as simple and minimal as possible, using **few abstractions**. Our goal was to understand the syntax and semantics of Rust itself — not to dive into full-fledged web frameworks like Axum or Rocket.
+
+➡️ ➡️ ➡️ 
 
 We need to emphasise the fact that this is in fact a prototype. This was not meant for production.
 
