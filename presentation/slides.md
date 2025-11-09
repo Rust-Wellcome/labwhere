@@ -458,6 +458,8 @@ You've head about Rust, and now you have seen it too!
 
 So, we've come to the end of the presentation. Although, there are some takeaways that we wanted to highlight through this presentation.
 
+➡️ ➡️ ➡️ 
+
 - The first one is about **collaborative learning**; it was the key that helped us reach this milestone together.
 -	The second one is about the **effort**; by putting in small but consistent weekly efforts, we were able to make steady progress.
 -	Third is about **abstractions**; beeping our approach simple and light on abstractions helped us better understand and appreciate Rust’s core philosophy.
