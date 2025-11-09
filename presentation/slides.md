@@ -456,15 +456,15 @@ You've head about Rust, and now you have seen it too!
 
 <!-- 
 
-So, we've come to the end of the presentation. The key takeaways that we wanted to highlight throughout the presentation are:
+So, we've come to the end of the presentation. Although, there are some takeaways that we wanted to highlight through this presentation.
 
-- Collaborative learning really helped us reach this milestone.
-- Even small, consistent weekly efforts made a big difference.
-- Working with minimal abstractions gave us a deeper appreciation for Rust’s design philosophy.
-- Learning together kept our motivation high — and that inspired us to start contributing to open-source projects to keep the momentum going.
+- Collaborative learning was the key that helped us reach this milestone together.
+-	By putting in small but consistent weekly efforts, we were able to make steady progress.
+-	Keeping our approach simple and light on abstractions helped us better understand and appreciate Rust’s core philosophy.
+-	And through it all, learning together kept our motivation high, eventually inspiring us to contribute to open-source projects and keep the momentum going.
 
 We sincerely hope you’ve taken something away from this presentation — not just about Rust, but about the value of learning together as a group. That’s really been our main goal and the biggest takeaway from this journey.
 
-Thank you very much.
+Thank you very much, and thank you for listening to the presentation.
 
 -->
