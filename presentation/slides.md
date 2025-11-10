@@ -33,10 +33,14 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    Dasun 👾 <span v-mark.circle.purple="2">{<code style="color: grey">dp27</code>}</span>, Abdullah 🚀 <span v-mark.circle.orange="2">{<code style="color: grey">ay6</code>}</span> and Shiv 💡 <span v-mark.circle.yellow="2">{<code style="color: grey">sb78</code>}</span>
+  Dasun 👾 <span v-mark.circle.purple="2">{<code style="color: grey">dp27</code>}</span><sup>1</sup>, Abdullah 🚀 <span v-mark.circle.orange="2">{<code style="color: grey">ay6</code>}</span><sup>1</sup> and Shiv 💡 <span v-mark.circle.yellow="2">{<code style="color: grey">sb78</code>}</span><sup>1</sup>
   </span>
   <br>
   <span v-mark.underline.red="1"><small>Production Software Development (PSD)</small></span>
+  <br>
+  <small style="font-size: 0.55em;">
+  <sup>1</sup>Senior Software Developer 
+  </small>
 </div>
 
 <!-- 
