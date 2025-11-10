@@ -112,6 +112,10 @@ Prototype Project <span v-mark.circle.purple="2">("LabWhere")</span>
   <img src="./image.png" class="rounded-lg"/>
 </div>
 
+<footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
+  Logos © their respective owners. Rust logo © The Rust Foundation.
+</footer>
+
 
 <style>
 h1 {
@@ -204,6 +208,10 @@ Some tools we've used.
 
 - **SQLx** <img src="./sqlite-logo.png" style="display: inline-block; height: 30px;">
   - As the SQLite Driver.
+
+<footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
+  Logos © their respective owners.
+</footer>
 
 ---
 transition: slide-right
@@ -425,6 +433,9 @@ class: text-2xl
 - Applying our rust concepts to larger projects
 - Plan to keep contributing 
 
+<footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
+  Logos © their respective owners.
+</footer>
 
 ---
 transition: slide-up
