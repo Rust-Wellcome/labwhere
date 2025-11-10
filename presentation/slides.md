@@ -312,6 +312,18 @@ mod tests {
 }
 ```
 
+<!-- 
+These are the service functions.
+
+Both of them take a database connection pool, and the request body.
+
+They return Hyper heap-allocated body type of Bytes.
+
+Search accepts ownership of the string - request body - and it can modify it.
+
+Scan borrows the reference to the string - request body - but it does not modify it.
+-->
+
 ---
 transition: fade-out
 ---
