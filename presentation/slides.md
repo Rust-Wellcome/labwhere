@@ -47,6 +47,10 @@ The Challenges, Triumphs, and Takeaways
   <span class="mb-2 text-xs text-gray-600">Scan to view slides</span>
 </div>
 
+<footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
+  Logos © their respective owners. Rust logo © The Rust Foundation.
+</footer>
+
 <!-- 
 
 Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv presenting alongside with me. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
