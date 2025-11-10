@@ -39,7 +39,7 @@ The Challenges, Triumphs, and Takeaways
   <span v-mark.underline.red="1"><small>Production Software Development (PSD)</small></span>
   <br>
   <small style="font-size: 0.55em;">
-  <sup>1</sup>Senior Software Developer 
+  <sup>1</sup>Senior Software Developer
   </small>
 </div>
 
@@ -78,15 +78,17 @@ layout: two-cols-header
 
 <v-click>
 
-## Prototype Project ("LabWhere")
+<h2>
+Prototype Project <span v-mark.circle.purple="2">("LabWhere")</span>
+</h2>
 
 - Started something closer to our domain.
-- Built as a learning <span v-mark.highlight.yellow="2"> prototype (not production) </span>.
+- Built as a learning <span v-mark.highlight.yellow="3"> prototype (not production) </span>.
 - Avoided ready-made frameworks.
 
 </v-click>
 
-<v-click at="+2">
+<v-click at="+3">
 
 ## Ways of working
 
@@ -123,7 +125,7 @@ We've got Steve in our audience - he's my line manager. So we both decided to le
 
 ➡️ ➡️ ➡️ 
 
-As I mentioned earlier, the prototype aligns closely with our domain. It’s essentially a reimagining — or rather, an “oxidation” — of an existing application called LabWhere, which provides an interface for scanning and tracking the locations of plates and tubes.
+As I mentioned earlier, the prototype aligns closely with our domain. It’s essentially a reimagining — or rather, an “oxidation” — of an existing application called LabWhere ➡️ ➡️ ➡️ , which provides an interface for scanning and tracking the locations of plates and tubes.
 
 For the prototype, we focused on two specific use cases:
 
