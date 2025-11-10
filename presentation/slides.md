@@ -45,9 +45,9 @@ This presentation is about our journey in learning a programming language which 
 
 And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us;
 
-➡️ ➡️ ➡️ 
 
-or for people in Zoom you can always contact us via Slack or Email (our user IDs are there in the slide along with our names).
+
+or for people in Zoom you can always contact us via Slack or Email (our user IDs are there ➡️ ➡️ ➡️ in the slide along with our names).
 
  -->
 
@@ -128,9 +128,7 @@ The prototype is a backend component that we’ve integrated with our long-read 
 
 We intentionally kept the prototype as simple and minimal as possible, using **few abstractions**. Our goal was to understand the syntax and semantics of Rust itself — not to dive into full-fledged web frameworks like Axum or Rocket.
 
-➡️ ➡️ ➡️ 
-
-We need to emphasise the fact that this is in fact a prototype. This was not meant for production.
+We need to emphasise the fact that this is in fact a prototype. ➡️ ➡️ ➡️ This was not meant for production.
 
 ➡️ ➡️ ➡️ 
 
