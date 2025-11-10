@@ -42,6 +42,10 @@ The Challenges, Triumphs, and Takeaways
   <sup>1</sup>Senior Software Developer
   </small>
 </div>
+<div class="absolute bottom-10 right-10 flex flex-col items-center">
+  <img src="./qr.png" class="h-32">
+  <span class="mb-2 text-xs text-gray-600">Scan to view slides</span>
+</div>
 
 <!-- 
 
@@ -414,9 +418,7 @@ class: text-2xl
 
 - Extended our Rust learning
 - Contributing to the Oxc project
-- Rule architecture and pattern matching in Rust
 - Applying our rust concepts to larger projects
-- Rust in the real world
 - Plan to keep contributing 
 
 
