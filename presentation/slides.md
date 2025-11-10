@@ -33,7 +33,7 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    Dasun 👾 <span v-mark.circle.blue="1">{<code style="color: grey">dp27</code>}</span>, Abdullah <span v-mark.circle.blue="1">{<code style="color: grey">ay6</code>}</span> and Shiv <span v-mark.circle.blue="1">{<code style="color: grey">sb78</code>}</span>
+    Dasun 👾 <span v-mark.circle.blue="1">{<code style="color: grey">dp27</code>}</span>, Abdullah 🚀 <span v-mark.circle.blue="1">{<code style="color: grey">ay6</code>}</span> and Shiv 💡 <span v-mark.circle.blue="1">{<code style="color: grey">sb78</code>}</span>
   </span>
 </div>
 
