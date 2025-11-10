@@ -33,15 +33,15 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-    Dasun 👾 <span v-mark.circle.blue="1">{<code style="color: grey">dp27</code>}</span>, Abdullah 🚀 <span v-mark.circle.blue="1">{<code style="color: grey">ay6</code>}</span> and Shiv 💡 <span v-mark.circle.blue="1">{<code style="color: grey">sb78</code>}</span>
+    Dasun 👾 <span v-mark.circle.purple="2">{<code style="color: grey">dp27</code>}</span>, Abdullah 🚀 <span v-mark.circle.orange="2">{<code style="color: grey">ay6</code>}</span> and Shiv 💡 <span v-mark.circle.yellow="2">{<code style="color: grey">sb78</code>}</span>
   </span>
   <br>
-  <small>Production Software Development (PSD)</small>
+  <span v-mark.underline.red="1"><small>Production Software Development (PSD)</small></span>
 </div>
 
 <!-- 
 
-Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv presenting alongside with me. We are from PSD - which stands for Production Software Development. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
+Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv presenting alongside with me. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
 
 This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
 
