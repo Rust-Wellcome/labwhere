@@ -27,7 +27,7 @@ layout: intro
 ---
 
 
-# Our Journey in Rust
+# Our Journey in Rust <img src="./rust.png" style="display: inline-block; height: 5rem;">
 
 The Challenges, Triumphs, and Takeaways
 
@@ -443,7 +443,7 @@ class: text-md
       <td>1</td>
       <td v-click="1">Pattern matching <code>match</code> statements).</td>
       <td v-click="2">Borrow checker.</td>
-      <td v-click="3">Verbosity at times <code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
+      <td v-click="3">Verbosity at times (<code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
     </tr>
     <tr>
       <td>2</td>
