@@ -277,6 +277,25 @@ async fn route(
 ```
 ````
 
+<!-- 
+Our controller is simple - a single function responsible for handling the incoming HTTP requests and dispatching the request to the handler using the route function.
+
+It takes a request and a database connection pool. It returns a response with a body of bytes or an error.
+If we don’t recognise the request, we return a bad request response.
+
+➡️ ➡️ ➡️ 
+
+The route function dispatches the request: it receives incoming HTTP requests and decides which service should handle them.
+
+
+Requests are matched based on method + URI path:
+OPTIONS → handled by preflight() (CORS).
+POST /scan → forwarded to the scan service.
+POST /searches → forwarded to the search service.
+Any other request → returns 404 Not Found.
+So, the controller separates request handling from business logic, forwarding requests to services without performing the business logic itself.
+-->
+
 ---
 transition: slide-down
 ---
@@ -338,6 +357,20 @@ transition: fade-out
         <img class="h-auto max-w-full rounded-lg" style="max-height: 450px" src="./models-r.png" alt="">
     </div>
 </div>
+
+<!-- 
+These are the models to access the database.
+
+They are Rust structs and they have implemented functions.
+
+They match the CRUD pattern, create, read, update and delete. We do not have deletions.
+
+Taking create as an example: It takes barcode String, unsigned 32 bit location id, and connection pool. It returns a Result of either Labware or a LabwareError. This is a common pattern in Rust. Using Result allows the caller to handle success and failure explicitly.
+
+As you see we have unit tests for each function we have implemented.
+
+This concludes the overall architecture and a little introduction to code.
+-->
 
 ---
 transition: slide-left
