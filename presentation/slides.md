@@ -35,6 +35,8 @@ The Challenges, Triumphs, and Takeaways
   <span class="font-700">
     Dasun 👾 <span v-mark.circle.blue="1">{<code style="color: grey">dp27</code>}</span>, Abdullah 🚀 <span v-mark.circle.blue="1">{<code style="color: grey">ay6</code>}</span> and Shiv 💡 <span v-mark.circle.blue="1">{<code style="color: grey">sb78</code>}</span>
   </span>
+  <br>
+  <small>Production Software Development (PSD)</small>
 </div>
 
 <!-- 
@@ -75,7 +77,7 @@ layout: two-cols-header
 ## Prototype Project ("LabWhere")
 
 - Started something closer to our domain.
-- Built as a learning <span v-mark.highlight.orange="2"> prototype (not production) </span>.
+- Built as a learning <span v-mark.highlight.yellow="2"> prototype (not production) </span>.
 - Avoided ready-made frameworks.
 
 </v-click>
@@ -229,7 +231,7 @@ level: 2
 # Controllers
 
 
-We check the HTTP method (courtesy of Hyper), and the URI to forward request to the service.
+We check the HTTP method (courtesy of `Hyper`), and the URI to forward request to the service.
 ````md magic-move {lines: true}
 ```rs {*|9}{lines:true}
 pub async fn process(
@@ -448,7 +450,7 @@ You've head about Rust, and now you have seen it too!
 - **Collaborative learning** played a key role in helping us reach this milestone.
 - **Consistent, small weekly efforts** added up and brought us to this point.
 - **Keeping abstractions to a minimum** helped us better appreciate Rust’s core philosophy.
-- **Learning together kept our motivation high**, and we’ve since started contributing to open-source projects to keep that momentum going.
+- **Learning together kept our motivation high**, and we’ve since kept the momentum going through open-source projects.
 
 </v-click>
 
