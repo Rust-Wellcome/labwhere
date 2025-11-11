@@ -430,7 +430,7 @@ class: text-2xl
 
 - Extended our Rust learning
 - Contributing to the Oxc project
-- Applying our rust concepts to larger projects
+- Applying our Rust concepts to larger projects
 - Plan to keep contributing 
 
 <footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
