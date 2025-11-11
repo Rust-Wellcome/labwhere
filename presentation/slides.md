@@ -506,7 +506,7 @@ layout: intro
 
 # Thank You!
 
-You've head about Rust, and now you have seen it too!
+You've heard about Rust, and now you have seen it too!
 ✅ ✅
 
 <v-click>
