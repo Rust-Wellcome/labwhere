@@ -515,10 +515,10 @@ You've head about Rust, and now you have seen it too!
 
 <br>
 
-- **Collaborative learning** played a key role in helping us reach this milestone.
-- **Consistent, small weekly efforts** added up and brought us to this point.
-- **Keeping abstractions to a minimum** helped us better appreciate Rust’s core philosophy.
-- **Learning together kept our motivation high**, and we’ve since kept the momentum going through open-source projects.
+- <v-mark v-mark.circle.teal="2"> <b>Collaborative learning</b> </v-mark> played a key role in helping us reach this milestone.
+- <v-mark v-mark.circle.teal="3"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
+- <v-mark v-mark.circle.teal="4"> <b>Keeping abstractions to a minimum</b> </v-mark> helped us better appreciate Rust’s core philosophy.
+- <v-mark v-mark.circle.teal="5"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
 
 </v-click>
 
@@ -528,9 +528,9 @@ So, we've come to the end of the presentation. Although, there are some takeaway
 
 ➡️ ➡️ ➡️ 
 
-- The first one is about **collaborative learning**; it was the key that helped us reach this milestone together.
--	The second one is about the **effort**; by putting in small but consistent weekly efforts, we were able to make steady progress.
--	Third is about **abstractions**; keeping our approach simple and light on abstractions helped us better understand and appreciate Rust’s core philosophy.
+- The first one is about **collaborative learning** ➡️ ➡️ ➡️; it was the key that helped us reach this milestone together.
+-	The second one is about the **effort** ➡️ ➡️ ➡️; by putting in small but consistent weekly efforts, we were able to make steady progress.
+-	Third is about **abstractions** ➡️ ➡️ ➡️; keeping our approach simple and light on abstractions helped us better understand and appreciate Rust’s core philosophy.
 -	And finally, through it all, **learning together** kept our motivation high, eventually inspiring us to contribute to open-source projects and keep the momentum going.
 
 We sincerely hope you’ve taken something away from this presentation — not just about Rust, but about the value of learning together as a group. That’s really been our main goal and the biggest takeaway from this journey.
