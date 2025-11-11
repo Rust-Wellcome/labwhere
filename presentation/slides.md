@@ -515,10 +515,10 @@ You've head about Rust, and now you have seen it too!
 
 <br>
 
-- <v-mark v-mark.circle.teal="2"> <b>Collaborative learning</b> </v-mark> played a key role in helping us reach this milestone.
-- <v-mark v-mark.circle.teal="3"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
-- <v-mark v-mark.circle.teal="4"> <b>Keeping abstractions to a minimum</b> </v-mark> helped us better appreciate Rust’s core philosophy.
-- <v-mark v-mark.circle.teal="5"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
+- <v-mark v-mark.highlight.yellow="2"> <b>Collaborative learning</b> </v-mark> played a key role in helping us reach this milestone.
+- <v-mark v-mark.highlight.yellow="3"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
+- <v-mark v-mark.highlight.yellow="4"> <b>Keeping abstractions to a minimum</b> </v-mark> helped us better appreciate Rust’s core philosophy.
+- <v-mark v-mark.highlight.yellow="5"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
 
 </v-click>
 
