@@ -477,28 +477,28 @@ class: text-md
     <tr>
       <th></th>
       <th v-click="1"><strong>Things we liked 😊</strong></th>
-      <th v-click="2"><strong>Things we liked, but found difficult to grasp 🤔</strong></th>
-      <th v-click="3"><strong>Things we didn't/don't like 😞</strong></th>
+      <th v-click="5"><strong>Things we liked, but found difficult to grasp 🤔</strong></th>
+      <th v-click="9"><strong>Things we didn't/don't like 😞</strong></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td v-click="1">Pattern matching <code>match</code> statements).</td>
-      <td v-click="2">Borrow checker.</td>
-      <td v-click="3">Verbosity at times (<code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
+      <td v-click="2">Pattern matching <code>match</code> statements).</td>
+      <td v-click="3">Borrow checker.</td>
+      <td v-click="4">Verbosity at times (<code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
     </tr>
     <tr>
       <td>2</td>
-      <td v-click="1">Functional-style enums <code>Option</code> and <code>Result</code>).</td>
-      <td v-click="2">Lifetimes.</td>
-      <td v-click="3">Slow builds.</td>
+      <td v-click="6">Functional-style enums <code>Option</code> and <code>Result</code>).</td>
+      <td v-click="7">Lifetimes.</td>
+      <td v-click="8">Slow builds.</td>
     </tr>
     <tr>
       <td>3</td>
-      <td v-click="1"><code>Cargo</code> as a package manager.</td>
-      <td v-click="2">Boxed values (heap-allocated objects) i.e., <code>Box</code>, <code>Arc</code>, etc.</td>
-      <td v-click="3"><code>"the method . . . exists but the following trait bounds were not satisfied"</code></td>
+      <td v-click="10"><code>Cargo</code> as a package manager.</td>
+      <td v-click="11">Boxed values (heap-allocated objects) i.e., <code>Box</code>, <code>Arc</code>, etc.</td>
+      <td v-click="12"><code>"the method . . . exists but the following trait bounds were not satisfied"</code></td>
     </tr>
     <tr>
       <td>4</td>
