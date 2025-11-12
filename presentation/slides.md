@@ -57,7 +57,7 @@ Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv prese
 
 This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
 
-And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us;
+And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us. We are not experts but we have _some_ working knowledge on how Rust works.
 
 
 
