@@ -226,6 +226,21 @@ Some tools we've used.
   Logos © their respective owners.
 </footer>
 
+<!-- 
+
+When we started this project, our goal was to really learn Rust itself — not just to pick up a framework, as mentioned before. That’s why we deliberately avoided using an out-of-the-box web framework. Frameworks can be very powerful, but they often hide a lot of the underlying language details. We wanted to experience those details directly, even if it meant doing a little more work ourselves.
+
+At the same time, we didn’t want to be bogged down by unnecessary complexity. So, we made use of a few essential building blocks from the ecosystem — specifically Tokio, Hyper, and Sqlx — to cover the basics of async runtime, networking, and database access.
+
+It’s also worth pointing out that we didn’t focus on security aspects in this project. Things like access control headers or same-origin policies weren’t part of our scope, because the aim was strictly to learn the language fundamentals rather than build a production-ready service.
+First, we used Tokio, which is Rust’s asynchronous runtime. Rust itself provides the grammar for asynchronous I/O ((async, await, Future), but it doesn’t ship with a runtime (event loop, task scheduler, timers, and I/O drivers). That’s something you need to plug in separately as a crate, and Tokio is the most widely used choice for this.
+Next, we brought in Hyper, which is a third-party HTTP library. Hyper abstracts away a lot of the lower-level network programming details and makes it easier for us to work directly with the HTTP request–response cycle, without having to reinvent all the protocol handling ourselves.
+And finally, we used Sqlx as the SQLite driver. That gave us a straightforward way to interact with the database from Rust.
+
+So, to summarise: Tokio runs the asynchronous I/O, Hyper gives us a clean abstraction for HTTP traffic, and Sqlx provides the database driver support.
+
+-->
+
 ---
 transition: slide-right
 layout: two-cols
