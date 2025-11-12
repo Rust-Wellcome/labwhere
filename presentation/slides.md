@@ -84,7 +84,7 @@ layout: two-cols-header
 - Steve & Dasun collaborated for a couple of weeks.
 - Abdullah and Shiv joined later in the journey.
 
-<div v-click v-click.hide style="
+<div v-if="$slidev.nav.clicks === 1" style="
   position: fixed;
   top: 0;
   left: 0;
@@ -97,7 +97,7 @@ layout: two-cols-header
   <img src="./meme1.JPG" />
 </div>
 
-<v-click at="+2">
+<v-click at="+3">
 
 <h2>
 Prototype Project <span v-mark.circle.purple="4">("LabWhere")</span>
