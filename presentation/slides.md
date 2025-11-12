@@ -483,6 +483,7 @@ class: text-md
 
 ---
 transition: fade-out
+layout: two-cols
 class: text-xl
 ---
 
@@ -497,6 +498,12 @@ class: text-xl
 Link to our code: [Rust-Wellcome/labwhere](https://github.com/Rust-Wellcome/labwhere)
 
 Link to our slides: [rust-wellcome.github.io/labwhere](https://rust-wellcome.github.io/labwhere)
+
+::right::
+
+<div class="flex items-center justify-center h-full">
+  <Youtube width=500 height=280 id="TGfQu0bQTKc"/>
+</div>
 
 
 ---
