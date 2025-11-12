@@ -84,14 +84,27 @@ layout: two-cols-header
 - Steve & Dasun collaborated for a couple of weeks.
 - Abdullah and Shiv joined later in the journey.
 
-<v-click>
+<div v-click v-click.hide style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: white;
+  z-index: 9999;
+  text-align: center;
+  padding: 1rem;
+">
+  <img src="./meme1.JPG" />
+</div>
+
+<v-click at="+2">
 
 <h2>
-Prototype Project <span v-mark.circle.purple="2">("LabWhere")</span>
+Prototype Project <span v-mark.circle.purple="4">("LabWhere")</span>
 </h2>
 
 - Started something closer to our domain.
-- Built as a learning <span v-mark.highlight.yellow="3"> prototype (not production) </span>.
+- Built as a learning <span v-mark.highlight.yellow="5"> prototype (not production) </span>.
 - Avoided ready-made frameworks.
 
 </v-click>
@@ -131,7 +144,7 @@ h1 {
 
 <!--
 
-So, Rust was this shiny programming language that made everyone look at their code and say, “Hey, you know what this needs? A complete rewrite… but in Rust.” Naturally, we wanted to join the cult. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer,” especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
+So, Rust was this shiny programming language that made everyone look at their code and say, “Hey, you know what this needs? A complete rewrite… but in Rust.” (It happened with the Linux kernel, and it happened with Git's `reftable`). Naturally, we wanted to join the cult. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer,” especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
 
 We've got Steve in our audience - he's my line manager. So we both decided to learn what Rust is all about. We decided that the best way to learn a new language was to actually write something with it. We then decided to start developing a **prototype** which was much closer to what we do in PSD. And then we found kindred spirits in Abdullah and Shiv — both equally excited to dive into Rust with a hands-on, collaborative approach.
 
