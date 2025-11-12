@@ -501,8 +501,12 @@ Link to our slides: [rust-wellcome.github.io/labwhere](https://rust-wellcome.git
 
 ::right::
 
-<div class="flex items-center justify-center h-full">
+<div class="flex items-center justify-center h-full mb-2">
   <Youtube width=500 height=280 id="TGfQu0bQTKc"/>
+</div>
+
+<div class="flex items-center justify-center -mt-25">
+  <div style="font-size: 0.7rem; color: grey"><i>"I let my threads panic ... for pleasure." - Sr. Rust Dev.</i></div>
 </div>
 
 
