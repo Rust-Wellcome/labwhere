@@ -33,10 +33,10 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-  Dasun 👾 <span v-mark.circle.orange="2">{<code style="color: grey">dp27</code>}</span><sup>1</sup>, Abdullah 🚀 <span v-mark.circle.blue="2">{<code style="color: grey">ay6</code>}</span><sup>1</sup> and Shiv 💡 <span v-mark.circle.brown="2">{<code style="color: grey">sb78</code>}</span><sup>1</sup>
+  Dasun 👾 <span v-mark.circle.orange="3">{<code style="color: grey">dp27</code>}</span><sup>1</sup>, Abdullah 🚀 <span v-mark.circle.blue="3">{<code style="color: grey">ay6</code>}</span> and Shiv<sup>1</sup>💡<span v-mark.circle.brown="3">{<code style="color: grey">sb78</code>}</span> <span v-click at="1">🤒</span>
   </span>
   <br>
-  <span v-mark.underline.red="1"><small>Production Software Development (PSD)</small></span>
+  <span v-mark.underline.red="2"><small>Production Software Development (PSD)</small></span>
   <br>
   <small style="font-size: 0.55em;">
   <sup>1</sup>Senior Software Developer
@@ -53,7 +53,7 @@ The Challenges, Triumphs, and Takeaways
 
 <!-- 
 
-Hello, good afternoon everyone! I am Dasun, and I've got Abdullah and Shiv presenting alongside with me. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
+Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. Shiv ➡️ ➡️ ➡️ was going to present as well but he's ill and lost his voice; so we decided to carry on with just us two. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
 
 This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
 
@@ -464,6 +464,16 @@ class: text-2xl
 <footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
   Logos © their respective owners.
 </footer>
+
+<!-- 
+Lately, as a team, we've been taking our Rust learning a step further, moving from just practicing concepts to actually applying them in a real open-source project.
+
+We've been contributing to the Oxidation Compiler, which is basically a collection of existing Javascript and Typescript tools but rewritten in rust for performance. We looked through the list of tools and found an ESLint rewrite, so we got stuck in and started to try and contribute.
+
+Our focus has been on understanding how the rule architecture works under the hood and how pattern matching is used to build linting rules. This gave us a really good look at how Rust concepts like ownership, pattern matching, and traits come together in a bigger, production-level codebase.
+
+What's been great is that we've not only strengthened our Rust skills, but also learned how large open-source projects are structured, things like contributing guidelines, testing setups, and how maintainers keep everything organised and consistent.
+-->
 
 ---
 transition: slide-up
