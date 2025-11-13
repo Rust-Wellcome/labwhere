@@ -495,26 +495,20 @@ class: text-md
     <tr>
       <td>1</td>
       <td v-click="2">Pattern matching <code>match</code> statements).</td>
-      <td v-click="3">Borrow checker.</td>
-      <td v-click="4">Verbosity at times (<code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
+      <td v-click="6">Borrow checker.</td>
+      <td v-click="10">Verbosity at times (<code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
     </tr>
     <tr>
       <td>2</td>
-      <td v-click="6">Functional-style enums <code>Option</code> and <code>Result</code>).</td>
+      <td v-click="3">Functional-style enums <code>Option</code> and <code>Result</code>).</td>
       <td v-click="7">Lifetimes.</td>
-      <td v-click="8">Slow builds.</td>
+      <td v-click="11">Slow builds.</td>
     </tr>
     <tr>
       <td>3</td>
-      <td v-click="10"><code>Cargo</code> as a package manager.</td>
-      <td v-click="11">Boxed values (heap-allocated objects) i.e., <code>Box</code>, <code>Arc</code>, etc.</td>
+      <td v-click="4"><code>Cargo</code> as a package manager.</td>
+      <td v-click="8">Boxed values (heap-allocated objects) i.e., <code>Box</code>, <code>Arc</code>, etc.</td>
       <td v-click="12"><code>"the method . . . exists but the following trait bounds were not satisfied"</code></td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td v-click="1">Support for tests with <code>#cfg[(test)]</code></td>
-      <td v-click="2"></td>
-      <td v-click="3"></td>
     </tr>
   </tbody>
 </table>
