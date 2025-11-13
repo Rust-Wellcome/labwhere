@@ -84,7 +84,7 @@ layout: two-cols-header
 - Steve & Dasun collaborated for a couple of weeks.
 - Abdullah and Shiv joined later in the journey.
 
-<div v-if="$slidev.nav.clicks === 1" style="
+<!-- <div v-if="$slidev.nav.clicks === 1" style="
   position: fixed;
   top: 0;
   left: 0;
@@ -95,6 +95,11 @@ layout: two-cols-header
   padding: 1rem;
 ">
   <img src="./meme1.JPG" />
+</div> -->
+
+<div v-if="$slidev.nav.clicks === 1" class="absolute top-10 left-10 z-50 flex gap-8">
+<img src="./meme1.JPG" class="rounded-lg max-w-md w-full h-auto" alt="Image 1" />
+  <img src="./meme2.JPG" class="rounded-lg max-w-md h-full w-auto" alt="Image 2" />
 </div>
 
 <v-click at="+3">
