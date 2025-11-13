@@ -33,7 +33,7 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-  Dasun 👾 <span v-mark.circle.orange="3">{<code style="color: grey">dp27</code>}</span><sup>‡</sup>, Abdullah 🚀 <span v-mark.circle.blue="3">{<code style="color: grey">ay6</code>}</span><sup>‡</sup> and Shiv💡<span v-mark.circle.brown="3">{<code style="color: grey">sb78</code>}</span><sup>‡</sup> <span v-click at="1" class="transition-all duration-500 ease-in-out">🤒😷</span>
+  Dasun 👾 <span v-mark.circle.orange="3">{<code style="color: grey">dp27</code>}</span><sup>‡</sup>, Abdullah 🚀 <span v-mark.circle.blue="3">{<code style="color: grey">ay6</code>}</span><sup>‡</sup> and Shiv💡<span v-mark.circle.brown="3">{<code style="color: grey">sb78</code>}</span><sup>‡</sup> <span v-mark.box.teal="1">🤒😷</span>
   </span>
   <br>
   <span v-mark.underline.red="2"><small>Production Software Development (PSD)</small></span>
@@ -53,7 +53,7 @@ The Challenges, Triumphs, and Takeaways
 
 <!-- 
 
-Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. Shiv was going to present as well but he's ill and lost his voice ➡️ ➡️ ➡️ so I've added two sick emojis next to his name in the slides hoping he would get better soon. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
+Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. Shiv was going to present as well but he's ill and lost his voice so I've added two sick emojis ➡️ ➡️ ➡️ next to his name in the slides hoping he would get better soon. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
 
 This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
 
