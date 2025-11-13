@@ -207,6 +207,12 @@ sequenceDiagram
 
 </div>
 
+<!-- 
+
+So, as I said before, we've hooked the prototype to our long-read front-end called Traction, through a feature flag. Traction communicates with the prototype to scan plates (or tubes) in, and searches for them. That is the interaction visualised by the sequence diagram there. This is going to be a quick demo but know that the labwhere prototype is the one that's serving up scanning and searching requests.
+
+-->
+
 ---
 transition: slide-left
 level: 2
