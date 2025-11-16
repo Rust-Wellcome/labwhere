@@ -118,7 +118,7 @@ Prototype Project <span v-mark.circle.purple="4">("LabWhere")</span>
 
 ## Ways of working
 
-- One session (1 - 1.5hours) a week.
+- One session (1 - 1½ hours) a week.
 - Took turns in running the session.
 
 </v-click>
@@ -285,14 +285,11 @@ ul li {
 </style>
 
 ---
-transition: slide-up
-level: 2
+transition: slide-left
 ---
 
-# Controllers
+# Code
 
-
-We check the HTTP method (courtesy of `Hyper`), and the URI to forward request to the service.
 ````md magic-move {lines: true}
 ```rs {*|9}{lines:true}
 pub async fn process(
@@ -308,7 +305,7 @@ pub async fn process(
 ```
 </div>
 
-```rs {*|7-9|10-12|13-18|*}{lines:true}
+```rs {*|8}{lines:true}
 async fn route(
      req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
      connection: &Pool<Sqlite>,
@@ -330,147 +327,85 @@ async fn route(
      }
  }
 ```
-````
-
-<!-- 
-Our controller is simple - a single function responsible for handling the incoming HTTP requests and dispatching the request to the handler using the route function.
-
-It takes a request and a database connection pool. It returns a response with a body of bytes or an error.
-If we don’t recognise the request, we return a bad request response.
-
-➡️ ➡️ ➡️ 
-
-The route function dispatches the request: it receives incoming HTTP requests and decides which service should handle them.
-
-
-Requests are matched based on method + URI path:
-OPTIONS → handled by preflight() (CORS).
-POST /scan → forwarded to the scan service.
-POST /searches → forwarded to the search service.
-Any other request → returns 404 Not Found.
-So, the controller separates request handling from business logic, forwarding requests to services without performing the business logic itself.
--->
-
----
-transition: slide-down
----
-
-# Services
-
-```rust {*|1-4|6-10|*}{lines:true}
-pub(crate) async fn search(
-    connection: &Pool<Sqlite>,
-    request_string: String,
-) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> { ... }
-
-#[cfg(test)]
-mod tests {
-    #[tokio::test]
-    async fn test_search() {...}
-}
-```
-
-```rust {*|1-4|6-12|*}{lines:true}
+```rs {*|8}{lines:true}
 pub async fn scan(
     connection: &Pool<Sqlite>,
     request: &str,
-) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> { ... }
-
-#[cfg(test)]
-mod tests {
-    #[tokio::test]
-    async fn test_scan() { ... }
-
-    #[tokio::test]
-    async fn test_scan_without_correct_content_type() { ... }
+) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
+  
+    // ... serialisation logic here.
+  
+    match Scan::create(json, connection).await {
+        Ok(scan) => {
+            // Logic for preparing the success response here.
+        }
+        Err(err) => {
+            // Logic for preparing error response here.
+        }
+    }
 }
 ```
+```rs {*|3|8|12}{lines:true}
+pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
+    let location: Location =
+        match Location::find_by_barcode(scan.location_barcode, connection).await {
+          // ... response handling ...
+        };
+    // ... some validations ...
+    for barcode in split_barcodes.iter() {
+        match Labware::find_by_barcode(&barcode.to_string(), connection).await {
+            Ok(mut labware) => {
+                labware.location_id = location.id;
 
-<!-- 
-These are the service functions.
-
-Both of them take a database connection pool, and the request body.
-
-They return Hyper heap-allocated body type of Bytes.
-
-Search accepts ownership of the string - request body - and it can modify it.
-
-Scan borrows the reference to the string - request body - but it does not modify it.
--->
-
----
-transition: fade-out
----
-
-# Models
-
-<div class="grid md:grid-cols-2 gap-4 dark:invert">
-    <div>
-        <img class="h-auto max-w-full rounded-lg" src="./models-l.png" alt="">
-    </div>
-    <div>
-        <img class="h-auto max-w-full rounded-lg" style="max-height: 450px" src="./models-r.png" alt="">
-    </div>
-</div>
-
-<!-- 
-These are the models to access the database.
-
-They are Rust structs and they have implemented functions.
-
-They match the CRUD pattern, create, read, update and delete. We do not have deletions.
-
-Taking create as an example: It takes barcode String, unsigned 32 bit location id, and connection pool. It returns a Result of either Labware or a LabwareError. This is a common pattern in Rust. Using Result allows the caller to handle success and failure explicitly.
-
-As you see we have unit tests for each function we have implemented.
-
-This concludes the overall architecture and a little introduction to code.
--->
-
----
-transition: slide-left
----
-
-# Code
-
-
-Let's dive into the code. 
-
-Pardon the dog gifs 🐶
-
-<div class="flex items-center justify-center">
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-      <div>
-          <img class="h-auto max-w-full rounded-lg" src="./dog-1.gif" alt="">
-      </div>
-      <div>
-          <img class="h-auto max-w-full rounded-lg" src="./dog-2.webp" alt="">
-      </div>
-      <div>
-          <img class="h-auto max-w-full rounded-lg" src="./dog-3.webp" alt="">
-      </div>
-  </div>
-</div>
-
-<!-- 
-
-So now, I’ll walk you through some of the code running behind the demonstration that Shiv just showed. The goal here is simply to give you a sense of how things are structured under the hood. The full codebase is available on GitHub for you to explore at your own pace. We will share the GitHub links for you to go through after the presentation.
-
--->
-
+                match Labware::update(&labware, connection).await {
+                  // .. return proper value or handle errors ...
+                }
+            }
+            Err(error) => match error {
+                // ... error handling
+            },
+        };
+    }
+    // ... return the correct value ...
+}
+```
+```rs {*}{lines:true}
+pub(crate) async fn update(
+    labware: &Labware,
+    connection: &Pool<Sqlite>,
+) -> Result<Labware, LabwhereError> {
+    match sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
+        .bind(labware.location_id)
+        .bind(labware.id)
+        .execute(connection)
+        .await
+    {
+        Ok(_) => {
+            match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
+                .bind(labware.location_id)
+                .fetch_one(connection)
+                .await
+            {
+                // ... handle result ...
+            }
+        }
+        Err(_) => Err(LabwhereError::database_error()),
+    }
+}
+```
+````
 ---
 transition: slide-right
 class: text-2xl
 ---
 
 
-# Oxidation Compiler <img src="https://raw.githubusercontent.com/oxc-project/oxc-assets/main/uwu.png" class="inline-block h-18 mr-2" />
+# Future Work: "The Oxidation Compiler" <img src="https://raw.githubusercontent.com/oxc-project/oxc-assets/main/uwu.png" class="inline-block h-18 mr-2" />
 
 
-- Extended our Rust learning
-- Contributing to the Oxc project
-- Applying our Rust concepts to larger projects
-- Plan to keep contributing 
+- Extending to **open-source** projects.
+- Applying our Rust concepts to bigger projects.
+- Plan to keep contributing.
 
 <footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
   Logos © their respective owners.
@@ -569,10 +504,10 @@ You've heard about Rust, and now you have seen it too!
 
 <br>
 
-- <v-mark v-mark.highlight.yellow="2"> <b>Collaborative learning</b> </v-mark> played a key role in helping us reach this milestone.
-- <v-mark v-mark.highlight.yellow="3"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
-- <v-mark v-mark.highlight.yellow="4"> <b>Keeping abstractions to a minimum</b> </v-mark> helped us better appreciate Rust’s core philosophy.
-- <v-mark v-mark.highlight.yellow="5"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
+- <v-mark v-mark.highlight.yellow="2"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
+- <v-mark v-mark.highlight.yellow="3"> <b>Minimal use of out-of-the-box frameworks</b> </v-mark> helped us better appreciate Rust’s core philosophy.
+- <v-mark v-mark.highlight.yellow="4"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
+- Because our <v-mark v-mark.highlight.yellow="5"> <b>collaborative learning</b></v-mark> sessions were highly effective, we plan to carry that approach forward into our PSD work.
 
 </v-click>
 
