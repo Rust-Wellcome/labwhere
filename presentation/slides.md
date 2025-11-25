@@ -580,7 +580,7 @@ You've heard about Rust, and now you have seen it too!
 <v-click at="+5">
 <div class="mascot-thankyou-container">
   <img src="./mascot.png" class="mascot-overlay mascot-dance" alt="Rust Mascot">
-  <span class="mascot-thankyou-text">Thank You!</span>
+  <span class="mascot-thankyou-text">Ferris the Crab says Thank You!</span>
 </div>
 </v-click>
 
@@ -612,7 +612,6 @@ You've heard about Rust, and now you have seen it too!
   font-size: 1.5vw;
   font-weight: bold;
   color: #ff0000ff;
-  text-shadow: 1px 1px 6px #222, 0 0 2px #fff;
   margin-bottom: 0.2em;
   letter-spacing: 0.05em;
   pointer-events: none;
