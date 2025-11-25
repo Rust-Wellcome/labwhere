@@ -340,7 +340,7 @@ pub async fn scan(
     }
 }
 ```
-```rs {*|3,8,12}{lines:true}
+```rs {*|3|8|12}{lines:true}
 pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
     let location: Location =
         match Location::find_by_barcode(scan.location_barcode, connection).await {
