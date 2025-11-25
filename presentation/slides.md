@@ -286,20 +286,6 @@ transition: slide-left
 # Code
 
 ````md magic-move {lines: true}
-```rs {*|9}{lines:true}
-pub async fn process(
-    req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
-    connection: &Pool<Sqlite>,
-) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
-  if Self::is_post_or_put_request(&req) && !Self::is_valid_content_type(&req) {
-      return Self::bad_request_response();
-  }
-  // This code fragment is a bit akin to the concept of "routes" in web frameworks.
-  Self::route(req, connection).await
-}
-```
-</div>
-
 ```rs {*|8}{lines:true}
 async fn route(
      req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
@@ -415,7 +401,7 @@ pub(crate) async fn update(
 }
 ```
 ````
-<div v-if="$slidev.nav.clicks === 10" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg animate-border-pulse">
+<div v-if="$slidev.nav.clicks === 8" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg animate-border-pulse">
   <img src="./cloudflare.png" style="max-width: 700px;" />
   <div
     class="w-full text-center text-sm text-red-600 font-semibold mt-2"
@@ -584,12 +570,60 @@ You've heard about Rust, and now you have seen it too!
 
 <br>
 
-- Because our <v-mark v-mark.highlight.yellow="1"> <b>collaborative learning</b></v-mark> sessions were highly effective, we plan to carry that approach forward into our PSD work.
-- <v-mark v-mark.highlight.yellow="2"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
-- <v-mark v-mark.highlight.yellow="3"> <b>Minimal use of out-of-the-box frameworks</b> </v-mark> helped us better appreciate Rust’s core philosophy.
-- <v-mark v-mark.highlight.yellow="4"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
+- Because our <v-mark v-mark.highlight.yellow="2"> <b>collaborative learning</b></v-mark> sessions were highly effective, we plan to carry that approach forward into our PSD work.
+- <v-mark v-mark.highlight.yellow="3"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
+- <v-mark v-mark.highlight.yellow="4"> <b>Minimal use of out-of-the-box frameworks</b> </v-mark> helped us better appreciate Rust’s core philosophy.
+- <v-mark v-mark.highlight.yellow="5"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
 
 </v-click>
+
+<v-click at="+5">
+<div class="mascot-thankyou-container">
+  <img src="./mascot.png" class="mascot-overlay mascot-dance" alt="Rust Mascot">
+  <span class="mascot-thankyou-text">Thank You!</span>
+</div>
+</v-click>
+
+<style>
+@keyframes mascot-dance {
+  0% { transform: rotate(-10deg) scale(1) }
+  10% { transform: rotate(10deg) scale(1.05) }
+  20% { transform: rotate(-8deg) scale(1.08) }
+  30% { transform: rotate(8deg) scale(1.1) }
+  40% { transform: rotate(-6deg) scale(1.05) }
+  50% { transform: rotate(6deg) scale(1) }
+  60% { transform: rotate(-8deg) scale(1.08) }
+  70% { transform: rotate(8deg) scale(1.1) }
+  80% { transform: rotate(-10deg) scale(1.05) }
+  90% { transform: rotate(10deg) scale(1) }
+  100% { transform: rotate(-10deg) scale(1) }
+}
+.mascot-thankyou-container {
+  position: fixed;
+  bottom: 2.5vh;
+  right: 2.5vw;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.mascot-thankyou-text {
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #ff0000ff;
+  text-shadow: 1px 1px 6px #222, 0 0 2px #fff;
+  margin-bottom: 0.2em;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+.mascot-overlay {
+  max-width: 10vw;
+  max-height: 10vh;
+  animation: mascot-dance 4.8s infinite cubic-bezier(.68,-0.55,.27,1.55);
+  pointer-events: none;
+}
+</style>
 
 <!-- 
 
@@ -605,5 +639,9 @@ So, we've come to the end of the presentation. Although, there are some takeaway
 We sincerely hope you’ve taken something away from this presentation — not just about Rust, but about the value of learning together as a group. That’s really been our main goal and the biggest takeaway from this journey.
 
 Thank you very much, and thank you for listening to the presentation.
+
+ ➡️ ➡️ ➡️ 
+
+ Any questions?
 
 -->
