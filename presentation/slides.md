@@ -379,7 +379,7 @@ pub(crate) async fn update(
     let labware_result_set = labware_query_result.unwrap();
 
     if labware_result_set.rows_affected() > 0 {
-        // ... use sqlx to fetch the location here...
+        // ... use sqlx to fetch the labware here...
         return Ok(Labware::new(
             labware.id,
             labware.barcode.clone(),
@@ -390,11 +390,11 @@ pub(crate) async fn update(
 }
 ```
 ```rs {*}{lines:true}
-///! This is NOT our code. This is just to show you something 😉
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
 ) -> Result<Labware, LabwhereError> {
+    // This is NOT our code. This is just to show you something 😉
     match sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
         .bind(labware.location_id)
         .bind(labware.id)
