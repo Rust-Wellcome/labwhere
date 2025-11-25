@@ -364,11 +364,12 @@ pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, Labwh
     // ... return the correct value ...
 }
 ```
-```rs {*|11,12|12}{lines:true}
+```rs {*|6-13|6-13}{lines:true}
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
 ) -> Result<Labware, LabwhereError> {
+    // 😉 😉 This is NOT our code. This is only here just to show you something 😉 😉
     let labware_query_result: Result<SqliteQueryResult, _> =
         sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
             .bind(labware.location_id)
@@ -394,7 +395,6 @@ pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
 ) -> Result<Labware, LabwhereError> {
-    // This is NOT our code. This is just to show you something 😉
     match sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
         .bind(labware.location_id)
         .bind(labware.id)
