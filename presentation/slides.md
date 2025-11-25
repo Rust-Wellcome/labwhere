@@ -340,7 +340,7 @@ pub async fn scan(
     }
 }
 ```
-```rs {*|3|8|12}{lines:true}
+```rs {*|3,8,12}{lines:true}
 pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
     let location: Location =
         match Location::find_by_barcode(scan.location_barcode, connection).await {
@@ -369,7 +369,7 @@ pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
 ) -> Result<Labware, LabwhereError> {
-    // 😉 😉 This is NOT our code. This is only here just to show you something 😉 😉
+    // ⚠️⚠️ This is NOT our code. This is only here just to show you something ⚠️⚠️
     let labware_query_result: Result<SqliteQueryResult, _> =
         sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
             .bind(labware.location_id)
@@ -415,7 +415,7 @@ pub(crate) async fn update(
 }
 ```
 ````
-<div v-if="$slidev.nav.clicks === 12" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg animate-border-pulse">
+<div v-if="$slidev.nav.clicks === 10" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg animate-border-pulse">
   <img src="./cloudflare.png" style="max-width: 700px;" />
   <div
     class="w-full text-center text-sm text-red-600 font-semibold mt-2"
