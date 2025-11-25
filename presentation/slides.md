@@ -33,10 +33,10 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-  Dasun 👾 <span v-mark.circle.orange="3">{<code style="color: grey">dp27</code>}</span><sup>‡</sup>, Abdullah 🚀 <span v-mark.circle.blue="3">{<code style="color: grey">ay6</code>}</span><sup>‡</sup> and Shiv💡<span v-mark.circle.brown="3">{<code style="color: grey">sb78</code>}</span><sup>‡</sup> <span v-mark.box.teal="1">🤒😷</span>
+  Dasun 👾 <span v-mark.circle.orange="2">{<code style="color: grey">dp27</code>}</span><sup>‡</sup>, Abdullah 🚀 <span v-mark.circle.blue="2">{<code style="color: grey">ay6</code>}</span><sup>‡</sup> and Shiv💡<span v-mark.circle.brown="2">{<code style="color: grey">sb78</code>}</span><sup>‡</sup> 
   </span>
   <br>
-  <span v-mark.underline.red="2"><small>Production Software Development (PSD)</small></span>
+  <span v-mark.underline.red="1"><small>Production Software Development (PSD)</small></span>
   <br>
   <small style="font-size: 0.55em;">
   <sup>‡</sup>Senior Software Developer
@@ -53,16 +53,11 @@ The Challenges, Triumphs, and Takeaways
 
 <!-- 
 
-Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. Shiv was going to present as well but he's ill and lost his voice so I've added two sick emojis ➡️ ➡️ ➡️ next to his name in the slides hoping he would get better soon. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
+Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
 
 This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
 
-And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, we will hang around in the networking session after the presentations so please feel free to come and talk to us. We are not experts but we have _some_ working knowledge on how Rust works.
-
-
-
-or for people in Zoom you can always contact us via Slack or Email (our user IDs are there ➡️ ➡️ ➡️ in the slide along with our names).
-
+And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, please feel free to contact us via Slack or Email (our user IDs are there ➡️ ➡️ ➡️ in the slide along with our names). We are not experts but we have _some_ working knowledge on how Rust works.
  -->
 
 
@@ -118,8 +113,8 @@ Prototype Project <span v-mark.circle.purple="4">("LabWhere")</span>
 
 ## Ways of working
 
-- One session (1 - 1.5hours) a week.
-- Took turns in running the session.
+- One session (1 - 1½ hours) a week.
+- Each person took charge in implementation.
 
 </v-click>
 
@@ -149,13 +144,13 @@ h1 {
 
 <!--
 
-So, Rust was this shiny programming language that made everyone look at their code and say, “Hey, you know what this needs? A complete rewrite… but in Rust.” (It happened with the Linux kernel ➡️ ➡️ ➡️, and it happened with Git's `reftable`). Naturally, we wanted to check what it's all about ➡️ ➡️ ➡️. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer,” especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
+So, Rust was this shiny programming language that made everyone look at their code thought of refactoring it. (It happened with the Linux kernel ➡️ ➡️ ➡️, and it happened with Git's `reftable` which is coming out in Git 3.0). Naturally, we wanted to check what it's all about ➡️ ➡️ ➡️. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer”, especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
 
 We've got Steve in our audience - he's my line manager. So we both decided to learn what Rust is all about. We decided that the best way to learn a new language was to actually write something with it. We then decided to start developing a **prototype** which was much closer to what we do in PSD. And then we found kindred spirits in Abdullah and Shiv — both equally excited to dive into Rust with a hands-on, collaborative approach.
 
 ➡️ ➡️ ➡️ 
 
-As I mentioned earlier, the prototype aligns closely with our domain. It’s essentially a reimagining — or rather, an “oxidation” — of an existing application called LabWhere ➡️ ➡️ ➡️ , which provides an interface for scanning and tracking the locations of plates and tubes.
+As I mentioned earlier, the prototype aligns closely with our domain. It’s essentially a reimagining of an existing application called LabWhere ➡️ ➡️ ➡️, which provides an interface for scanning and tracking the locations of plates and tubes.
 
 For the prototype, we focused on two specific use cases:
 
@@ -164,13 +159,13 @@ For the prototype, we focused on two specific use cases:
 
 The prototype is a backend component that we’ve integrated with our long-read LIMS frontend, Traction, to showcase its functionality. The connection to the long-read LIMS is controlled via a feature flag — flipping the flag redirects traffic between the original LabWhere service and the prototype.
 
-We intentionally kept the prototype as simple and minimal as possible, using **few abstractions**. Our goal was to understand the syntax and semantics of Rust itself — not to dive into full-fledged web frameworks like Axum or Rocket.
+We intentionally kept the prototype as simple and minimal as possible, using **few out-of-the-box web frameworks**. Our goal was to understand the syntax and semantics of Rust itself — not to dive into web frameworks like Axum or Rocket.
 
 We need to emphasise the fact that this is in fact a prototype. ➡️ ➡️ ➡️ This was not meant for production.
 
 ➡️ ➡️ ➡️ 
 
-One of the key takeaways we want to highlight in this presentation is that we successfully learned a new programming language — its syntax and semantics — and used it to write a small part of an existing system, fully integrated with our current infrastructure. We achieved this through collaborative sessions of just about one to one and a half hours per week — and it’s been a process we’ve genuinely enjoyed.
+One of the key takeaways we want to highlight in this presentation is that we successfully learned a new programming language and used it to write a small part of an existing system, fully integrated with our current infrastructure. We achieved this through collaborative sessions of just about one to one and a half hours per week — and it’s been a process we’ve genuinely enjoyed.
 
 So, to the next section of our presentation: Shiv will now demonstrate the working of the rust prototype we’ve built.
 
@@ -285,14 +280,11 @@ ul li {
 </style>
 
 ---
-transition: slide-up
-level: 2
+transition: slide-left
 ---
 
-# Controllers
+# Code
 
-
-We check the HTTP method (courtesy of `Hyper`), and the URI to forward request to the service.
 ````md magic-move {lines: true}
 ```rs {*|9}{lines:true}
 pub async fn process(
@@ -308,7 +300,7 @@ pub async fn process(
 ```
 </div>
 
-```rs {*|7-9|10-12|13-18|*}{lines:true}
+```rs {*|8}{lines:true}
 async fn route(
      req: Request<impl Body<Data = Bytes, Error = hyper::Error> + Send + Sync + 'static>,
      connection: &Pool<Sqlite>,
@@ -330,133 +322,129 @@ async fn route(
      }
  }
 ```
-````
-
-<!-- 
-Our controller is simple - a single function responsible for handling the incoming HTTP requests and dispatching the request to the handler using the route function.
-
-It takes a request and a database connection pool. It returns a response with a body of bytes or an error.
-If we don’t recognise the request, we return a bad request response.
-
-➡️ ➡️ ➡️ 
-
-The route function dispatches the request: it receives incoming HTTP requests and decides which service should handle them.
-
-
-Requests are matched based on method + URI path:
-OPTIONS → handled by preflight() (CORS).
-POST /scan → forwarded to the scan service.
-POST /searches → forwarded to the search service.
-Any other request → returns 404 Not Found.
-So, the controller separates request handling from business logic, forwarding requests to services without performing the business logic itself.
--->
-
----
-transition: slide-down
----
-
-# Services
-
-```rust {*|1-4|6-10|*}{lines:true}
-pub(crate) async fn search(
-    connection: &Pool<Sqlite>,
-    request_string: String,
-) -> Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> { ... }
-
-#[cfg(test)]
-mod tests {
-    #[tokio::test]
-    async fn test_search() {...}
-}
-```
-
-```rust {*|1-4|6-12|*}{lines:true}
+```rs {*|8}{lines:true}
 pub async fn scan(
     connection: &Pool<Sqlite>,
     request: &str,
-) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> { ... }
-
-#[cfg(test)]
-mod tests {
-    #[tokio::test]
-    async fn test_scan() { ... }
-
-    #[tokio::test]
-    async fn test_scan_without_correct_content_type() { ... }
+) -> std::result::Result<Response<BoxBody<Bytes, hyper::Error>>, hyper::Error> {
+  
+    // ... serialisation logic here.
+  
+    match Scan::create(json, connection).await {
+        Ok(scan) => {
+            // Logic for preparing the success response here.
+        }
+        Err(err) => {
+            // Logic for preparing error response here.
+        }
+    }
 }
 ```
+```rs {*|3|8|12}{lines:true}
+pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
+    let location: Location =
+        match Location::find_by_barcode(scan.location_barcode, connection).await {
+          // ... response handling ...
+        };
+    // ... some validations ...
+    for barcode in split_barcodes.iter() {
+        match Labware::find_by_barcode(&barcode.to_string(), connection).await {
+            Ok(mut labware) => {
+                labware.location_id = location.id;
 
-<!-- 
-These are the service functions.
+                match Labware::update(&labware, connection).await {
+                  // .. return proper value or handle errors ...
+                }
+            }
+            Err(error) => match error {
+                // ... error handling
+            },
+        };
+    }
+    // ... return the correct value ...
+}
+```
+```rs {*|11,12|12}{lines:true}
+pub(crate) async fn update(
+    labware: &Labware,
+    connection: &Pool<Sqlite>,
+) -> Result<Labware, LabwhereError> {
+    let labware_query_result: Result<SqliteQueryResult, _> =
+        sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
+            .bind(labware.location_id)
+            .bind(labware.id)
+            .execute(connection)
+            .await;
+    // Panics if labware_query_result is an error value.
+    let labware_result_set = labware_query_result.unwrap();
 
-Both of them take a database connection pool, and the request body.
-
-They return Hyper heap-allocated body type of Bytes.
-
-Search accepts ownership of the string - request body - and it can modify it.
-
-Scan borrows the reference to the string - request body - but it does not modify it.
--->
-
----
-transition: fade-out
----
-
-# Models
-
-<div class="grid md:grid-cols-2 gap-4 dark:invert">
-    <div>
-        <img class="h-auto max-w-full rounded-lg" src="./models-l.png" alt="">
-    </div>
-    <div>
-        <img class="h-auto max-w-full rounded-lg" style="max-height: 450px" src="./models-r.png" alt="">
-    </div>
-</div>
-
-<!-- 
-These are the models to access the database.
-
-They are Rust structs and they have implemented functions.
-
-They match the CRUD pattern, create, read, update and delete. We do not have deletions.
-
-Taking create as an example: It takes barcode String, unsigned 32 bit location id, and connection pool. It returns a Result of either Labware or a LabwareError. This is a common pattern in Rust. Using Result allows the caller to handle success and failure explicitly.
-
-As you see we have unit tests for each function we have implemented.
-
-This concludes the overall architecture and a little introduction to code.
--->
-
----
-transition: slide-left
----
-
-# Code
-
-
-Let's dive into the code. 
-
-Pardon the dog gifs 🐶
-
-<div class="flex items-center justify-center">
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-      <div>
-          <img class="h-auto max-w-full rounded-lg" src="./dog-1.gif" alt="">
-      </div>
-      <div>
-          <img class="h-auto max-w-full rounded-lg" src="./dog-2.webp" alt="">
-      </div>
-      <div>
-          <img class="h-auto max-w-full rounded-lg" src="./dog-3.webp" alt="">
-      </div>
+    if labware_result_set.rows_affected() > 0 {
+        // ... use sqlx to fetch the labware here...
+        return Ok(Labware::new(
+            labware.id,
+            labware.barcode.clone(),
+            Some(&location_result_set),
+        ));
+    }
+    Err(LabwhereError::database_error())
+}
+```
+```rs {*}{lines:true}
+pub(crate) async fn update(
+    labware: &Labware,
+    connection: &Pool<Sqlite>,
+) -> Result<Labware, LabwhereError> {
+    // This is NOT our code. This is just to show you something 😉
+    match sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
+        .bind(labware.location_id)
+        .bind(labware.id)
+        .execute(connection)
+        .await
+    {
+        Ok(_) => {
+            match sqlx::query_as::<_, Location>("SELECT * FROM locations WHERE id = ?")
+                .bind(labware.location_id)
+                .fetch_one(connection)
+                .await
+            {
+                // ... handle result ...
+            }
+        }
+        Err(_) => Err(LabwhereError::database_error()),
+    }
+}
+```
+````
+<div v-if="$slidev.nav.clicks === 12" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg">
+  <img src="./cloudflare.png" style="max-width: 700px;" />
+  <div
+    class="w-full text-center text-sm text-red-600 font-semibold mt-2"
+    style="background-color: #630101; color: #ffee00"
+  >
+    <br>
+    🚨🚨 <b>Reason for CloudFlare outage</b>
+    <span style="font-size: 0.7em;">
+      (Source: CloudFlare
+      <a
+        href="https://blog.cloudflare.com/18-november-2025-outage/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="color: #ffee00; text-decoration: underline;"
+      >Blog</a>)
+    </span>
+    🚨🚨
+    <br>
+    Do not call
+    <code style="background-color: black; font-size: 0.8em;">unwrap()</code>
+    on error values. Use
+    <code style="background-color: black; font-size: 0.8em;">match</code>,
+    <code style="background-color: black; font-size: 0.8em;">unwrap_err()</code>
+    or
+    <code style="background-color: black; font-size: 0.8em;">unwrap_or_default()</code>
+    instead.
+    <br><br>
   </div>
 </div>
-
-<!-- 
-
-So now, I’ll walk you through some of the code running behind the demonstration that Shiv just showed. The goal here is simply to give you a sense of how things are structured under the hood. The full codebase is available on GitHub for you to explore at your own pace. We will share the GitHub links for you to go through after the presentation.
-
--->
 
 ---
 transition: slide-right
@@ -464,13 +452,12 @@ class: text-2xl
 ---
 
 
-# Oxidation Compiler <img src="https://raw.githubusercontent.com/oxc-project/oxc-assets/main/uwu.png" class="inline-block h-18 mr-2" />
+# Future Work: "The Oxidation Compiler" <img src="https://raw.githubusercontent.com/oxc-project/oxc-assets/main/uwu.png" class="inline-block h-18 mr-2" />
 
 
-- Extended our Rust learning
-- Contributing to the Oxc project
-- Applying our Rust concepts to larger projects
-- Plan to keep contributing 
+- Extending to **open-source** projects.
+- Applying our Rust concepts to bigger projects.
+- Plan to keep contributing.
 
 <footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
   Logos © their respective owners.
@@ -569,10 +556,10 @@ You've heard about Rust, and now you have seen it too!
 
 <br>
 
-- <v-mark v-mark.highlight.yellow="2"> <b>Collaborative learning</b> </v-mark> played a key role in helping us reach this milestone.
-- <v-mark v-mark.highlight.yellow="3"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
-- <v-mark v-mark.highlight.yellow="4"> <b>Keeping abstractions to a minimum</b> </v-mark> helped us better appreciate Rust’s core philosophy.
-- <v-mark v-mark.highlight.yellow="5"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
+- <v-mark v-mark.highlight.yellow="2"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
+- <v-mark v-mark.highlight.yellow="3"> <b>Minimal use of out-of-the-box frameworks</b> </v-mark> helped us better appreciate Rust’s core philosophy.
+- <v-mark v-mark.highlight.yellow="4"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
+- Because our <v-mark v-mark.highlight.yellow="5"> <b>collaborative learning</b></v-mark> sessions were highly effective, we plan to carry that approach forward into our PSD work.
 
 </v-click>
 
