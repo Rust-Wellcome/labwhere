@@ -562,6 +562,11 @@ Link to our slides: [rust-wellcome.github.io/labwhere](https://rust-wellcome.git
   <div style="font-size: 0.7rem; color: grey"><i>"I let my threads panic ... for pleasure." - Sr. Rust Dev.</i></div>
 </div>
 
+<div class="absolute bottom-1 left-10 flex flex-col items-center">
+  <img src="./qr.png" class="h-32">
+  <span class="mb-2 text-xs text-gray-600">Scan to view slides</span>
+</div>
+
 
 ---
 transition: fade-out
@@ -579,10 +584,10 @@ You've heard about Rust, and now you have seen it too!
 
 <br>
 
+- Because our <v-mark v-mark.highlight.yellow="1"> <b>collaborative learning</b></v-mark> sessions were highly effective, we plan to carry that approach forward into our PSD work.
 - <v-mark v-mark.highlight.yellow="2"> <b>Consistent, small weekly efforts</b> </v-mark> added up and brought us to this point.
 - <v-mark v-mark.highlight.yellow="3"> <b>Minimal use of out-of-the-box frameworks</b> </v-mark> helped us better appreciate Rust’s core philosophy.
 - <v-mark v-mark.highlight.yellow="4"> <b>Learning together kept our motivation high</b> </v-mark>, and we’ve since kept the momentum going through open-source projects.
-- Because our <v-mark v-mark.highlight.yellow="5"> <b>collaborative learning</b></v-mark> sessions were highly effective, we plan to carry that approach forward into our PSD work.
 
 </v-click>
 
@@ -595,7 +600,7 @@ So, we've come to the end of the presentation. Although, there are some takeaway
 - The first one is about **collaborative learning** ➡️ ➡️ ➡️; it was the key that helped us reach this milestone together.
 -	The second one is about the **effort** ➡️ ➡️ ➡️; by putting in small but consistent weekly efforts, we were able to make steady progress.
 -	Third is about **abstractions** ➡️ ➡️ ➡️; keeping our approach simple and light on abstractions helped us better understand and appreciate Rust’s core philosophy.
--	And finally, through it all, **learning together** ➡️ ➡️ ➡️ kept our motivation high, eventually inspiring us to contribute to open-source projects and keep the momentum going.
+-	And through it all, **learning together** ➡️ ➡️ ➡️ kept our motivation high, eventually inspiring us to contribute to open-source projects and keep the momentum going.
 
 We sincerely hope you’ve taken something away from this presentation — not just about Rust, but about the value of learning together as a group. That’s really been our main goal and the biggest takeaway from this journey.
 
