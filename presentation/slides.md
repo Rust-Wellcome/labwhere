@@ -390,6 +390,7 @@ pub(crate) async fn update(
 }
 ```
 ```rs {*}{lines:true}
+///! This is NOT our code. This is just to show you something 😉
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
