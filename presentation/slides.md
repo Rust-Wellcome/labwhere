@@ -390,7 +390,7 @@ pub(crate) async fn update(
     Err(LabwhereError::database_error())
 }
 ```
-```rs {*}{lines:true}
+```rs {*|5-9,10,11,19,20,21}{lines:true}
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
@@ -457,6 +457,7 @@ class: text-2xl
 
 
 - Extending to **open-source** projects.
+- 1 - 1½ hours per week.
 - Applying our Rust concepts to bigger projects.
 - Plan to keep contributing.
 
