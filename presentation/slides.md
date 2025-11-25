@@ -390,7 +390,7 @@ pub(crate) async fn update(
     Err(LabwhereError::database_error())
 }
 ```
-```rs {*|5-9,10,11,19,20,21}{lines:true}
+```rs {*|5-9,10,11,19,20,21|*}{lines:true}
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
