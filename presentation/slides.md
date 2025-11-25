@@ -419,7 +419,7 @@ pub(crate) async fn update(
   <img src="./cloudflare.png" style="max-width: 700px;" />
   <div
     class="w-full text-center text-sm text-red-600 font-semibold mt-2"
-    style="background-color: #630101; color: #ffee00"
+    style="background-color: #9c0303; color: #ffee00"
   >
     <br>
     🚨🚨 <b>Reason for CloudFlare outage</b>
