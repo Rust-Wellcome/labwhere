@@ -340,7 +340,7 @@ pub async fn scan(
     }
 }
 ```
-```rs {*|3|8|12}{lines:true}
+```rs {*|3,8,12}{lines:true}
 pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, LabwhereError> {
     let location: Location =
         match Location::find_by_barcode(scan.location_barcode, connection).await {
@@ -415,7 +415,7 @@ pub(crate) async fn update(
 }
 ```
 ````
-<div v-if="$slidev.nav.clicks === 12" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg">
+<div v-if="$slidev.nav.clicks === 12" class="absolute top-10 left-1/2 -translate-x-1/2 z-[9999] border-4 border-red-600 rounded-lg animate-border-pulse">
   <img src="./cloudflare.png" style="max-width: 700px;" />
   <div
     class="w-full text-center text-sm text-red-600 font-semibold mt-2"
@@ -446,6 +446,27 @@ pub(crate) async fn update(
     <br><br>
   </div>
 </div>
+
+<style>
+@keyframes border-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220,38,38,0.7);
+    border-color: #dc2626;
+  }
+  50% {
+    box-shadow: 0 0 16px 4px rgba(220,38,38,0.9);
+    border-color: #ffee00;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220,38,38,0.7);
+    border-color: #dc2626;
+  }
+}
+.animate-border-pulse {
+  animation: border-pulse 1.2s infinite;
+  transition: border-color 0.2s;
+}
+</style>
 
 ---
 transition: slide-right
