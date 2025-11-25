@@ -33,7 +33,7 @@ The Challenges, Triumphs, and Takeaways
 
 <div class="absolute bottom-10">
   <span class="font-700">
-  Dasun 👾 <span v-mark.circle.orange="2">{<code style="color: grey">dp27</code>}</span><sup>‡</sup>, Abdullah 🚀 <span v-mark.circle.blue="2">{<code style="color: grey">ay6</code>}</span><sup>‡</sup> and Shiv💡<span v-mark.circle.brown="2">{<code style="color: grey">sb78</code>}</span><sup>‡</sup> 
+  Dasun 👾 <span v-mark.circle.orange="2">{<code style="color: grey">dp27</code>}</span><sup>‡</sup>, Abdullah 🚀 <span v-mark.circle.blue="2">{<code style="color: grey">ay6</code>}</span><sup>‡</sup>, and Shiv💡<span v-mark.circle.brown="2">{<code style="color: grey">sb78</code>}</span><sup>‡</sup> 
   </span>
   <br>
   <span v-mark.underline.red="1"><small>Production Software Development (PSD)</small></span>
@@ -364,11 +364,12 @@ pub async fn create(scan: Scan, connection: &Pool<Sqlite>) -> Result<Scan, Labwh
     // ... return the correct value ...
 }
 ```
-```rs {*|11,12|12}{lines:true}
+```rs {*|6-13|6-13}{lines:true}
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
 ) -> Result<Labware, LabwhereError> {
+    // 😉 😉 This is NOT our code. This is only here just to show you something 😉 😉
     let labware_query_result: Result<SqliteQueryResult, _> =
         sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
             .bind(labware.location_id)
@@ -389,12 +390,11 @@ pub(crate) async fn update(
     Err(LabwhereError::database_error())
 }
 ```
-```rs {*}{lines:true}
+```rs {*|5-9,10,11,19,20,21|*}{lines:true}
 pub(crate) async fn update(
     labware: &Labware,
     connection: &Pool<Sqlite>,
 ) -> Result<Labware, LabwhereError> {
-    // This is NOT our code. This is just to show you something 😉
     match sqlx::query("UPDATE labwares SET location_id = ? WHERE id = ?")
         .bind(labware.location_id)
         .bind(labware.id)
@@ -419,7 +419,7 @@ pub(crate) async fn update(
   <img src="./cloudflare.png" style="max-width: 700px;" />
   <div
     class="w-full text-center text-sm text-red-600 font-semibold mt-2"
-    style="background-color: #630101; color: #ffee00"
+    style="background-color: #9c0303; color: #ffee00"
   >
     <br>
     🚨🚨 <b>Reason for CloudFlare outage</b>
@@ -433,6 +433,7 @@ pub(crate) async fn update(
       >Blog</a>)
     </span>
     🚨🚨
+    <br>
     <br>
     Do not call
     <code style="background-color: black; font-size: 0.8em;">unwrap()</code>
@@ -456,6 +457,7 @@ class: text-2xl
 
 
 - Extending to **open-source** projects.
+- 1 - 1½ hours per week.
 - Applying our Rust concepts to bigger projects.
 - Plan to keep contributing.
 

@@ -27,3 +27,4 @@ Cargo.lock
 *.vscode
 presentation/dist
 presentation/node_modules
+presentation/.venv
