@@ -561,7 +561,7 @@ layout: intro
 
 # Thank You!
 
-Rust may have sparked the journey, but the heart of the journey was learning side-by-side.
+Rust may have sparked the journey, but the heart of the journey was learning together.
 
 <v-click>
 
@@ -628,6 +628,15 @@ Rust may have sparked the journey, but the heart of the journey was learning sid
   max-height: 10vh;
   animation: mascot-dance 4.8s infinite cubic-bezier(.68,-0.55,.27,1.55);
   pointer-events: none;
+}
+h1 {
+  background-color: #2B90B6;
+  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }
 </style>
 
