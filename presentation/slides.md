@@ -561,7 +561,7 @@ layout: intro
 
 # Thank You!
 
-You've heard about Rust, and now you have seen it too!
+Rust may have sparked the journey, but the heart of the journey was learning side-by-side.
 ✅ ✅
 
 <v-click>
