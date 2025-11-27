@@ -53,11 +53,11 @@ The Challenges, Triumphs, and Takeaways
 
 <!-- 
 
-Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. At PSD, we primarily work on our custom short- and long-read LIMS systems, and our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
+Hello, good afternoon everyone! I am Dasun, and I've got Abdullah presenting alongside with me. We are from PSD - which stands for Production Software Development ➡️ ➡️ ➡️. Tom spoke about what we do it PSD, and at PSD our tech stack is quite polyglot by nature so it's quite natural for us to gravitate towards checking out what other programming languages are all about. 
 
-This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways. 
+This presentation is about our journey in learning a programming language which was new for us. We want to share our triumphs, the challenges we faced, and leave you with some key takeaways.
 
-And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, please feel free to contact us via Slack or Email (our user IDs are there ➡️ ➡️ ➡️ in the slide along with our names). We are not experts but we have _some_ working knowledge on how Rust works.
+And we will kindly have to ask to hold off to your questions until the end. If the time does not permit it, please feel free to contact us via Slack or Email (our user IDs are there ➡️ ➡️ ➡️ in the slide along with our names).
  -->
 
 
@@ -144,7 +144,7 @@ h1 {
 
 <!--
 
-So, Rust was this shiny programming language that made everyone look at their code thought of refactoring it. (It happened with the Linux kernel ➡️ ➡️ ➡️, and it happened with Git's `reftable` which is coming out in Git 3.0). Naturally, we wanted to check what it's all about ➡️ ➡️ ➡️. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer”, especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
+So, Rust was this shiny programming language that made people look at their own code and thought of integrating Rust into it. (It happened with the Linux kernel ➡️ ➡️ ➡️, and it happened with Git's `reftable` which is coming out in Git 3.0). Naturally, we wanted to check what it's all about ➡️ ➡️ ➡️. We knew none of our PSD applications actually needed a rewrite — they were doing just fine. But we figured learning Rust would be a great "excuse" to explore how programming could be made “safer”, especially when it comes to those "sneaky memory leaks" that you read on blog posts every couple of weeks.
 
 We've got Steve in our audience - he's my line manager. So we both decided to learn what Rust is all about. We decided that the best way to learn a new language was to actually write something with it. We then decided to start developing a **prototype** which was much closer to what we do in PSD. And then we found kindred spirits in Abdullah and Shiv — both equally excited to dive into Rust with a hands-on, collaborative approach.
 
@@ -633,7 +633,8 @@ So, we've come to the end of the presentation. Although, there are some takeaway
 - The first one is about **collaborative learning** ➡️ ➡️ ➡️; it was the key that helped us reach this milestone together.
 -	The second one is about the **effort** ➡️ ➡️ ➡️; by putting in small but consistent weekly efforts, we were able to make steady progress.
 -	Third is about **abstractions** ➡️ ➡️ ➡️; keeping our approach simple and light on abstractions helped us better understand and appreciate Rust’s core philosophy.
--	And through it all, **learning together** ➡️ ➡️ ➡️ kept our motivation high, eventually inspiring us to contribute to open-source projects and keep the momentum going.
+-	And through it all, **learning together** ➡️ ➡️ ➡️ kept our motivation high, eventually inspiring us to contribute to open-source projects and keep the momentum going. Most importantly, we plan to apply collaborative learning into our work in PSD because we have found it to be quite effective in getting things through.
+
 
 We sincerely hope you’ve taken something away from this presentation — not just about Rust, but about the value of learning together as a group. That’s really been our main goal and the biggest takeaway from this journey.
 
