@@ -581,7 +581,7 @@ You've heard about Rust, and now you have seen it too!
 <div class="mascot-thankyou-container">
   <img src="./mascot.png" class="mascot-overlay mascot-dance" alt="Rust Mascot">
   <span class="mascot-thankyou-text">Ferris the Crab says Thank You!</span>
-  <span class="mascot-subtext">(Ferris is Rust's mascot). Read about him <a href="https://rustfoundation.org/media/celebrating-rusts-birthday-with-karen-tolva-creator-of-ferris-the-rustacean/">here</a>.</span>
+  <span class="mascot-subtext">(Ferris is Rust's mascot. Read about him <a href="https://rustfoundation.org/media/celebrating-rusts-birthday-with-karen-tolva-creator-of-ferris-the-rustacean/">here</a>).</span>
 </div>
 </v-click>
 
