@@ -581,6 +581,7 @@ You've heard about Rust, and now you have seen it too!
 <div class="mascot-thankyou-container">
   <img src="./mascot.png" class="mascot-overlay mascot-dance" alt="Rust Mascot">
   <span class="mascot-thankyou-text">Ferris the Crab says Thank You!</span>
+  <span class="mascot-subtext">Ferris is Rust's mascot</span>
 </div>
 </v-click>
 
@@ -614,6 +615,13 @@ You've heard about Rust, and now you have seen it too!
   color: #ff0000ff;
   margin-bottom: 0.2em;
   letter-spacing: 0.05em;
+  pointer-events: none;
+}
+.mascot-subtext {
+  font-size: 0.9vw;
+  color: #444;
+  margin-top: 0.1em;
+  text-shadow: 0 1px 2px #fff8;
   pointer-events: none;
 }
 .mascot-overlay {
