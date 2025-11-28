@@ -600,32 +600,33 @@ Rust may have sparked the journey, but the heart of the journey was learning tog
 }
 .mascot-thankyou-container {
   position: fixed;
-  bottom: 2.5vh;
-  right: 2.5vw;
+  bottom: 0;
+  right: 0;
   z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: center;
   pointer-events: none;
+  margin: 1.5vw 1.5vw;
 }
 .mascot-thankyou-text {
-  font-size: 1.5vw;
+  font-size: 1.1rem;
   font-weight: bold;
   color: #ff0000ff;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.15em;
   letter-spacing: 0.05em;
   pointer-events: none;
 }
 .mascot-subtext {
-  font-size: 0.9vw;
+  font-size: 0.85rem;
   color: #ff0000;
-  margin-top: 0.1em;
+  margin-top: 0.08em;
   text-shadow: 0 1px 2px #fff8;
   pointer-events: none;
 }
 .mascot-overlay {
-  max-width: 10vw;
-  max-height: 10vh;
+  max-width: 8vw;
+  max-height: 8vh;
   animation: mascot-dance 4.8s infinite cubic-bezier(.68,-0.55,.27,1.55);
   pointer-events: none;
 }
