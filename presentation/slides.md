@@ -462,11 +462,10 @@ class: text-2xl
 
 # Future Work: "The Oxidation Compiler" <img src="https://raw.githubusercontent.com/oxc-project/oxc-assets/main/uwu.png" class="inline-block h-18 mr-2" />
 
-
-- Extending to **open-source** projects.
+- Collection of high-performance tools for JavaScript written in Rust.
+- We are writing one of the `ESLint` rules in Rust.
 - 1 - 1½ hours per week.
-- Applying our Rust concepts to bigger projects.
-- Plan to keep contributing.
+- Applying our Rust concepts to bigger projects and keep contributing.
 
 <footer class="absolute bottom-2 left-0 w-full text-center text-xs text-gray-500" style="font-size: 0.4rem">
   Logos © their respective owners.
