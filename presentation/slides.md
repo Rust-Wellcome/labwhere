@@ -223,11 +223,25 @@ level: 2
           <span style="width: 12px; height: 12px; background: #ffbd2e; border-radius: 50%; display: inline-block; border: 1px solid #e1a116;"></span>
           <span style="width: 12px; height: 12px; background: #27c93f; border-radius: 50%; display: inline-block; border: 1px solid #1aab29;"></span>
         </div>
-        <div style="flex: 1; text-align: center; color: #444; font-size: 0.78em; font-weight: 500; letter-spacing: 0.01em; user-select: none;">
-          Rust LabWhere Demo (via Traction UI)
-        </div>
-        <div style="width: 60px; display: flex; align-items: center; justify-content: flex-end;">
-          <img src="./rust.png" alt="Rust logo" style="height: 18px; width: auto; margin-left: 8px; margin-right: 2px; vertical-align: middle;" />
+        <div style="flex: 1; text-align: center; color: #444; font-size: 0.65em; font-weight: 500; letter-spacing: 0.01em; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                  Rust LabWhere Demo: Traction UI
+                </div>
+      </div>
+      <!-- Chrome Address Bar -->
+      <div style="height: 32px; background: #f5f6fa; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; padding: 0 1.2em; box-shadow: 0 3px 12px -4px #0002; z-index: 2;">
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <div style="display: flex; align-items: center; width: 100%; max-width: 520px; font-size: 0.85em; padding: 0.12em 0.2em;">
+            <span style="margin-right: 0.4em; color: #bdbdbd; font-size: 1em;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bdbdbd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <div style="flex: 1; background: #fff; border: 1.5px solid #d1d5db; border-radius: 999px; padding: 0.13em 0.8em; font-size: 0.97em; color: #444; box-shadow: 0 1px 2px #0001; display: flex; align-items: center; min-width: 0;">
+              <span style="color: #bdbdbd; font-size: 0.85em; margin-right: 0.4em;">🔒</span>
+              <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.85em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #7a7373ff;">https://uat.traction.psd.sanger.ac.uk</span>
+            </div>
+            <span style="margin-left: 0.4em; color: #bdbdbd; font-size: 1em;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bdbdbd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </span>
+          </div>
         </div>
       </div>
       <!-- Browser Content (iframe) -->
@@ -243,6 +257,12 @@ level: 2
     </div>
   </div>
 </div>
+
+<div style="width: 100%; text-align: center; margin-top: 0.2em; font-size: 0.55em; color: #888; letter-spacing: 0.01em;">
+  <span style="font-size: 0.6em;">This "window" is an embedded iframe rendering the live Traction UAT website (URL shown in the "address bar") for demonstration purposes.</span>
+</div>
+
+
 
 ---
 transition: slide-left
