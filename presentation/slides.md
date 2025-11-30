@@ -223,9 +223,9 @@ level: 2
           <span style="width: 12px; height: 12px; background: #ffbd2e; border-radius: 50%; display: inline-block; border: 1px solid #e1a116;"></span>
           <span style="width: 12px; height: 12px; background: #27c93f; border-radius: 50%; display: inline-block; border: 1px solid #1aab29;"></span>
         </div>
-        <div style="flex: 1; text-align: center; color: #444; font-size: 0.65em; font-weight: 500; letter-spacing: 0.01em; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                  Rust LabWhere Demo: Traction UI
-                </div>
+        <!-- <div style="flex: 1; text-align: center; color: #444; font-size: 0.65em; font-weight: 500; letter-spacing: 0.01em; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+                  Traction
+        </div> -->
       </div>
       <!-- Chrome Address Bar -->
       <div style="height: 32px; background: #f5f6fa; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; padding: 0 1.2em; box-shadow: 0 3px 12px -4px #0002; z-index: 2;">
