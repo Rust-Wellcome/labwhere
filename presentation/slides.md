@@ -209,6 +209,23 @@ So, as I said before, we've hooked the prototype to our long-read front-end call
 -->
 
 ---
+transition: slide-up
+level: 2
+---
+
+<div class="flex items-center justify-center">
+  <div style="width: 100%; max-width: 850px; aspect-ratio: 16/9; display: flex; justify-content: center; align-items: center;">
+    <iframe
+      src="https://uat.traction.psd.sanger.ac.uk/#/dashboard"
+      style="width: 100%; height: 100%; min-height: 320px; border: 2px solid #2B90B6; border-radius: 12px; box-shadow: 0 4px 32px #000a; background: white;"
+      allowfullscreen
+      loading="lazy"
+      title="Traction Dashboard Demo"
+    ></iframe>
+  </div>
+</div>
+
+---
 transition: slide-left
 level: 2
 ---
@@ -560,7 +577,7 @@ layout: intro
 
 # Thank You!
 
-Rust may have sparked the journey, but the heart of the journey was learning together.
+ Rust may have sparked the journey, but the heart of the journey was <u>learning together</u>.
 
 <v-click>
 
@@ -581,6 +598,13 @@ Rust may have sparked the journey, but the heart of the journey was learning tog
   <span class="mascot-thankyou-text">Ferris the Crab says Thank You!</span>
   <span class="mascot-subtext">(Ferris is Rust's mascot. Read about him <a href="https://rustfoundation.org/media/celebrating-rusts-birthday-with-karen-tolva-creator-of-ferris-the-rustacean/">here</a>).</span>
 </div>
+</v-click>
+
+<v-click at="7">
+  <div class="absolute bottom-1 left-10 flex flex-col items-center">
+    <img src="./qr.png" class="h-32">
+    <span class="mb-2 text-xs text-gray-600">Scan to view slides</span>
+  </div>
 </v-click>
 
 <style>
