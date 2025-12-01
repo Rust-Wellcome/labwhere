@@ -528,13 +528,15 @@ class: text-2xl
 </footer>
 
 <!-- 
-Lately, as a team, we've been taking our Rust learning a step further, moving from just practicing concepts to actually applying them in a real open-source project.
+For the last few months, we've been taking our Rust learning a step further, moving from just practicing concepts to actually applying them in a real open-source project.
 
-We've been contributing to the Oxidation Compiler, which is basically a collection of existing Javascript and Typescript tools but rewritten in rust for performance. We looked through the list of tools and found an ESLint rewrite, so we got stuck in and started to try and contribute.
+We've been contributing to the Oxidation Compiler, which is basically a collection of existing Javascript and Typescript tools but rewritten in rust. We looked through the list of tools and found an ESLint rewrite, so we got stuck in and started to try and contribute.
 
-Our focus has been on understanding how the rule architecture works under the hood and how pattern matching is used to build linting rules. This gave us a really good look at how Rust concepts like ownership, pattern matching, and traits come together in a bigger, production-level codebase.
+Our focus has been on understanding how the rule architecture works under the hood and how we can use concepts like pattern matching and traits to build linting rules.
 
-What's been great is that we've not only strengthened our Rust skills, but also learned how large open-source projects are structured, things like contributing guidelines, testing setups, and how maintainers keep everything organised and consistent.
+And it's been really good so far, it's given us the opportunity to apply the rust concepts we've learned to a real-world project, as well as learn new ones and expand on our knowledge of rust.
+
+And the benefits go beyond just the code, we've also learned how large open-source projects are structured, things like contributing guidelines, testing setups, and how maintainers keep everything organised and consistent.
 -->
 
 ---
@@ -542,7 +544,7 @@ transition: slide-up
 class: text-md
 ---
 
-# Summary on Rust.
+# What Stood Out to Us
 
 <table>
   <thead>
@@ -556,24 +558,146 @@ class: text-md
   <tbody>
     <tr>
       <td>1</td>
-      <td v-click="1">Pattern matching <code>match</code> statements).</td>
-      <td v-click="2">Borrow checker.</td>
-      <td v-click="3">Verbosity at times (<code>unwrap()</code> call, <code>Result</code>, and <code>Option</code> <em>can</em> be a bit verbose).</td>
+      <td v-click="1">Pattern matching</td>
+      <td v-click="2">Borrow checker</td>
+      <td v-click="3">Verbosity at times</td>
     </tr>
     <tr>
       <td>2</td>
-      <td v-click="1">Functional-style enums <code>Option</code> and <code>Result</code>).</td>
-      <td v-click="2">Lifetimes.</td>
-      <td v-click="3">Slow builds.</td>
+      <td v-click="1">Handling missing values/errors</td>
+      <td v-click="2">Lifetimes</td>
+      <td v-click="3">Slower compile times</td>
     </tr>
     <tr>
       <td>3</td>
-      <td v-click="1"><code>Cargo</code> as a package manager.</td>
-      <td v-click="2">Boxed values (heap-allocated objects) i.e., <code>Box</code>, <code>Arc</code>, etc.</td>
-      <td v-click="3"><code>"the method . . . exists but the following trait bounds were not satisfied"</code></td>
+      <td v-click="1"><code>Cargo</code> as a package manager</td>
+      <td v-click="2">Boxed values <code>Box</code>, <code>Arc</code>, etc.</td>
+      <td v-click="3">Complex error messages</td>
     </tr>
   </tbody>
 </table>
+
+<style>
+table {
+  width: 100%;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+table th {
+  padding: 1rem 0.8rem;
+  font-size: 1.3rem;
+}
+
+table td {
+  padding: 1rem 0.8rem;
+  font-size: 1.1rem;
+}
+
+table tbody tr {
+  height: 3.5rem;
+}
+</style>
+
+
+<!--
+
+We've learnt quite a lot about rust, and we wanted to make a summary of the different aspects of rust we've experienced, so we've categorised them into three groups: things we liked, things we liked but found difficult to grasp, and things we didn't/don't like.
+
+Things We Liked
+
+Pattern Matching
+
+A structured way to handle decisions in code
+
+Rust forces you to handle every possible outcome
+
+Less ambiguity and fewer bugs
+
+Rust is very comfortable saying “no, you missed something”
+
+
+That strictness shows up again in how Rust handles uncertainty.
+
+Rust doesn’t allow hidden failures or missing values
+
+You must acknowledge when something might not exist or might fail
+
+Slightly more work up front, fewer surprises later
+
+That same philosophy extends beyond the language itself.
+
+
+Cargo is Rust’s all-in-one tool manager
+
+Handles setup, dependencies, testing—almost everything
+
+One of those tools..
+
+Category Segue (Liked → Hard)
+
+“So overall, things felt thoughtfully designed—but some parts required adjusting how you think.”
+
+
+like.. the Borrow Checker
+
+Rust constantly tracks who owns data and when
+
+Prevents a whole range of runtime errors
+
+Very helpful, but it pushes back a lot at first
+
+And once ownership comes up, timing becomes important.
+
+
+Lifetimes tell Rust how long data is valid for, so the borrow checker can ensure data isn’t used after it expires.
+
+Mostly automatic, but confusing when visible
+
+Feels logical, just not intuitive immediately
+
+Which leads into how Rust handles memory more broadly.
+
+Boxed values
+
+They let you interface with the heap, which stores data that isn’t tied to a function call, so it can live longer than the stack.
+
+There are two types we came across:
+
+Box<T> owns that data alone, while Arc<T> lets it be shared safely.
+Not hard individually
+Knowing when to use them comes with experience
+
+And it highlighted to us that Rust doesn’t guess, you have to be explicit
+
+Category Segue (Hard → Didn’t Like)
+
+That brings us to a few areas that didn’t work as smoothly for us.
+
+
+Verbosity
+Rust wants everything written out clearly
+Safer, but sometimes feels long-winded
+Simple ideas can look more complicated than expected
+
+And that’s especially noticeable while waiting on builds.
+
+Build Times
+Compiler does deep checking
+Great for correctness
+Slower iteration during development
+
+And when something fails…
+
+Error Messages
+Extremely precise
+Sometimes too precise
+You don't understand them until you've figured out what's went wrong
+
+
+Overall, Rust feels very deliberately designed: it prioritises safety and correctness, but that comes with trade-offs in complexity and a learning curve that reflects those choices
+-->
+
 
 ---
 transition: fade-out
@@ -607,7 +731,6 @@ Link to our slides: [rust-wellcome.github.io/labwhere](https://rust-wellcome.git
   <img src="./qr.png" class="h-32">
   <span class="mb-2 text-xs text-gray-600">Scan to view slides</span>
 </div>
-
 
 ---
 transition: fade-out
