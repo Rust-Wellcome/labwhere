@@ -218,10 +218,10 @@ level: 2
     <div style="width: 100%; height: 100%; border-radius: 14px; box-shadow: 0 4px 32px #000a; border: 1.5px solid #bbb; background: #f8f9fa; display: flex; flex-direction: column; overflow: hidden;">
       <!-- Browser Title Bar -->
       <div style="height: 26px; background: linear-gradient(90deg, #e3e4e8 80%, #d1d5db 100%); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; padding: 0 1.2em;">
-        <div style="display: flex; gap: 0.28em; align-items: center; margin-left: -0.3em; margin-right: 0em;">
-          <span style="width: 9px; height: 9px; background: #ff5f56; border-radius: 50%; display: inline-block; border: 0.8px solid #e55347;"></span>
-          <span style="width: 9px; height: 9px; background: #ffbd2e; border-radius: 50%; display: inline-block; border: 0.8px solid #e1a116;"></span>
-          <span style="width: 9px; height: 9px; background: #27c93f; border-radius: 50%; display: inline-block; border: 0.8px solid #1aab29;"></span>
+        <div style="display: flex; gap: 0.5em; align-items: center; margin-right: 1em;">
+          <span style="width: 12px; height: 12px; background: #ff5f56; border-radius: 50%; display: inline-block; border: 1px solid #e55347;"></span>
+          <span style="width: 12px; height: 12px; background: #ffbd2e; border-radius: 50%; display: inline-block; border: 1px solid #e1a116;"></span>
+          <span style="width: 12px; height: 12px; background: #27c93f; border-radius: 50%; display: inline-block; border: 1px solid #1aab29;"></span>
         </div>
         <!-- <div style="flex: 1; text-align: center; color: #444; font-size: 0.65em; font-weight: 500; letter-spacing: 0.01em; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
                   Traction
@@ -234,7 +234,7 @@ level: 2
             <span style="margin-right: 0.4em; color: #bdbdbd; font-size: 1em;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bdbdbd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </span>
-            <div style="flex: 1; background: #fff; border: 1.5px solid #d1d5db; border-radius: 999px; padding: 0.13em 0.8em; font-size: 0.97em; color: #444; box-shadow: 0 1px 2px #0001; display: flex; align-items: center; min-width: 0;">
+            <div style="flex: 1; background: #fff; border: 1.5px solid #d1d5db; border-radius: 999px; padding: 0.13em 0.8em; font-size: 0.97em; color: #444; box-shadow: 0 1px 2px #0001; display: flex; align-items: center; justify-content: center; min-width: 0;">
               <span style="color: #bdbdbd; font-size: 0.85em; margin-right: 0.4em;">🔒</span>
               <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.85em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #7a7373ff;">https://uat.traction.psd.sanger.ac.uk</span>
             </div>
