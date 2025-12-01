@@ -218,10 +218,10 @@ level: 2
     <div style="width: 100%; height: 100%; border-radius: 14px; box-shadow: 0 4px 32px #000a; border: 1.5px solid #bbb; background: #f8f9fa; display: flex; flex-direction: column; overflow: hidden;">
       <!-- Browser Title Bar -->
       <div style="height: 26px; background: linear-gradient(90deg, #e3e4e8 80%, #d1d5db 100%); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; padding: 0 1.2em;">
-        <div style="display: flex; gap: 0.5em; align-items: center; margin-right: 1em;">
-          <span style="width: 12px; height: 12px; background: #ff5f56; border-radius: 50%; display: inline-block; border: 1px solid #e55347;"></span>
-          <span style="width: 12px; height: 12px; background: #ffbd2e; border-radius: 50%; display: inline-block; border: 1px solid #e1a116;"></span>
-          <span style="width: 12px; height: 12px; background: #27c93f; border-radius: 50%; display: inline-block; border: 1px solid #1aab29;"></span>
+        <div style="display: flex; gap: 0.28em; align-items: center; margin-right: 0.7em;">
+          <span style="width: 9px; height: 9px; background: #ff5f56; border-radius: 50%; display: inline-block; border: 0.8px solid #e55347;"></span>
+          <span style="width: 9px; height: 9px; background: #ffbd2e; border-radius: 50%; display: inline-block; border: 0.8px solid #e1a116;"></span>
+          <span style="width: 9px; height: 9px; background: #27c93f; border-radius: 50%; display: inline-block; border: 0.8px solid #1aab29;"></span>
         </div>
         <!-- <div style="flex: 1; text-align: center; color: #444; font-size: 0.65em; font-weight: 500; letter-spacing: 0.01em; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
                   Traction
